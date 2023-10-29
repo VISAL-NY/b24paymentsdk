@@ -434,16 +434,16 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
             //CUSTOM SHAPE BANK ICON
-            ShapeDrawable shape=CustomShape.applyShape(Color.TRANSPARENT,12);
+            ShapeDrawable shape=CustomShape.applyShape(Color.TRANSPARENT,8,itemView.getContext());
             bankImageBackground.setBackground(shape);
 
 
 
             if(isLightMode){
-                applyStyleShapeLightMode();
+                applyStyleShapeLightMode(itemView.getContext());
 
             }else {
-                applyStyleShapeDarkMode();
+                applyStyleShapeDarkMode(itemView.getContext());
             }
 
 
@@ -452,20 +452,20 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
 
-        void applyStyleShapeLightMode(){
+        void applyStyleShapeLightMode(Context context){
 
             LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
 
-//            card bank item
+//           card bank item
             String bgBankItemColor=lightModeModel.getButton().getBankButton().getBackgroundColor();
             String convertBgBankItemColor= ConvertColorHexa.convertHex(bgBankItemColor);
 
-            ShapeDrawable bankItemShape= CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),30);
+            ShapeDrawable bankItemShape= CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),12,context);
 
 
             String selectColor=ConvertColorHexa.getFiftyPercentColor(bgBankItemColor);
 
-            ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),30);
+            ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),12,context);
 
 
             ShapeDrawable normal=new ShapeDrawable();
@@ -476,10 +476,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             selector.addState(new int[]{}, normal);
             containerBankItemSecondLayer.setBackground(selector);
 
-            containerBankItemFirstLayer.setElevation(35.0f);
+            int elevation=(int)(5*context.getResources().getDisplayMetrics().density);
+            containerBankItemFirstLayer.setElevation(elevation);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 int shadow =Color.argb(36,183,190,203);
-                containerBankItemFirstLayer.setOutlineSpotShadowColor(shadow);
+                int shadowPX = (int) (shadow * context.getResources().getDisplayMetrics().density);
+                containerBankItemFirstLayer.setOutlineSpotShadowColor(shadowPX);
             }
             containerBankItemFirstLayer.setBackground(bankItemShape);
 
@@ -503,10 +505,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         //favorite background
             String bgFavButton=lightModeModel.getButton().getFavoriteButton().getBackgroundColor();
             String convertBgFavButton=ConvertColorHexa.convertHex(bgFavButton);
-            ShapeDrawable favButton=CustomShape.applyShape(Color.parseColor(convertBgFavButton),20);
+            ShapeDrawable favButton=CustomShape.applyShape(Color.parseColor(convertBgFavButton),6,context);
 
             String favButtonSelected=ConvertColorHexa.getFiftyPercentColor(bgFavButton);
-            ShapeDrawable favButtonSelectColor=CustomShape.applyShape(Color.parseColor(favButtonSelected),20);
+            ShapeDrawable favButtonSelectColor=CustomShape.applyShape(Color.parseColor(favButtonSelected),6,context);
             StateListDrawable favSelector=SelectedState.selectedSate(favButton,favButtonSelectColor);
             addToFavoriteContainer.setBackground(favSelector);
 
@@ -518,7 +520,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         }
 
-       void applyStyleShapeDarkMode(){
+       void applyStyleShapeDarkMode(Context context){
 
            DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
 
@@ -526,12 +528,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            String bgBankItemColor=darkModeModel.getButton().getBankButton().getBackgroundColor();
            String convertBgBankItemColor= ConvertColorHexa.convertHex(bgBankItemColor);
 
-           ShapeDrawable bankItemShape=CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),30);
+           ShapeDrawable bankItemShape=CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),12,context);
 
 
            String selectColor=ConvertColorHexa.getFiftyPercentColor(bgBankItemColor);
 
-           ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),30);
+           ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),12,context);
 
 
            ShapeDrawable normal=new ShapeDrawable();
@@ -542,10 +544,13 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            selector.addState(new int[]{}, normal);
            containerBankItemSecondLayer.setBackground(selector);
 
-           containerBankItemFirstLayer.setElevation(35.0f);
+
+           int elevation=(int)(5*context.getResources().getDisplayMetrics().density);
+           containerBankItemFirstLayer.setElevation(elevation);
            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                int shadow =Color.argb(36,183,190,203);
-               containerBankItemFirstLayer.setOutlineSpotShadowColor(shadow);
+               int shadowPX = (int) (shadow * context.getResources().getDisplayMetrics().density);
+               containerBankItemFirstLayer.setOutlineSpotShadowColor(shadowPX);
            }
            containerBankItemFirstLayer.setBackground(bankItemShape);
 
@@ -569,9 +574,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            //favorite background
            String bgFavButton=darkModeModel.getButton().getFavoriteButton().getBackgroundColor();
            String convertBgFavButton=ConvertColorHexa.convertHex(bgFavButton);
-           ShapeDrawable favButton=CustomShape.applyShape(Color.parseColor(convertBgFavButton),20);
+           ShapeDrawable favButton=CustomShape.applyShape(Color.parseColor(convertBgFavButton),6,context);
            String favButtonSelected=ConvertColorHexa.getFiftyPercentColor(bgFavButton);
-           ShapeDrawable favButtonSelectColor=CustomShape.applyShape(Color.parseColor(favButtonSelected),20);
+           ShapeDrawable favButtonSelectColor=CustomShape.applyShape(Color.parseColor(favButtonSelected),6,context);
 
            StateListDrawable favSelector= SelectedState.selectedSate(favButton,favButtonSelectColor);
 
@@ -620,7 +625,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             }else {
                 containerFee.setVisibility(View.GONE);
             }
-
         }
     }
 

@@ -239,11 +239,14 @@ public class PaymentMethodFragment extends Fragment
 
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setStroke(2,
+        int width=(int) (1 * getContext().getResources().getDisplayMetrics().density);
+        int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
+        gradientDrawable.setStroke(width,
                 Color.parseColor(dashLineColorHexa),
-                15,
-                15); // Set the stroke color and width
-        gradientDrawable.setCornerRadius(40); // Set the corner radius
+                dashWidthHeight,
+                dashWidthHeight);
+        int cornerRadius=(int)(18 *getContext().getResources().getDisplayMetrics().density); // Set the stroke color and width
+        gradientDrawable.setCornerRadius(cornerRadius); // Set the corner radius
         gradientDrawable.setDither(true);
         bottomDashLine.setBackground(gradientDrawable);
 
@@ -284,13 +287,19 @@ public class PaymentMethodFragment extends Fragment
 
 
         //dash line
+        String dashLineColor=darkModeModel.getSecondaryColor().getTextColor();
+        String dashLineColorHexa=ConvertColorHexa.convertHex(dashLineColor);
+
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setStroke(1,
-                Color.parseColor(totalAmountTitleHexa),
-                15,
-                15); // Set the stroke color and width
-        gradientDrawable.setCornerRadius(40); // Set the corner radius
+        int width=(int) (1 * getContext().getResources().getDisplayMetrics().density);
+        int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
+        gradientDrawable.setStroke(width,
+                Color.parseColor(dashLineColorHexa),
+                dashWidthHeight,
+                dashWidthHeight);
+        int cornerRadius=(int)(18 *getContext().getResources().getDisplayMetrics().density); // Set the stroke color and width
+        gradientDrawable.setCornerRadius(cornerRadius); // Set the corner radius
         gradientDrawable.setDither(true);
         bottomDashLine.setBackground(gradientDrawable);
 

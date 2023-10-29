@@ -336,12 +336,13 @@ public class KhqrFragment extends Fragment {
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
-        gradientDrawable.setStroke(1,
+        int width=(int)(1*getContext().getResources().getDisplayMetrics().density);
+        int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
+
+        gradientDrawable.setStroke(width,
                 Color.parseColor(dashLineHexa),
-                15.0f,
-                15.0f); // Set the stroke color and width
-        gradientDrawable.setCornerRadius(20); // Set the corner radius
-        gradientDrawable.setDither(true);
+                dashWidthHeight,
+                dashWidthHeight); // Set the stroke color and width// Set the corner radius
 
         dashLineLeft.setBackground(gradientDrawable);
         dashLineRight.setBackground(gradientDrawable);
@@ -359,9 +360,9 @@ public class KhqrFragment extends Fragment {
        String bgDownloadShare=lightModeModel.getButton().getActionButton().getBackgroundColor();
        String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
 
-        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),20);
+        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),10,getContext());
         String downloadShareSelectedColor=ConvertColorHexa.getFiftyPercentColor(bgDownloadShare);
-        ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),20);
+        ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),10,getContext());
 
 
         StateListDrawable selectorDownload= SelectedState.selectedSate(shape,shape1);
@@ -414,11 +415,13 @@ public class KhqrFragment extends Fragment {
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
-        gradientDrawable.setStroke(1,
+        int width=(int)(1*getContext().getResources().getDisplayMetrics().density);
+        int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
+
+        gradientDrawable.setStroke(width,
                 Color.parseColor(dashLineHexa),
-                15.0f,
-                15.0f); // Set the stroke color and width// Set the corner radius
-        gradientDrawable.setDither(true);
+                dashWidthHeight,
+                dashWidthHeight);
 
         dashLineLeft.setBackground(gradientDrawable);
         dashLineRight.setBackground(gradientDrawable);
@@ -437,9 +440,9 @@ public class KhqrFragment extends Fragment {
         String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
 
 
-        ShapeDrawable shape=CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),20);
+        ShapeDrawable shape=CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),10,getContext());
         String downloadShareSelectedColor=ConvertColorHexa.getFiftyPercentColor(bgDownloadShare);
-        ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),20);
+        ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),10,getContext());
 
 
         StateListDrawable selectorDownload= SelectedState.selectedSate(shape,shape1);
@@ -463,8 +466,6 @@ public class KhqrFragment extends Fragment {
 
         textDownload.setTextColor(Color.parseColor(downloadShareHexa));
         textShare.setTextColor(Color.parseColor(downloadShareHexa));
-
-
 
 
     }
@@ -494,19 +495,21 @@ public class KhqrFragment extends Fragment {
         }
 
         //apply khqr card corner
-        ShapeDrawable khqrCard=CustomShape.applyShape(Color.WHITE,100.0f);
+        ShapeDrawable khqrCard=CustomShape.applyShape(Color.WHITE,30,getContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            int shadowColor=Color.argb(90,0,0,0);
-            khqrCardContainer.setOutlineSpotShadowColor(shadowColor);
+            int shadowColor=Color.argb(10,0,0,0);
+            int shadowPX=(int) (shadowColor*getContext().getResources().getDisplayMetrics().density);
+            khqrCardContainer.setOutlineSpotShadowColor(shadowPX);
         }
-        khqrCardContainer.setElevation(20f);
+        int elevation=(int)(40*getContext().getResources().getDisplayMetrics().density);
+        khqrCardContainer.setElevation(elevation);
         khqrCardContainer.setBackground(khqrCard);
 
-        ShapeDrawable containerQrcode=CustomShape.applyShape(Color.WHITE,80.0f);
+        ShapeDrawable containerQrcode=CustomShape.applyShape(Color.WHITE,30,getContext());
         containerQrCode.setBackground(containerQrcode);
 
         ShapeDrawable khqrBg=CustomShape.applyShape(
-                getResources().getColor(R.color.khqr_backgound_color),80.0f);
+                getResources().getColor(R.color.khqr_backgound_color),30,getContext());
         khqrBackground.setBackground(khqrBg);
 
 

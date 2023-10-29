@@ -151,7 +151,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
 
                         //set bottomsheet radius
-                        setRadiusCorner(getContext(),bottomSheet,15,checkoutPageConfigModel);
+                        setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
 
                         //set drag handle
                     if(isLightMode){

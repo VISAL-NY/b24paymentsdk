@@ -87,10 +87,10 @@ public class ExpireFragment extends Fragment {
         //shape button
         String bgButton=lightModeModel.getButton().getRetryButton().getBackgroundColor();
         String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
-        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),20);
+        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,getContext());
 
         String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
-        ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),20);
+        ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),10,getContext());
 
         StateListDrawable selector= SelectedState.selectedSate(shape,buttonSelected);
         buttonTryAgain.setBackground(selector);
@@ -104,13 +104,15 @@ public class ExpireFragment extends Fragment {
         //dash line
         String dashLine=lightModeModel.getSecondaryColor().getTextColor();
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
+
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
-        gradientDrawable.setStroke(1,
+        int dashWidthHeight = (int) (5 * getContext().getResources().getDisplayMetrics().density);
+        int width = (int) (1 * getContext().getResources().getDisplayMetrics().density);
+        gradientDrawable.setStroke(width,
                 Color.parseColor(dashLineHexa),
-                15,
-                15); // Set the stroke color and width
-        gradientDrawable.setCornerRadius(20); // Set the corner radius
+                dashWidthHeight,
+                dashWidthHeight); // Set the stroke color and width// Set the corner radius
         gradientDrawable.setDither(true);
         expireDashLine.setBackground(gradientDrawable);
 
@@ -138,9 +140,9 @@ public class ExpireFragment extends Fragment {
         //shape button
         String bgButton=darkModeModel.getButton().getRetryButton().getBackgroundColor();
         String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
-        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),20);
+        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,getContext());
         String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
-        ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),20);
+        ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),10,getContext());
 
         StateListDrawable selector= SelectedState.selectedSate(shape,buttonSelected);
         buttonTryAgain.setBackground(selector);
@@ -157,10 +159,12 @@ public class ExpireFragment extends Fragment {
 
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
-        gradientDrawable.setStroke(1,
+        int dashWidthHeight = (int) (5 * getContext().getResources().getDisplayMetrics().density);
+        int width = (int) (1 * getContext().getResources().getDisplayMetrics().density);
+        gradientDrawable.setStroke(width,
                 Color.parseColor(dashLineHexa),
-                15,
-                15); // Set the stroke color and width// Set the corner radius
+                dashWidthHeight,
+                dashWidthHeight); // Set the stroke color and width// Set the corner radius
         gradientDrawable.setDither(true);
         expireDashLine.setBackground(gradientDrawable);
 

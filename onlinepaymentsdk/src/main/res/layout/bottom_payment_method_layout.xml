@@ -4,7 +4,7 @@
     android:layout_gravity="bottom"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_size75"
-    android:layout_marginBottom="25dp"
+    android:layout_marginBottom="30dp"
     android:background="#D83838">
     <FrameLayout
         android:id="@+id/bottom_dash_line_container"
@@ -12,12 +12,13 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_sheet_dash_line_shape"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="-3dp"
-        android:layout_marginLeft="-3dp"
+        android:layout_marginRight="-5dp"
+        android:layout_marginLeft="-5dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="-5dp"
         >
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center|start"
@@ -60,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="20dp"
             android:gravity="bottom"
             android:paddingBottom="15dp">
             <androidx.appcompat.widget.AppCompatTextView

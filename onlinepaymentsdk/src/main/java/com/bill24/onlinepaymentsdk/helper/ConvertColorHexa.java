@@ -23,11 +23,11 @@ public class ConvertColorHexa {
 
         if (colorCode.length() < 8) {
             colorCode=colorCode.replace("#","");
-            return "#" +"2B" +colorCode ;
+            return "#" +"80" +colorCode ;
         } else {
             // Remove the last two characters and add "80" after #
             colorCode=colorCode.replace("#","");
-            return "#" + "2B"+ colorCode.substring(0, 6);
+            return "#" + "80"+ colorCode.substring(0, 6);
         }
     }
 }

@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.bill24.onlinepaymentsdk.customShapeDrawable.CustomShape;
 import com.bill24.onlinepaymentsdk.customShapeDrawable.SelectedState;
@@ -105,7 +106,7 @@ public class SuccessActivity extends AppCompatActivity {
         isLightMode=getIntent().getBooleanExtra(Constant.IS_LIGHT_MODE,false);
         checkoutPageConfigModel=getIntent().getParcelableExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG);
         transactionInfoModel=getIntent().getParcelableExtra(Constant.KEY_TRANSACTION_INFO);
-        //billerModel=getIntent().getParcelableExtra(Constant.KEY_BILLER);
+        billerModel=getIntent().getParcelableExtra(Constant.KEY_BILLER);
 
         ChangLanguage.setLanguage(language,this);
 
@@ -148,10 +149,10 @@ public class SuccessActivity extends AppCompatActivity {
         textToMerchant.setTypeface(typeface);
         textToMerchant.setTextSize(14);
 
-        textTranDate.setTypeface(typeface);
+
         textTranDate.setTextSize(14);
 
-        textTotalAmount.setTypeface(typeface);
+
         textTotalAmount.setTextSize(16);
         textTotalAmount.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
 
@@ -175,8 +176,13 @@ public class SuccessActivity extends AppCompatActivity {
         textBankRef.setText(transactionInfoModel.getBankRefId());
         textToMerchant.setText(billerModel.getBillerDisplayName());
         textTranDate.setText(transactionInfoModel.getTranDate());
-        textTotalAmount.setText(transactionInfoModel.getTotalAmountDisplay());
+        textTotalAmount.setText(transactionInfoModel.getTranAmountDisplay());
         textCurrency.setText(transactionInfoModel.getCurrency());
+
+    }
+    private void launchDeeplink(String url){
+        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
 
     }
 
@@ -239,7 +245,7 @@ public class SuccessActivity extends AppCompatActivity {
             bankRef.setText(transactionInfoModel.getBankRefId());
             merchantName.setText(billerModel.getBillerDisplayName());
             transactionDate.setText(transactionInfoModel.getTranDate());
-            totalAmount.setText(transactionInfoModel.getTotalAmountDisplay());
+            totalAmount.setText(transactionInfoModel.getTranAmountDisplay());
             currency.setText(transactionInfoModel.getCurrency());
 
             //use to update font
@@ -275,10 +281,10 @@ public class SuccessActivity extends AppCompatActivity {
             merchantName.setTypeface(typeface);
             merchantName.setTextSize(14);
 
-            transactionDate.setTypeface(typeface);
+
             transactionDate.setTextSize(14);
 
-            totalAmount.setTypeface(typeface);
+
             totalAmount.setTextSize(16);
             totalAmount.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
 
@@ -290,8 +296,6 @@ public class SuccessActivity extends AppCompatActivity {
 
             view.layout(0,0,view.getMeasuredWidth(),view.getMeasuredHeight());
             return  Bitmap.createBitmap(view.getMeasuredWidth(),view.getMeasuredHeight(),Bitmap.Config.ARGB_8888);
-
-
 
     }
 
@@ -382,7 +386,6 @@ public class SuccessActivity extends AppCompatActivity {
 
     private void downloadShareContainerShape(){
         if(isLightMode){
-
 
             String bgDownloadShare=lightModeModel.getButton().getActionButton().getBackgroundColor();
             String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
@@ -575,14 +578,18 @@ public class SuccessActivity extends AppCompatActivity {
 
         shareContainer.setOnClickListener(v->{
 
-
-
             Bitmap bitmap=convertLayoutToImage(layoutImage);
             Canvas canvas=new Canvas(bitmap);
+
             layoutImage.draw(canvas);
 
             shareKHQR(bitmap);
 
+        });
+
+        buttonDoneContainer.setOnClickListener(v->{
+            //todo lauchdeeplink
+            Toast.makeText(this, "Button done click", Toast.LENGTH_SHORT).show();
         });
 
     }

@@ -31,11 +31,12 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_invoice_already_paid_suceess"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/invoice_already_paid"
                 android:layout_gravity="center"
-                android:layout_marginVertical="10dp"
+                android:layout_marginVertical="20dp"
+                android:gravity="center"
                 android:textColor="@color/black"/>
 
             <View
@@ -47,7 +48,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="10dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -62,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:text="Transaction # "
                     android:textColor="@color/black"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="right"/>
             </FrameLayout>
             <FrameLayout
@@ -83,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:text="Transaction # "
                     android:textColor="@color/black"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="right"/>
             </FrameLayout>
             <FrameLayout
@@ -104,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="Transaction # "
                     android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="right"/>
             </FrameLayout>
             <FrameLayout
@@ -124,17 +126,18 @@
                     android:layout_height="wrap_content"
                     android:text="Transaction # "
                     android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_medium"
                     android:layout_gravity="right"/>
             </FrameLayout>
 
             <View
                 android:id="@+id/dash_lin_second_success"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/dash_line_horizontal"/>
             <FrameLayout
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp">
@@ -158,6 +161,7 @@
                         android:layout_height="wrap_content"
                         android:text="Transaction # "
                         android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_medium"
                         android:layout_marginEnd="3dp"
                         />
 
@@ -166,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/roboto_medium"
                         android:text="KHR"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -174,7 +178,7 @@
 
             <View
                 android:id="@+id/dash_line_third_success"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/dash_line_horizontal"/>
@@ -185,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="30dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -262,7 +266,7 @@
                 android:layout_height="48dp"
                 android:background="#D52C2C"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
 
                 >
                 <androidx.appcompat.widget.AppCompatTextView

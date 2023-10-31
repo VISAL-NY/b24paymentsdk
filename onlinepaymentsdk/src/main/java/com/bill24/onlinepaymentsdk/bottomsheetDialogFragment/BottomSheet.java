@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -234,6 +235,11 @@ public class BottomSheet extends BottomSheetDialogFragment {
         editor.apply();
     }
 
+    private void launchDeeplink(String url){
+        Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -252,12 +258,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-
-    }
 
 
 
@@ -335,6 +335,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                     }
 
                                     else {
+//                                        launchDeeplink();
                                         //todo open redirect screen
                                     }
 
@@ -385,15 +386,12 @@ public class BottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.bottom_sheet_layout,container,false);
 
-
         initView(view);
-
 
         showProgressIndicator();
 
 //        ShapeDrawable shapeDrawable=CustomShape.applyShape(Color.WHITE,25);
 //        view.setBackground(shapeDrawable);
-
 
         return view;
     }

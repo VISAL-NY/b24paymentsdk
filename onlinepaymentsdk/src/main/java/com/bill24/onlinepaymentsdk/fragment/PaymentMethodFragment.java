@@ -184,8 +184,6 @@ public class PaymentMethodFragment extends Fragment
         startActivity(intent);
 
 
-
-
     }
 
     private void getPreference(){
@@ -392,6 +390,7 @@ public class PaymentMethodFragment extends Fragment
                 }
                 break;
             case Bank.MASTERCARD:
+
                 //todo handle when click on mastercard
 
                 break;

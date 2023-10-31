@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private String amount;
     private String userRef;
     ResponseModel responseModel;
-    boolean isLightMode=true;
+    boolean isLightMode=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

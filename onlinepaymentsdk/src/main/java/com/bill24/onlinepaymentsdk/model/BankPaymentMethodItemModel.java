@@ -84,6 +84,17 @@ public class BankPaymentMethodItemModel {
     private  boolean isFavorite;
     @SerializedName("fee")
     private  double fee;
+
+    public String getFeeDisplay() {
+        return feeDisplay;
+    }
+
+    public void setFeeDisplay(String feeDisplay) {
+        this.feeDisplay = feeDisplay;
+    }
+
+    @SerializedName("fee_display")
+    private String feeDisplay;
     @SerializedName("support_deeplink")
     private  boolean supportDeeplink;
     @SerializedName("support_checkout_page")

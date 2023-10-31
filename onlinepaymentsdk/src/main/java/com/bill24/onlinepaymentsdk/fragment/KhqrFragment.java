@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
+import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BillerModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.ExpiredTransactionModel;
@@ -52,6 +54,7 @@ import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.onlinepaymentsdk.model.baseResponseModel.BaseResponse;
 import com.bill24.onlinepaymentsdk.model.conts.Constant;
 import com.bill24.onlinepaymentsdk.model.conts.CurrencyCode;
+import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.bill24.onlinepaymentsdk.model.requestModel.ExpiredRequestModel;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
@@ -80,7 +83,7 @@ public class KhqrFragment extends Fragment {
     private TransactionInfoModel transactionInfoModel;
     private CheckoutPageConfigModel checkoutPageConfigModel;
     private AppCompatImageView dashLineLeft,dashLineRight;
-    private String transactionId,refererKey,language;
+    private String transactionId,refererKey,language,baseUrl;
     private CoordinatorLayout khqrContainer;
     private View khqrBackground;
     private  boolean isLightMode;
@@ -182,6 +185,9 @@ public class KhqrFragment extends Fragment {
             //get isLight mode
             isLightMode=preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
 
+            //get base url
+            baseUrl=preferences.getString(Constant.BASE_URL_ENV,"");
+
         }
 
     }
@@ -203,7 +209,7 @@ public class KhqrFragment extends Fragment {
 
         }
 
-        RequestAPI requestAPI=new RequestAPI(refererKey);
+        RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
         ExpiredRequestModel requestModel=new ExpiredRequestModel(transactionId);
         Call<BaseResponse<ExpiredTransactionModel>> call =requestAPI.postExpireTran(requestModel);
 
@@ -236,7 +242,8 @@ public class KhqrFragment extends Fragment {
                     }
                 }
                 else {
-                    Toast.makeText(getContext(),"Code : "+response.code(),Toast.LENGTH_SHORT).show();
+                    Log.d("extend time", "onResponse: "+response.code());
+                    //Toast.makeText(getContext(),"Code : "+response.code(),Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -288,6 +295,8 @@ public class KhqrFragment extends Fragment {
             SetFont font=new SetFont();
             Typeface typeface=font.setFont(getContext(),language);
 
+
+
         // Customize the content and appearance of the custom layout
             AppCompatTextView textView = customView.findViewById(R.id.custom_snackbar_desc);
             textView.setTypeface(typeface);
@@ -309,10 +318,22 @@ public class KhqrFragment extends Fragment {
         String imageTitle="KHQR Image "+formattedDateTime+microseconds;
         String imageUrl= MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(),bitmap,imageTitle,"");
 
-        if(imageUrl!=null){
-            customSnackBar(view,R.drawable.check_circle_24px,getResources().getString(R.string.image_saved));
+        String saveSuccess="";
+        String saveUnSuceess="";
+        if(language.equals(LanguageCode.EN)){
+            saveSuccess=Translate.IMAGE_SAVE_EN;
+            saveUnSuceess=Translate.IMAGE_UNSAVE_EN;
+
         }else {
-            customSnackBar(view,R.drawable.error_24px,getResources().getString(R.string.image_unsave));
+            saveSuccess=Translate.IMAGE_SAVE_KM;
+            saveUnSuceess=Translate.IMAGE_UNSAVE_KM;
+        }
+
+
+        if(imageUrl!=null){
+            customSnackBar(view,R.drawable.check_circle_24px,saveSuccess);
+        }else {
+            customSnackBar(view,R.drawable.error_24px,saveUnSuceess);
         }
     }
     private void shareKHQR(Bitmap bitmap){
@@ -409,10 +430,6 @@ public class KhqrFragment extends Fragment {
         textDownload.setTextColor(Color.parseColor(downloadShareHexa));
         textShare.setTextColor(Color.parseColor(downloadShareHexa));
 
-
-
-
-
     }
 
 
@@ -491,10 +508,26 @@ public class KhqrFragment extends Fragment {
 
 
     }
+
+    private void translateLanguage(){
+        if(language.equals(LanguageCode.KH)){
+            textDownload.setText(Translate.DONWLOAD_KM);
+            textScanToPay.setText(Translate.SCAN_TO_PAY_KM);
+            textShare.setText(Translate.SHARE_KM);
+            textOr.setText(Translate.OR_KM);
+        }
+        else {
+            textDownload.setText(Translate.DOWNLOAD_EN);
+            textScanToPay.setText(Translate.SCAN_TO_PAY_EN);
+            textShare.setText(Translate.SHARE_EN);
+            textOr.setText(Translate.OR_EN);
+        }
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSharePreference();
+
         ChangLanguage.setLanguage(language,getContext());
 
     }
@@ -505,8 +538,12 @@ public class KhqrFragment extends Fragment {
         View view=LayoutInflater.from(getContext()).inflate(R.layout.khqr_fragment_layout,container,false);
         initView(view);
         bindData();
+
+        translateLanguage();
         //Update Font
         updateFont();
+
+
 
         //applyStyle
         if(isLightMode){

@@ -33,6 +33,7 @@ import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
+import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BillerModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.TransactionInfoModel;
@@ -41,6 +42,7 @@ import com.bill24.onlinepaymentsdk.model.appearance.darkMode.DarkModeModel;
 import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.onlinepaymentsdk.model.conts.Constant;
 import com.bill24.onlinepaymentsdk.model.conts.CurrencyCode;
+import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
@@ -174,11 +176,36 @@ public class SuccessActivity extends AppCompatActivity {
     private void bindData(){
         textTranNo.setText(transactionInfoModel.getTranNo());
         textBankRef.setText(transactionInfoModel.getBankRefId());
-        textToMerchant.setText(billerModel.getBillerDisplayName());
+//todo
+        //textToMerchant.setText(billerModel.getBillerDisplayName());
         textTranDate.setText(transactionInfoModel.getTranDate());
         textTotalAmount.setText(transactionInfoModel.getTranAmountDisplay());
         textCurrency.setText(transactionInfoModel.getCurrency());
 
+    }
+
+    private void translateLanguage(){
+        if(language.equals(LanguageCode.EN)){
+            textInvoiceAlreadyPaid.setText(Translate.INVOICE_PAID_DONE_EN);
+            textTranNoTitle.setText(Translate.TRANSACTION_EN);
+            textBankRefTitle.setText(Translate.BANK_REF_EN);
+            textToMerchantTitle.setText(Translate.TO_MERCHANT_EN);
+            textTranDateTitle.setText(Translate.TRAN_DATE_EN);
+            textTotalTitle.setText(Translate.TOTAL_AMOUNT_EN);
+            textDownload.setText(Translate.DOWNLOAD_EN);
+            textShare.setText(Translate.SHARE_EN);
+            textDone.setText(Translate.DONE_EN);
+        }else {
+            textInvoiceAlreadyPaid.setText(Translate.INVOICE_PAID_DONE_KM);
+            textTranNoTitle.setText(Translate.TRANSACTION_KM);
+            textBankRefTitle.setText(Translate.BANK_REF_KM);
+            textToMerchantTitle.setText(Translate.TO_MERCHANT_KM);
+            textTranDateTitle.setText(Translate.TRAN_DATE_KM);
+            textTotalTitle.setText(Translate.TOTAL_AMOUNT_KM);
+            textDownload.setText(Translate.DONWLOAD_KM);
+            textShare.setText(Translate.SHARE_KM);
+            textDone.setText(Translate.DONE_KM);
+        }
     }
     private void launchDeeplink(String url){
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -243,7 +270,9 @@ public class SuccessActivity extends AppCompatActivity {
             //set value
             transactionNo.setText(transactionInfoModel.getTranNo());
             bankRef.setText(transactionInfoModel.getBankRefId());
-            merchantName.setText(billerModel.getBillerDisplayName());
+
+            //todo
+           // merchantName.setText(billerModel.getBillerDisplayName());
             transactionDate.setText(transactionInfoModel.getTranDate());
             totalAmount.setText(transactionInfoModel.getTranAmountDisplay());
             currency.setText(transactionInfoModel.getCurrency());
@@ -251,6 +280,22 @@ public class SuccessActivity extends AppCompatActivity {
             //use to update font
             SetFont font=new SetFont();
             Typeface typeface=font.setFont(this,language);
+
+            if(language.equals(LanguageCode.EN)){
+                invoiceAlreayPaid.setText(Translate.INVOICE_PAID_DONE_EN);
+                tranNoTitle.setText(Translate.TRANSACTION_EN);
+                bankRefTitle.setText(Translate.BANK_REF_EN);
+                toMerchantTitle.setText(Translate.TO_MERCHANT_EN);
+                tranDateTitle.setText(Translate.TRAN_DATE_EN);
+                totalTitle.setText(Translate.TOTAL_EN);
+            }else {
+                invoiceAlreayPaid.setText(Translate.INVOICE_PAID_DONE_KM);
+                tranNoTitle.setText(Translate.TRANSACTION_KM);
+                bankRefTitle.setText(Translate.BANK_REF_KM);
+                toMerchantTitle.setText(Translate.TO_MERCHANT_KM);
+                tranDateTitle.setText(Translate.TRAN_DATE_KM);
+                totalTitle.setText(Translate.TOTAL_KM);
+            }
 
             invoiceAlreayPaid.setTypeface(typeface);
             invoiceAlreayPaid.setTextSize(16);
@@ -331,10 +376,21 @@ public class SuccessActivity extends AppCompatActivity {
         String imageTitle="KHQR Image "+formattedDateTime+microseconds;
         String imageUrl= MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,imageTitle,"");
 
-        if(imageUrl!=null){
-            customSnackBar(R.drawable.check_circle_24px,getResources().getString(R.string.image_saved));
+        String saveSuccess="";
+        String saveUnSuceess="";
+        if(language.equals(LanguageCode.EN)){
+            saveSuccess=Translate.IMAGE_SAVE_EN;
+            saveUnSuceess=Translate.IMAGE_UNSAVE_EN;
+
         }else {
-            customSnackBar(R.drawable.error_24px,getResources().getString(R.string.image_unsave));
+            saveSuccess=Translate.IMAGE_SAVE_KM;
+            saveUnSuceess=Translate.IMAGE_UNSAVE_KM;
+        }
+
+        if(imageUrl!=null){
+            customSnackBar(R.drawable.check_circle_24px,saveSuccess);
+        }else {
+            customSnackBar(R.drawable.bottom_sheet_dash_line_shape,saveUnSuceess);
         }
     }
 
@@ -538,55 +594,35 @@ public class SuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success);
 
-
-
         initView();
-
         getDataIntent();
-
-
-
         dashLine();
-
+        translateLanguage();
         bindData();
 
         updateFont();
-
         successContainerShape();
-
-
-
         downloadShareContainerShape();
-
         buttonDoneShape();
-
         applyTextStyle();
 
         View layoutImage=getLayoutInflater().inflate(R.layout.download_share_success_image_layout,null);
-
         downloadContainer.setOnClickListener(v->{
-
             Bitmap bitmap=convertLayoutToImage(layoutImage);
             Canvas canvas=new Canvas(bitmap);
             layoutImage.draw(canvas);
-
             //Save Image into Gallerry
             downloadKHQR(bitmap);
 
         });
-
-
         shareContainer.setOnClickListener(v->{
-
             Bitmap bitmap=convertLayoutToImage(layoutImage);
             Canvas canvas=new Canvas(bitmap);
-
             layoutImage.draw(canvas);
 
             shareKHQR(bitmap);
 
         });
-
         buttonDoneContainer.setOnClickListener(v->{
             //todo lauchdeeplink
             Toast.makeText(this, "Button done click", Toast.LENGTH_SHORT).show();

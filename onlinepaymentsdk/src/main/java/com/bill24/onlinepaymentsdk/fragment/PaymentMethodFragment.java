@@ -39,6 +39,7 @@ import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
 import com.bill24.onlinepaymentsdk.helper.StickyHeaderItemDecoration;
+import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutDetailModel;
@@ -51,6 +52,7 @@ import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.onlinepaymentsdk.model.baseResponseModel.BaseResponse;
 import com.bill24.onlinepaymentsdk.model.conts.Bank;
 import com.bill24.onlinepaymentsdk.model.conts.Constant;
+import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.bill24.onlinepaymentsdk.model.requestModel.ExpiredRequestModel;
 import com.bill24.onlinepaymentsdk.model.requestModel.GenerateDeeplinkRequestModel;
 import com.google.android.material.divider.MaterialDivider;
@@ -73,11 +75,11 @@ public class PaymentMethodFragment extends Fragment
     private LinearLayoutCompat containerPaymentMethod;
     private FrameLayout bottomPaymentContainer,bottomDashLine;
     private List<BankPaymentMethodModel> bankPaymentMethodModelList;
-    private TransactionInfoModel transactionInfoModel;
-    private CheckoutPageConfigModel checkoutPageConfigModel;
-    private String refererKey,language;
+    private TransactionInfoModel transactionInfoModel=new TransactionInfoModel();
+    private CheckoutPageConfigModel checkoutPageConfigModel=new CheckoutPageConfigModel();
+    private String refererKey,language,baseUrl;
     private boolean isLightMode;
-    private CheckoutDetailModel checkoutDetailModel;
+    private CheckoutDetailModel checkoutDetailModel=new CheckoutDetailModel();
     public PaymentMethodFragment(){
 
     }
@@ -115,6 +117,17 @@ public class PaymentMethodFragment extends Fragment
         }
     }
 
+    private void translateLanguage(){
+        if(language.equals(LanguageCode.EN)){
+            textPaymentMethod.setText(Translate.PAYMENT_METHOD_EN);
+            textTotalAmountTitle.setText(Translate.TOTAL_AMOUNT_EN);
+        }
+        if(language.equals(LanguageCode.KH)){
+            textPaymentMethod.setText(Translate.PAYMENT_METHOD_KM);
+            textTotalAmountTitle.setText(Translate.TOTAL_AMOUNT_KM);
+        }
+    }
+
     private void updateFont(){
         SetFont font=new SetFont();
         Typeface typeface=font.setFont(getContext(),language);
@@ -125,7 +138,7 @@ public class PaymentMethodFragment extends Fragment
         textPaymentMethod.setTextColor(getResources().getColor(R.color.header_font_color));
 
         textTotalAmountTitle.setTypeface(typeface);
-        textTotalAmountTitle.setTextSize(11);
+        textTotalAmountTitle.setTextSize(13);
 
     }
 
@@ -141,7 +154,8 @@ public class PaymentMethodFragment extends Fragment
                     transactionInfoModel.getTranNo(),
                     refererKey,
                     isLightMode,
-                    language);
+                    language,
+                    baseUrl);
 
             adapter.setOnItemClickListener(listener);
             recyclerViewPaymentMethod.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -154,17 +168,16 @@ public class PaymentMethodFragment extends Fragment
 
     @SuppressLint("SetTextI18n")
     private void displayOsVersion(){
-        try {
-            PackageInfo packageInfo=getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0);
-            String version=packageInfo.versionName;
-            int versionCode=packageInfo.versionCode;
+
+           // PackageInfo packageInfo=getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0);
+            //String version=packageInfo.versionName;
+            //int versionCode=packageInfo.versionCode;
+            String version="1.0.0";
+            String versionCode="0";
             textVersion.setText("V" + version + "." + versionCode);
-        }catch (PackageManager.NameNotFoundException e){
-            e.printStackTrace();
-        }
     }
     private void postExpiredTran(ExpiredRequestModel model){
-        RequestAPI requestAPI=new RequestAPI(refererKey);
+        RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
         Call<BaseResponse<ExpiredTransactionModel>> call=requestAPI.postExpireTran(model);
         call.enqueue(new Callback<BaseResponse<ExpiredTransactionModel>>() {
             @Override
@@ -202,6 +215,10 @@ public class PaymentMethodFragment extends Fragment
 
         //get isLightMode
         isLightMode=preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
+
+        //get base url
+        baseUrl=preferences.getString(Constant.BASE_URL_ENV,"");
+
     }
 
 
@@ -321,6 +338,7 @@ public class PaymentMethodFragment extends Fragment
         connectivityState=new ConnectivityState(this);//Init BroadCastReceiver
 
         getPreference();
+
         ChangLanguage.setLanguage(language,getContext());
 
 
@@ -341,6 +359,9 @@ public class PaymentMethodFragment extends Fragment
         }
 
 
+        //translate
+        translateLanguage();
+
         //set container of webview height to 90%
         int screenHeight=getResources().getDisplayMetrics().heightPixels;
         int newHeight=(int) (screenHeight*0.9);
@@ -349,6 +370,11 @@ public class PaymentMethodFragment extends Fragment
 
         //show hide bill24
         toggleBill24();
+
+        texBill24.setOnClickListener(v->{
+            Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(Constant.BILL24_URL));
+            startActivity(intent);
+        });
 
         //Update Font
         updateFont();
@@ -391,6 +417,15 @@ public class PaymentMethodFragment extends Fragment
                 break;
             case Bank.MASTERCARD:
 
+//                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
+//                intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
+//                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
+//                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
+//                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
+//                //intent.putExtra(Constant.KEY_BILLER,billerModel);
+//
+//                startActivity(intent);
+
                 //todo handle when click on mastercard
 
                 break;
@@ -398,7 +433,7 @@ public class PaymentMethodFragment extends Fragment
                 postExpiredTran(expiredRequestModel);
                 GenerateDeeplinkRequestModel generateDeeplinkRequestModel=new GenerateDeeplinkRequestModel(itemModel.getId(), transactionInfoModel.getTranNo());
 
-                RequestAPI requestAPI=new RequestAPI(refererKey);
+                RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
                 Call<BaseResponse<GenerateLinkDeepLinkModel>> call=requestAPI.postGenerateDeeplink(generateDeeplinkRequestModel);
                 call.enqueue(new Callback<BaseResponse<GenerateLinkDeepLinkModel>>() {
                     @Override

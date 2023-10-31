@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private String amount;
     private String userRef;
     ResponseModel responseModel;
-    boolean isLightMode=false;
+    boolean isLightMode=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             String deviceCode="devicode";
             String desc="decription";
             String cancelUrl="";
-            String redirect="";
+            String redirect="https://www.google.com/";
             String ChannelCode="CH1";
             String branchCode="";
             String branchName="";
@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
             initTranV2(requestModel);
 
-
-
         });
     }
 
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                    Bill24OnlinePayment.init(
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
-                           "123",
+                           "123X",
                            isLightMode
                    );
 

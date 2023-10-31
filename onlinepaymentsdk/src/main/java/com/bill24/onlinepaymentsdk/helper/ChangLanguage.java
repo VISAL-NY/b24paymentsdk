@@ -1,5 +1,6 @@
 package com.bill24.onlinepaymentsdk.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -20,7 +21,8 @@ public class ChangLanguage {
         Locale.setDefault(locale);
         Resources resources=context.getResources();
         Configuration configuration=resources.getConfiguration();
-        configuration.locale=locale;
+        configuration.setLocale(locale);
         resources.updateConfiguration(configuration,resources.getDisplayMetrics());
+
     }
 }

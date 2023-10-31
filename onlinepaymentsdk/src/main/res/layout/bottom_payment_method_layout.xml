@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/total_amount"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 />
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
@@ -67,11 +67,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/text_power_by"
                 android:layout_gravity="end"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/power_by"
                 android:textStyle="italic"
-                android:textSize="8sp"
+                android:textSize="10sp"
+                android:gravity="right"
                 android:fontFamily="@font/roboto_regular"
                 android:layout_marginBottom="4dp"
                 />

@@ -1,8 +1,5 @@
 package com.example.bill24paymentonline.model;
 
-import com.bill24.onlinepaymentsdk.core.ApiClient;
-import com.bill24.onlinepaymentsdk.model.baseUrl.BaseUrl;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

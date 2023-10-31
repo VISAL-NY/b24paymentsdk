@@ -39,5 +39,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    //Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    //Gson Convert
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    //Picasso Loading image
+    implementation 'com.squareup.picasso:picasso:2.8'
+    //Convert Data Object to Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+    //http log
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
+
 
 }

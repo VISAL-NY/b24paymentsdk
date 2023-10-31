@@ -1,6 +1,5 @@
 package com.bill24.onlinepaymentsdk.bottomsheetDialogFragment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -39,13 +38,12 @@ import com.bill24.onlinepaymentsdk.model.TransactionInfoModel;
 import com.bill24.onlinepaymentsdk.model.appearance.darkMode.DarkModeModel;
 import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.onlinepaymentsdk.model.baseResponseModel.BaseResponse;
+import com.bill24.onlinepaymentsdk.model.baseUrl.BaseURL;
 import com.bill24.onlinepaymentsdk.model.conts.Constant;
 import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.bill24.onlinepaymentsdk.model.requestModel.CheckoutDetailRequestModel;
 import com.bill24.onlinepaymentsdk.socketIO.EVentName;
 import com.bill24.onlinepaymentsdk.socketIO.SocketManager;
-import com.bill24.onlinepaymentsdk.socketIO.conts.CONTS;
-import com.bill24.onlinepaymentsdk.socketIO.model.SendToMerchantModel;
 import com.bill24.onlinepaymentsdk.socketIO.model.SocketRespModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -68,7 +66,33 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private View dragHandle;
     private boolean isLightMode;
     private BottomSheetDialog dialog;
-    private String transactionId,refererKey,language;
+    private String transactionId,refererKey,language,env, baseUrl="";
+    public BottomSheet(
+            String transactionId,
+            String refererKey,
+            boolean isLightMode){
+        this.transactionId=transactionId;
+        this.refererKey=refererKey;
+        this.isLightMode=isLightMode;
+
+        if(env==null || env.isEmpty()){
+            baseUrl =BaseURL.BASE_URL_DEMO;
+        }
+        requestModel=new CheckoutDetailRequestModel(transactionId);
+    }
+    public BottomSheet(
+            String transactionId,
+            String refererKey,
+            boolean isLightMode,
+            String language,
+            String env){
+        this.transactionId=transactionId;
+        this.refererKey=refererKey;
+        this.isLightMode=isLightMode;
+        this.language=language;
+        this.env=env;
+        requestModel=new CheckoutDetailRequestModel(this.transactionId);
+    }
     public BottomSheet(
             String transactionId,
             String refererKey,
@@ -78,17 +102,13 @@ public class BottomSheet extends BottomSheetDialogFragment {
         this.refererKey=refererKey;
         this.isLightMode=isLightMode;
         this.language=language;
+
+        if(env==null || env.isEmpty()){
+            baseUrl =BaseURL.BASE_URL_DEMO;
+        }
         requestModel=new CheckoutDetailRequestModel(this.transactionId);
     }
-    public BottomSheet(
-            String transactionId,
-            String refererKey,
-            boolean isLightMode){
-        this.transactionId=transactionId;
-        this.refererKey=refererKey;
-        this.isLightMode=isLightMode;
-        requestModel=new CheckoutDetailRequestModel(transactionId);
-    }
+
 
     private void initView(View view){
         bottomSheet=view.findViewById(R.id.bottom_sheet);
@@ -116,101 +136,32 @@ public class BottomSheet extends BottomSheetDialogFragment {
         progressBarContainer.setVisibility(View.GONE);
     }
 
-    private void postCheckoutDetail(){
-        RequestAPI requestAPI=new RequestAPI(refererKey);
-        Call<BaseResponse<CheckoutDetailModel>> call=requestAPI.postCheckoutDetail(requestModel);
-        call.enqueue(new Callback<BaseResponse<CheckoutDetailModel>>() {
-            @Override
-            public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
-                if(response.isSuccessful()){
-                    List<BankPaymentMethodModel> bankPaymentMethodModelList=
-                                (   response.body() !=null &&
-                                    response.body().getData() !=null &&
-                                    response.body().getData().getTransInfo() !=null &&
-                                        response.body().getData().getTransInfo().getBankPaymentMethod() !=null
-                                    ) ?
+    @Override
+    public void onStart() {
+        super.onStart();
 
-                            response.body().getData().getTransInfo().getBankPaymentMethod() : new ArrayList<>();
+        //connect to socket
+        connectSocketIO(transactionId);
 
-                    BillerModel billerModel=
-                            (
-                                    response.body()!=null &&
-                                            response.body().getData() !=null &&
-                                            response.body().getData().getBiller() !=null
-                                    ) ?
-                                    response.body().getData().getBiller():new BillerModel();
+        if(language==null || language.isEmpty()){
+            language= LanguageCode.KH;
+        }
 
-                    //TransactionInfo
-                    TransactionInfoModel transactionInfoModel=
-                                         (
-                                            response.body() !=null &&
-                                            response.body().getData() !=null &&
-                                            response.body().getData().getTransInfo()!=null
-                                            ) ?
-                            response.body().getData().getTransInfo() : new TransactionInfoModel();
+        if(env!=null && env.equals(Constant.DEMO_ENV)){
+            baseUrl =BaseURL.BASE_URL_DEMO;
+        }
+        if(env!=null && env.equals(Constant.STAGING_ENV)){
+            baseUrl = BaseURL.BASE_URL_STAGGING;
+        }
 
-                    //CheckoutPageConfig
-                    CheckoutPageConfigModel checkoutPageConfigModel=
-                            (
-                                    response.body()!=null &&
-                                            response.body().getData() !=null &&
-                                            response.body().getData().getCheckoutPageConfig() !=null
-                                    ) ?
-                                    response.body().getData().getCheckoutPageConfig() : new CheckoutPageConfigModel();
+        if(isLightMode){
+            bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loding_light_shape));
+        }else {
+            bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loading_dark_shape));
+        }
 
-
-
-
-                        //set bottomsheet radius
-                        setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
-
-
-                      //set getlanuage
-                        if(language == null || language.isEmpty()){
-                            language=transactionInfoModel.getLanguage();
-                        }
-
-                        //set drag handle
-                    if(isLightMode){
-                        LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
-                        String dragHandle=lightModeModel.getIndicatorColor();
-                        String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);
-
-                        createDraghanle(Color.parseColor(dragHanleHexa));
-                    }else {
-                        DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-                        String dragHandle=darkModeModel.getIndicatorColor();
-                        String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);
-                        createDraghanle(Color.parseColor(dragHanleHexa));
-                    }
-
-                        if(!bankPaymentMethodModelList.isEmpty()){
-                        setSharePreference(bankPaymentMethodModelList,transactionInfoModel,checkoutPageConfigModel,billerModel,language);//Store value in sharePreference
-                        showFragment(new PaymentMethodFragment());//Go to Fragment PaymentMethod
-                    }
-
-                    new Handler().postDelayed(() -> {
-                        hideProgressIndicator();//Hide Progress Indicator
-                    },100);
-
-                        
-                    Log.d("checkoutDetail", "onResponse: "+transactionInfoModel.getKhqrString());
-                }
-
-
-            }
-            @Override
-            public void onFailure(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Throwable t) {
-
-                Toast.makeText(getContext(),"Error internal server",Toast.LENGTH_LONG).show();
-                Log.d("bottomSheet", "onFailure: "+t.getMessage());
-
-                Handler handler=new Handler();
-                handler.postDelayed(() -> dialog.dismiss(),4000);
-
-            }
-        });
     }
+
 
     private void connectSocketIO(String roomName){
         SocketManager.connectJoinRoom(roomName);
@@ -231,6 +182,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         editor.putString(Constant.KEY_CHECKOUT_PAGE_CONFIG,SharePreferenceCustom.convertObjectToJson(checkoutPageConfigModel));
         editor.putString(Constant.KEY_BILLER,SharePreferenceCustom.convertObjectToJson(billerModel));
         editor.putBoolean(Constant.IS_LIGHT_MODE,isLightMode);
+        editor.putString(Constant.BASE_URL_ENV, baseUrl);
 
         editor.apply();
     }
@@ -240,23 +192,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         startActivity(intent);
 
     }
-    @Override
-    public void onStart() {
-        super.onStart();
 
-        //connect to socket
-        connectSocketIO(transactionId);
-
-//        if(language==null || language.isEmpty()){
-//            language= LanguageCode.KH;
-//        }
-        if(isLightMode){
-            bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loding_light_shape));
-        }else {
-            bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loading_dark_shape));
-        }
-
-    }
 
 
 
@@ -303,7 +239,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                String object=args[0].toString();
                SocketRespModel socketRespModel=SharePreferenceCustom.converJsonToObject(object,SocketRespModel.class);
                 try {
-                    RequestAPI requestAPI=new RequestAPI(refererKey);
+                    RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
                     CheckoutDetailRequestModel request=new CheckoutDetailRequestModel(socketRespModel.getTranNo());
                     Call<BaseResponse<CheckoutDetailModel>> call=requestAPI.postCheckoutDetail(request);
                     call.enqueue(new Callback<BaseResponse<CheckoutDetailModel>>() {
@@ -417,6 +353,102 @@ public class BottomSheet extends BottomSheetDialogFragment {
         //wait broadcast from server
         broadcastFromSocketServer();
 
+    }
+
+    private void postCheckoutDetail(){
+        RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
+        Call<BaseResponse<CheckoutDetailModel>> call=requestAPI.postCheckoutDetail(requestModel);
+        call.enqueue(new Callback<BaseResponse<CheckoutDetailModel>>() {
+            @Override
+            public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
+                if(response.isSuccessful()){
+                    List<BankPaymentMethodModel> bankPaymentMethodModelList=
+                            (   response.body() !=null &&
+                                    response.body().getData() !=null &&
+                                    response.body().getData().getTransInfo() !=null &&
+                                    response.body().getData().getTransInfo().getBankPaymentMethod() !=null
+                            ) ?
+
+                                    response.body().getData().getTransInfo().getBankPaymentMethod() : new ArrayList<>();
+
+                    BillerModel billerModel=
+                            (
+                                    response.body()!=null &&
+                                            response.body().getData() !=null &&
+                                            response.body().getData().getBiller() !=null
+                            ) ?
+                                    response.body().getData().getBiller():new BillerModel();
+
+                    //TransactionInfo
+                    TransactionInfoModel transactionInfoModel=
+                            (
+                                    response.body() !=null &&
+                                            response.body().getData() !=null &&
+                                            response.body().getData().getTransInfo()!=null
+                            ) ?
+                                    response.body().getData().getTransInfo() : new TransactionInfoModel();
+
+                    //CheckoutPageConfig
+                    CheckoutPageConfigModel checkoutPageConfigModel=
+                            (
+                                    response.body()!=null &&
+                                            response.body().getData() !=null &&
+                                            response.body().getData().getCheckoutPageConfig() !=null
+                            ) ?
+                                    response.body().getData().getCheckoutPageConfig() : new CheckoutPageConfigModel();
+
+
+
+
+                    //set bottomsheet radius
+                    setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
+
+
+                    //set getlanuage
+                    if(language == null || language.isEmpty()){
+                        language=transactionInfoModel.getLanguage();
+                    }
+
+                    //set drag handle
+                    if(isLightMode){
+                        LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
+                        String dragHandle=lightModeModel.getIndicatorColor();
+                        String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);
+
+                        createDraghanle(Color.parseColor(dragHanleHexa));
+                    }else {
+                        DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
+                        String dragHandle=darkModeModel.getIndicatorColor();
+                        String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);
+                        createDraghanle(Color.parseColor(dragHanleHexa));
+                    }
+
+                    if(!bankPaymentMethodModelList.isEmpty()){
+                        setSharePreference(bankPaymentMethodModelList,transactionInfoModel,checkoutPageConfigModel,billerModel,language);//Store value in sharePreference
+                        showFragment(new PaymentMethodFragment());//Go to Fragment PaymentMethod
+                    }
+
+                    new Handler().postDelayed(() -> {
+                        hideProgressIndicator();//Hide Progress Indicator
+                    },100);
+
+
+                    Log.d("checkoutDetail", "onResponse: "+transactionInfoModel.getKhqrString());
+                }
+
+
+            }
+            @Override
+            public void onFailure(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Throwable t) {
+
+                Toast.makeText(getContext(),"Error internal server",Toast.LENGTH_LONG).show();
+                Log.d("bottomSheet", "onFailure: "+t.getMessage());
+
+                Handler handler=new Handler();
+                handler.postDelayed(() -> dialog.dismiss(),4000);
+
+            }
+        });
     }
 
     @Override

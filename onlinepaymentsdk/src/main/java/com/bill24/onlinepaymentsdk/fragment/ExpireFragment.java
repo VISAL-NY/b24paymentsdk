@@ -28,10 +28,12 @@ import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
+import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.appearance.darkMode.DarkModeModel;
 import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.onlinepaymentsdk.model.conts.Constant;
+import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 
 public class ExpireFragment extends Fragment {
     private FrameLayout buttonTryAgain;
@@ -184,6 +186,19 @@ public class ExpireFragment extends Fragment {
 
         isLightMode=preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
     }
+
+    private void translateLanguage(){
+        if (language.equals(LanguageCode.EN)){
+            textTranExpired.setText(Translate.TRAN_EXPIRE_EN);
+            textTryAgain.setText(Translate.TRY_AGAIN_TITLE_EN);
+            textTryagainButton.setText(Translate.TRY_AGAIN_EN);
+        }else {
+            textTranExpired.setText(Translate.TRAN_EXPIRE_KM);
+            textTryAgain.setText(Translate.TRY_AGAIN_TITLE_KM);
+            textTryagainButton.setText(Translate.TRY_AGAIN_KM);
+        }
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +212,9 @@ public class ExpireFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=LayoutInflater.from(getContext()).inflate(R.layout.expire_fragment_layout,container,false);
         initView(view);
+
+        translateLanguage();
+
         //Update Font
         updateFont();
 

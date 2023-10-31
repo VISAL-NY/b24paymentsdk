@@ -17,26 +17,27 @@ import retrofit2.Call;
 
 public class RequestAPI {
 
-    private final String refererKey;
-    public RequestAPI(String refererKey){
+    private  String refererKey,baseUrl;
+    public RequestAPI(String refererKey,String baseUrl){
         this.refererKey=refererKey;
+        this.baseUrl=baseUrl;
     }
 
     public Call<BaseResponse<CheckoutDetailModel>> postCheckoutDetail(CheckoutDetailRequestModel model){
-        return RetrofitClient.getInstance().getApiClient()
+        return RetrofitClient.getInstance(baseUrl).getApiClient()
                 .postCheckoutDetail(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
     }
 
     public  Call<BaseResponse<ExpiredTransactionModel>> postExpireTran(ExpiredRequestModel model){
-        return  RetrofitClient.getInstance().getApiClient().
+        return  RetrofitClient.getInstance(baseUrl).getApiClient().
                         postExpiredTransaction(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
     }
     public Call<BaseResponse<GenerateLinkDeepLinkModel>> postGenerateDeeplink(GenerateDeeplinkRequestModel model){
-        return RetrofitClient.getInstance().getApiClient().
+        return RetrofitClient.getInstance(baseUrl).getApiClient().
                 postGenerateDeepLink(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
     }
     public Call<BaseResponse<AddToFavoriteModel>> postAddToFavorite(AddToFavoriteRequestModel model){
-        return RetrofitClient.getInstance().getApiClient().
+        return RetrofitClient.getInstance(baseUrl).getApiClient().
                 postAddToFavorite(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
     }
 }

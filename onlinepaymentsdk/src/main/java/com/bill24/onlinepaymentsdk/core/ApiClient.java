@@ -21,13 +21,13 @@ public interface ApiClient {
     Call<BaseResponse<CheckoutDetailModel>> postCheckoutDetail(
             @Header("Content-Type") String contentType,
             @Header("token") String token,
-            @Header("Referer-Key") String refererKey,
+            @Header("X-Referrer-Key") String refererKey,
             @Body CheckoutDetailRequestModel requestModel);
     @POST("checkout/generate_links")
     Call<BaseResponse<GenerateLinkDeepLinkModel>> postGenerateDeepLink(
             @Header("Content-Type") String contentType,
             @Header("token") String token,
-            @Header("Referer-Key") String refererKey,
+            @Header("X-Referrer-Key") String refererKey,
             @Body GenerateDeeplinkRequestModel requestModel
     );
 
@@ -35,14 +35,14 @@ public interface ApiClient {
     Call<BaseResponse<ExpiredTransactionModel>> postExpiredTransaction(
             @Header("Content-Type") String contentType,
             @Header("token") String token,
-            @Header("Referer-Key") String refererKey,
+            @Header("X-Referrer-Key") String refererKey,
             @Body ExpiredRequestModel requestModel
             );
     @POST("checkout/favorite_bank")
     Call<BaseResponse<AddToFavoriteModel>> postAddToFavorite(
             @Header("Content-Type") String contentType,
             @Header("token") String token,
-            @Header("Referer-Key") String refererKey,
+            @Header("X-Referrer-Key") String refererKey,
             @Body AddToFavoriteRequestModel requestModel
     );
 

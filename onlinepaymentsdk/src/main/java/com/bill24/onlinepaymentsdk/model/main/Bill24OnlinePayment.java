@@ -14,9 +14,22 @@ public class Bill24OnlinePayment {
             String transactionId,
             String refererKey,
             boolean isLightMode,
+            String language,
+            String env){
+
+        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,language,env);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
+    }
+    public static void init(
+            FragmentManager fragmentManager,
+            String transactionId,
+            String refererKey,
+            boolean isLightMode,
             String language){
         BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,language);
         bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
     }
 
     public static void init(

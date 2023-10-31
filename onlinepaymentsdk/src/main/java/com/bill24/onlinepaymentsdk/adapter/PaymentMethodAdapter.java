@@ -31,6 +31,7 @@ import com.bill24.onlinepaymentsdk.customShapeDrawable.SelectedState;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.StickyHeaderItemDecoration;
+import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.AddToFavoriteModel;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodModel;
@@ -70,7 +71,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 //            textServiceTitle,
 //            textServiceAmount,
 //            textCurrency;
-    private String tranasctionId, refererKey,language;
+    private String tranasctionId, refererKey,language,baseUrl;
     private boolean isLightMode;
 
    public void setPaymentMethod(
@@ -80,7 +81,8 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            String transactionId,
            String refererKey,
            boolean isLightMode,
-           String language){
+           String language,
+           String baseUrl){
        this.checkoutPageConfigModel=checkoutPageConfigModel;
        this.transactionInfoModel=transactionInfoModel;
        this.bankPaymentMethodModelList=bankPaymentMethodModelList;
@@ -88,6 +90,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
        this.refererKey=refererKey;
        this.isLightMode=isLightMode;
        this.language=language;
+       this.baseUrl=baseUrl;
 
        notifyDataSetChanged();
    }
@@ -142,7 +145,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private void postAddToFavorite(String bankId,boolean isFavorite){
         AddToFavoriteRequestModel model=new AddToFavoriteRequestModel(tranasctionId,bankId,isFavorite);
-        Call<BaseResponse<AddToFavoriteModel>> call= RetrofitClient.getInstance().
+        Call<BaseResponse<AddToFavoriteModel>> call= RetrofitClient.getInstance(baseUrl).
                 getApiClient().postAddToFavorite(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
 
         call.enqueue(new Callback<BaseResponse<AddToFavoriteModel>>() {
@@ -591,7 +594,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         void bindItem(BankPaymentMethodItemModel bankPaymentMethodItemModel){
             if(language.equals(LanguageCode.EN)){
                 textBankName.setText(bankPaymentMethodItemModel.getName());
+                textBankFee.setText(Translate.FEE_EN);
             }else {
+                textBankFee.setText(Translate.FEE_KM);
                 if(bankPaymentMethodItemModel.getNameKh().equals("")){
                     textBankName.setText(bankPaymentMethodItemModel.getName());
                 }else {
@@ -599,7 +604,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             }
 
-            textBankServicePayment_Amount.setText(formatCurrency(bankPaymentMethodItemModel.getFee(),transactionInfoModel.getCurrency()));
+
+
+            textBankServicePayment_Amount.setText(bankPaymentMethodItemModel.getFeeDisplay());
 
 
             if(transactionInfoModel.getCurrency().equals(CurrencyCode.USD)){
@@ -634,14 +641,14 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
        void OnItemPaymentMethodClick(BankPaymentMethodItemModel id);
     }
 
-    private String formatCurrency(double amount,String currency){
-        NumberFormat currencyFormat=NumberFormat.getNumberInstance();
-        if(currency.equals(CurrencyCode.KHR)){
-            return currencyFormat.format(amount);
-        }else {
-            DecimalFormat decimalFormat=new DecimalFormat("#,##0.00");
-            return  decimalFormat.format(amount);
-        }
-
-    }
+//    private String formatCurrency(double amount,String currency){
+//        NumberFormat currencyFormat=NumberFormat.getNumberInstance();
+//        if(currency.equals(CurrencyCode.KHR)){
+//            return currencyFormat.format(amount);
+//        }else {
+//            DecimalFormat decimalFormat=new DecimalFormat("#,##0.00");
+//            return  decimalFormat.format(amount);
+//        }
+//
+//    }
 }

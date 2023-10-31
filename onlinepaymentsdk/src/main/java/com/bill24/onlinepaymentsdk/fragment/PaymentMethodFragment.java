@@ -1,5 +1,6 @@
 package com.bill24.onlinepaymentsdk.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bill24.onlinepaymentsdk.R;
+import com.bill24.onlinepaymentsdk.SuccessActivity;
 import com.bill24.onlinepaymentsdk.adapter.PaymentMethodAdapter;
 import com.bill24.onlinepaymentsdk.bottomsheetDialogFragment.BottomSheet;
 import com.bill24.onlinepaymentsdk.core.RequestAPI;
@@ -39,6 +41,7 @@ import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
 import com.bill24.onlinepaymentsdk.helper.StickyHeaderItemDecoration;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodModel;
+import com.bill24.onlinepaymentsdk.model.CheckoutDetailModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.ExpiredTransactionModel;
 import com.bill24.onlinepaymentsdk.model.GenerateLinkDeepLinkModel;
@@ -74,7 +77,9 @@ public class PaymentMethodFragment extends Fragment
     private CheckoutPageConfigModel checkoutPageConfigModel;
     private String refererKey,language;
     private boolean isLightMode;
+    private CheckoutDetailModel checkoutDetailModel;
     public PaymentMethodFragment(){
+
     }
     
     private void initView(View view){
@@ -147,12 +152,13 @@ public class PaymentMethodFragment extends Fragment
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void displayOsVersion(){
         try {
             PackageInfo packageInfo=getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0);
             String version=packageInfo.versionName;
             int versionCode=packageInfo.versionCode;
-            textVersion.setText("V"+version+"."+versionCode);
+            textVersion.setText("V" + version + "." + versionCode);
         }catch (PackageManager.NameNotFoundException e){
             e.printStackTrace();
         }

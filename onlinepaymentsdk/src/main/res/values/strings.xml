@@ -19,4 +19,12 @@
     <string name="khqr">ទូទាត់តាម រយះ KHQR</string>
     <string name="image_saved">Save image success !</string>
     <string name="image_unsave">Save image fail !</string>
+    <string name="invoice_already_paid">Invoice already paid</string>
+    <string name="already">Already</string>
+    <string name="total">Total</string>
+    <string name="transaction_date">Transaction Date</string>
+    <string name="transaction">Transaction #</string>
+    <string name="bank_ref">Bank Ref #</string>
+    <string name="to_merchant">To Merchant</string>
+    <string name="done">Done</string>
 </resources>

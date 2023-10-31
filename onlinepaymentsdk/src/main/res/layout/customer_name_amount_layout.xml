@@ -8,11 +8,11 @@
     android:layout_marginBottom="@dimen/dimen_size12_5"
     >
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_khqr_customer_name"
+        android:id="@+id/text_khqr_merchant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="kranh virakbot"
-        android:textSize="8sp"
+        android:text="virackbot"
+        android:textSize="9sp"
         android:textColor="@color/black"
         android:fontFamily="@font/nunitosans_semi_bold"
         />

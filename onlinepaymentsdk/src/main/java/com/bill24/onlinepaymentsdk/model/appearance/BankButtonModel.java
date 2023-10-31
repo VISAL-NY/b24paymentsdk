@@ -1,8 +1,34 @@
 package com.bill24.onlinepaymentsdk.model.appearance;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
-public class BankButtonModel {
+public class BankButtonModel implements Parcelable{
+
+
+    protected BankButtonModel(Parcel in) {
+        backgroundColor = in.readString();
+        textPrimary = in.readString();
+        textSecondary = in.readString();
+        hoverBorder = in.readString();
+    }
+
+    public static final Creator<BankButtonModel> CREATOR = new Creator<BankButtonModel>() {
+        @Override
+        public BankButtonModel createFromParcel(Parcel in) {
+            return new BankButtonModel(in);
+        }
+
+        @Override
+        public BankButtonModel[] newArray(int size) {
+            return new BankButtonModel[size];
+        }
+    };
+
     public String getBackgroundColor() {
         return backgroundColor;
     }
@@ -43,4 +69,17 @@ public class BankButtonModel {
     private String textSecondary;
     @SerializedName("hover_border")
     private String hoverBorder;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(backgroundColor);
+        parcel.writeString(textPrimary);
+        parcel.writeString(textSecondary);
+        parcel.writeString(hoverBorder);
+    }
 }

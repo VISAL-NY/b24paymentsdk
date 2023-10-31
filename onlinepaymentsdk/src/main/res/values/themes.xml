@@ -26,7 +26,7 @@
 
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bottom_sheet_container_shape</item>
+        <item name="android:background">@drawable/bottom_sheet_loding_light_shape</item>
     </style>
 
 </resources>

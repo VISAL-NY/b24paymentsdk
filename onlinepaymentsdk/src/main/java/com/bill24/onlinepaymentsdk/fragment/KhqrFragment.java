@@ -43,6 +43,7 @@ import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
+import com.bill24.onlinepaymentsdk.model.BillerModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.ExpiredTransactionModel;
 import com.bill24.onlinepaymentsdk.model.TransactionInfoModel;
@@ -68,13 +69,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class KhqrFragment extends Fragment {
-    private AppCompatTextView textCustomerName,
+    private AppCompatTextView textMerchantName,
             textAmount,textCurrency,textCountDownTime,
             textScanToPay,textDownload,textShare,textOr;
     private AppCompatImageView khqrImage,khqrCurrencyIcon,imageDownload,imageShare;
     private FrameLayout downloadContainer,shareContainer,khqrLoading,
             khqrCardContainer,containerQrCode;
     private RelativeLayout containerLoadingTime;
+    private BillerModel billerModel;
     private TransactionInfoModel transactionInfoModel;
     private CheckoutPageConfigModel checkoutPageConfigModel;
     private AppCompatImageView dashLineLeft,dashLineRight;
@@ -87,7 +89,7 @@ public class KhqrFragment extends Fragment {
     }
 
     private void initView(View view){
-        textCustomerName=view.findViewById(R.id.text_khqr_customer_name);
+        textMerchantName=view.findViewById(R.id.text_khqr_merchant_name);
         textAmount=view.findViewById(R.id.text_khqr_amount);
         textCurrency=view.findViewById(R.id.text_khqr_currency);
         textCountDownTime=view.findViewById(R.id.text_timer);
@@ -126,7 +128,7 @@ public class KhqrFragment extends Fragment {
     }
 
     private void bindData(){
-        textCustomerName.setText(transactionInfoModel.getCustomerName());
+        textMerchantName.setText(billerModel.getBillerDisplayName());
         textAmount.setText(transactionInfoModel.getTotalAmountDisplay());
         textCurrency.setText(transactionInfoModel.getCurrency());
         //load image
@@ -172,6 +174,11 @@ public class KhqrFragment extends Fragment {
             String checkoutPageConfigJson=preferences.getString(Constant.KEY_CHECKOUT_PAGE_CONFIG,"");
             checkoutPageConfigModel=SharePreferenceCustom.converJsonToObject(checkoutPageConfigJson, CheckoutPageConfigModel.class);
 
+            //biller
+            String billerJson=preferences.getString(Constant.KEY_BILLER,"");
+            billerModel=SharePreferenceCustom.converJsonToObject(billerJson, BillerModel.class);
+
+
             //get isLight mode
             isLightMode=preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
 
@@ -180,7 +187,22 @@ public class KhqrFragment extends Fragment {
     }
 
     private void postExtendExpiredTime(){
-        khqrLoading.setVisibility(View.VISIBLE);
+        if(isLightMode){
+            LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
+            String khqrLoadingColor=lightModeModel.getSecondaryColor().getBackgroundColor();
+            String khqrLoadingHexa=ConvertColorHexa.convertHex(khqrLoadingColor);
+            khqrLoading.setBackgroundColor(Color.parseColor(khqrLoadingHexa));
+            khqrLoading.setVisibility(View.VISIBLE);
+        }else {
+
+            DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
+            String khqrLoadingColor=darkModeModel.getSecondaryColor().getBackgroundColor();
+            String khqrLoadingHexa=ConvertColorHexa.convertHex(khqrLoadingColor);
+            khqrLoading.setBackgroundColor(Color.parseColor(khqrLoadingHexa));
+            khqrLoading.setVisibility(View.VISIBLE);
+
+        }
+
         RequestAPI requestAPI=new RequestAPI(refererKey);
         ExpiredRequestModel requestModel=new ExpiredRequestModel(transactionId);
         Call<BaseResponse<ExpiredTransactionModel>> call =requestAPI.postExpireTran(requestModel);
@@ -227,13 +249,13 @@ public class KhqrFragment extends Fragment {
     }
 
     private Bitmap convertLayoutToImage(View view){
-        AppCompatTextView customerName=view.findViewById(R.id.text_khqr_customer_name);
+        AppCompatTextView merchantName=view.findViewById(R.id.text_khqr_merchant_name);
         AppCompatTextView amount=view.findViewById(R.id.text_khqr_amount);
         AppCompatImageView qrcodeImage=view.findViewById(R.id.khqr_image_download_share);
         AppCompatImageView khqrCurrencyLogo=view.findViewById(R.id.khqr_currency_icon_download_share);
         AppCompatTextView currency=view.findViewById(R.id.text_khqr_currency);
 
-        customerName.setText(transactionInfoModel.getCustomerName());
+        merchantName.setText(billerModel.getBillerDisplayName());
         amount.setText(transactionInfoModel.getTotalAmountDisplay());
         if(transactionInfoModel.getCurrency().equals(CurrencyCode.KHR)){
             currency.setText(transactionInfoModel.getCurrency());

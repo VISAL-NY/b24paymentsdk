@@ -446,8 +446,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
                 applyStyleShapeDarkMode(itemView.getContext());
             }
 
-
-
         }
 
 
@@ -594,7 +592,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             if(language.equals(LanguageCode.EN)){
                 textBankName.setText(bankPaymentMethodItemModel.getName());
             }else {
-                textBankName.setText(bankPaymentMethodItemModel.getNameKh());
+                if(bankPaymentMethodItemModel.getNameKh().equals("")){
+                    textBankName.setText(bankPaymentMethodItemModel.getName());
+                }else {
+                    textBankName.setText(bankPaymentMethodItemModel.getNameKh());
+                }
             }
 
             textBankServicePayment_Amount.setText(formatCurrency(bankPaymentMethodItemModel.getFee(),transactionInfoModel.getCurrency()));

@@ -32,17 +32,22 @@ public class SocketManager {
         return socket;
     }
     public static void connectJoinRoom(String roomName){
-        if(socket==null){
-            socket=SocketManager.getSocket();
+
+        if(!socket.connected()){
+            socket.connect();
         }
         socket.on(EVentName.CONNECT, args -> {
             Log.d("bbbbbbb", "call: From Client Cannect to Server");
             socket.emit(EVentName.JOIN_ROOM,CONTS.PREFIX_ROOM_NAME+"-"+roomName);
         });
+
+
     }
     public static void disConnect(){
         Log.d("vvvvvv", "disConnect: Disconnect from server");
         if(socket!=null){
+            socket.off(EVentName.CONNECT);
+            socket.off(EVentName.JOIN_ROOM);
             socket.disconnect();
         }
 

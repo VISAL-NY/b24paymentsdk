@@ -14,9 +14,8 @@ public class Bill24OnlinePayment {
             String transactionId,
             String refererKey,
             boolean isLightMode,
-            Class<? extends Activity> activityClass,
             String language){
-        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,activityClass,language);
+        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,language);
         bottomSheet.show(fragmentManager,bottomSheet.getTag());
     }
 
@@ -24,9 +23,8 @@ public class Bill24OnlinePayment {
             FragmentManager fragmentManager,
             String transactionId,
             String refererKey,
-            boolean isLightMode,
-            Class<? extends Activity> activityClass){
-        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,activityClass);
+            boolean isLightMode){
+        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode);
         bottomSheet.show(fragmentManager, bottomSheet.getTag());
     }
 

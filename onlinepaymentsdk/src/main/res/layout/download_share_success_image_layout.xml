@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@color/white">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/success_container"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:paddingTop="20dp"
+        android:paddingBottom="30dp"
+        android:background="@color/white"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/success_icon"
+            android:layout_gravity="center"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_invoice_already_paid_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/invoice_already_paid"
+            android:layout_gravity="center"
+            android:layout_marginVertical="10dp"
+            android:textColor="@color/black"/>
+
+        <View
+            android:id="@+id/dash_line_first_success"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/dash_line_horizontal"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_tran_no_title_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/transaction"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_tran_no_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction # "
+                android:textColor="@color/black"
+                android:layout_gravity="right"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_bank_ref_title_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/bank_ref"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_bank_ref_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction # "
+                android:textColor="@color/black"
+                android:layout_gravity="right"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_to_merchant_title_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/to_merchant"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_to_merchant_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction # "
+                android:textColor="@color/black"
+                android:layout_gravity="right"/>
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_tran_date_title_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/transaction_date"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_tran_date_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction # "
+                android:textColor="@color/black"
+                android:layout_gravity="right"/>
+        </FrameLayout>
+
+        <View
+            android:id="@+id/dash_lin_second_success"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/dash_line_horizontal"/>
+        <FrameLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_total_title_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/total"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_total_amount_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Transaction # "
+                    android:textColor="@color/black"
+                    android:layout_marginEnd="3dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_currency_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="KHR"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </FrameLayout>
+
+        <!--        <View-->
+        <!--            android:id="@+id/dash_line_third_success"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:background="@drawable/dash_line_horizontal"/>-->
+
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.cardview.widget.CardView>
+
+
+

@@ -1,11 +1,55 @@
 package com.bill24.onlinepaymentsdk.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class TransactionInfoModel implements Serializable {
+public class TransactionInfoModel implements Parcelable {
+    protected TransactionInfoModel(Parcel in) {
+        tranId = in.readString();
+        identityCode = in.readString();
+        tranNo = in.readString();
+        tranAmount = in.readDouble();
+        tranAmountDisplay = in.readString();
+        totalAmount = in.readDouble();
+        totalAmountDisplay = in.readString();
+        currency = in.readString();
+        isAllowFavorite = in.readByte() != 0;
+        customerCode = in.readString();
+        customerName = in.readString();
+        customerEmail = in.readString();
+        customerPhone = in.readString();
+        tranDate = in.readString();
+        expiredDate = in.readString();
+        bankRefId = in.readString();
+        status = in.readString();
+        cancelUrl = in.readString();
+        redirectUrl = in.readString();
+        paymentLink = in.readString();
+        language = in.readString();
+        khqrImage = in.readString();
+        khqrString = in.readString();
+        description = in.readString();
+    }
+
+    public static final Creator<TransactionInfoModel> CREATOR = new Creator<TransactionInfoModel>() {
+        @Override
+        public TransactionInfoModel createFromParcel(Parcel in) {
+            return new TransactionInfoModel(in);
+        }
+
+        @Override
+        public TransactionInfoModel[] newArray(int size) {
+            return new TransactionInfoModel[size];
+        }
+    };
+
     public String getTranId() {
         return tranId;
     }
@@ -266,4 +310,36 @@ public class TransactionInfoModel implements Serializable {
     @SerializedName("bank_payment_method")
     private List<BankPaymentMethodModel> bankPaymentMethod;
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(tranId);
+        parcel.writeString(identityCode);
+        parcel.writeString(tranNo);
+        parcel.writeDouble(tranAmount);
+        parcel.writeString(tranAmountDisplay);
+        parcel.writeDouble(totalAmount);
+        parcel.writeString(totalAmountDisplay);
+        parcel.writeString(currency);
+        parcel.writeByte((byte) (isAllowFavorite ? 1 : 0));
+        parcel.writeString(customerCode);
+        parcel.writeString(customerName);
+        parcel.writeString(customerEmail);
+        parcel.writeString(customerPhone);
+        parcel.writeString(tranDate);
+        parcel.writeString(expiredDate);
+        parcel.writeString(bankRefId);
+        parcel.writeString(status);
+        parcel.writeString(cancelUrl);
+        parcel.writeString(redirectUrl);
+        parcel.writeString(paymentLink);
+        parcel.writeString(language);
+        parcel.writeString(khqrImage);
+        parcel.writeString(khqrString);
+        parcel.writeString(description);
+    }
 }

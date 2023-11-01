@@ -17,7 +17,8 @@ import retrofit2.Call;
 
 public class RequestAPI {
 
-    private  String refererKey,baseUrl;
+    private final String refererKey;
+    private final String baseUrl;
     public RequestAPI(String refererKey,String baseUrl){
         this.refererKey=refererKey;
         this.baseUrl=baseUrl;

@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,6 +23,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -31,20 +31,17 @@ import com.bill24.onlinepaymentsdk.customShapeDrawable.CustomShape;
 import com.bill24.onlinepaymentsdk.customShapeDrawable.SelectedState;
 import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
+import com.bill24.onlinepaymentsdk.helper.CustomSnackbar;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
-import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
 import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BillerModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.TransactionInfoModel;
-import com.bill24.onlinepaymentsdk.model.appearance.AppearanceModel;
 import com.bill24.onlinepaymentsdk.model.appearance.darkMode.DarkModeModel;
 import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.onlinepaymentsdk.model.conts.Constant;
-import com.bill24.onlinepaymentsdk.model.conts.CurrencyCode;
 import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.google.android.material.snackbar.Snackbar;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -341,13 +338,15 @@ public class SuccessActivity extends AppCompatActivity {
 
     }
 
-    private void  customSnackBar(int image,String desc){
+    private void  customSnackBar(int image,String desc,int color){
         Snackbar customSnackbar = Snackbar.make(findViewById(R.id.snackbar_success_container), "",Snackbar.LENGTH_SHORT);
 
         Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) customSnackbar.getView();
         View customView = getLayoutInflater().inflate(R.layout.snackbar_success_custom_layout, null);
-        snackbarLayout.setBackgroundColor(getColor(R.color.snackbar_background_color));//remove snackbar background
-        snackbarLayout.addView(customView, 0);
+
+        snackbarLayout.setBackgroundColor(ContextCompat.getColor(this,color));//remove snackbar background
+        customView.setBackgroundColor(ContextCompat.getColor(this,color));
+        snackbarLayout.addView(customView);
 
         //update font family
         SetFont font=new SetFont();
@@ -385,9 +384,9 @@ public class SuccessActivity extends AppCompatActivity {
         }
 
         if(imageUrl!=null){
-            customSnackBar(R.drawable.check_circle_24px,saveSuccess);
+           customSnackBar(R.drawable.check_circle_24px,saveSuccess,R.color.snackbar_background_success_color);
         }else {
-            customSnackBar(R.drawable.bottom_sheet_dash_line_shape,saveUnSuccess);
+            customSnackBar(R.drawable.error_24px,saveUnSuccess,R.color.snackbar_background_error_color);
         }
     }
 
@@ -452,7 +451,6 @@ public class SuccessActivity extends AppCompatActivity {
             downloadContainer.setBackground(selectorDownload);
 
             StateListDrawable selectorShare=SelectedState.selectedSate(shape,shape1);
-
 
             shareContainer.setBackground(selectorShare);
 

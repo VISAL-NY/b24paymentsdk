@@ -42,6 +42,7 @@ import com.bill24.onlinepaymentsdk.customShapeDrawable.CustomShape;
 import com.bill24.onlinepaymentsdk.customShapeDrawable.SelectedState;
 import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
+import com.bill24.onlinepaymentsdk.helper.CustomSnackbar;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
 import com.bill24.onlinepaymentsdk.helper.Translate;
@@ -56,7 +57,6 @@ import com.bill24.onlinepaymentsdk.model.conts.Constant;
 import com.bill24.onlinepaymentsdk.model.conts.CurrencyCode;
 import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.bill24.onlinepaymentsdk.model.requestModel.ExpiredRequestModel;
-import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -283,31 +283,31 @@ public class KhqrFragment extends Fragment {
     }
 
 
-    private void  customSnackBar(View view,int image,String desc){
-        Snackbar customSnackbar = Snackbar.make(view.findViewById(R.id.container_khqrfragment), "",Snackbar.LENGTH_SHORT);
-
-        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) customSnackbar.getView();
-        View customView = getLayoutInflater().inflate(R.layout.snackbar_success_custom_layout, null);
-
-        snackbarLayout.setBackgroundColor(getContext().getColor(R.color.snackbar_background_color));//remove snackbar background
-        snackbarLayout.addView(customView);
-
-        //update font family
-            SetFont font=new SetFont();
-            Typeface typeface=font.setFont(getContext(),language);
-
-
-
-        // Customize the content and appearance of the custom layout
-            AppCompatTextView textView = customView.findViewById(R.id.custom_snackbar_desc);
-            textView.setTypeface(typeface);
-            textView.setText(desc);
-
-            AppCompatImageView imageView=customView.findViewById(R.id.custom_snackbar_icon);
-            imageView.setImageResource(image);
-
-        customSnackbar.show();
-    }
+//    private void  customSnackBar(View view,int image,String desc){
+//        Snackbar customSnackbar = Snackbar.make(view.findViewById(R.id.container_khqrfragment), "",Snackbar.LENGTH_SHORT);
+//
+//        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) customSnackbar.getView();
+//        View customView = getLayoutInflater().inflate(R.layout.snackbar_success_custom_layout, null);
+//        customView.setBackgroundColor(Color.BLUE);
+//        snackbarLayout.setBackgroundColor(getContext().getColor(R.color.snackbar_background_color));//remove snackbar background
+//        snackbarLayout.addView(customView);
+//
+//        //update font family
+//            SetFont font=new SetFont();
+//            Typeface typeface=font.setFont(getContext(),language);
+//
+//
+//
+//        // Customize the content and appearance of the custom layout
+//            AppCompatTextView textView = customView.findViewById(R.id.custom_snackbar_desc);
+//            textView.setTypeface(typeface);
+//            textView.setText(desc);
+//
+//            AppCompatImageView imageView=customView.findViewById(R.id.custom_snackbar_icon);
+//            imageView.setImageResource(image);
+//
+//        customSnackbar.show();
+//    }
 
     private void downloadKHQR(Bitmap bitmap,View view){
         Date now = new Date();
@@ -332,9 +332,18 @@ public class KhqrFragment extends Fragment {
 
 
         if(imageUrl!=null){
-            customSnackBar(view,R.drawable.check_circle_24px,saveSuccess);
+            CustomSnackbar.showSuccessSnackbar(getContext(),view,
+                    R.drawable.check_circle_24px,
+                    saveSuccess,R.color.snackbar_background_success_color,language);
         }else {
-            customSnackBar(view,R.drawable.error_24px,saveUnSuceess);
+            CustomSnackbar.showSuccessSnackbar(
+                    getContext(),
+                    view,
+                    R.drawable.error_24px,
+                    saveUnSuceess,
+                    R.color.snackbar_background_error_color,
+                    language
+            );
         }
     }
     private void shareKHQR(Bitmap bitmap){

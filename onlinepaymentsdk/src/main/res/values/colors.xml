@@ -24,7 +24,9 @@
     <color name="button_unclick">#8057BC1E</color>
     <color name="unfavorite_back_color">#80EAF7E3</color>
     <color name="undownload_back_color">#80D4E8FF</color>
-    <color name="snackbar_background_color">#EBFCF6</color>
+    <color name="snackbar_background_success_color">#EBFCF6</color>
+    <color name="snackbar_background_error_color">#FAEEEE</color>
+
     <color name="snackbar_text_color">#131C18</color>
     <color name="new_color">#FF336699</color>
 </resources>

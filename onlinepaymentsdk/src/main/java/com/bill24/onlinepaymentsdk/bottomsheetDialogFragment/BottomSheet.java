@@ -91,6 +91,15 @@ public class BottomSheet extends BottomSheetDialogFragment {
         this.isLightMode=isLightMode;
         this.language=language;
         this.env=env;
+
+        if(env.equals(Constant.DEMO_ENV)){
+            baseUrl=BaseURL.BASE_URL_DEMO;
+        }else if(env.equals(Constant.STAGING_ENV)){
+            baseUrl=BaseURL.BASE_URL_STAGGING;
+        }else {
+            baseUrl=BaseURL.BASE_URL_DEMO;
+        }
+
         requestModel=new CheckoutDetailRequestModel(this.transactionId);
     }
     public BottomSheet(
@@ -106,6 +115,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         if(env==null || env.isEmpty()){
             baseUrl =BaseURL.BASE_URL_DEMO;
         }
+
         requestModel=new CheckoutDetailRequestModel(this.transactionId);
     }
 
@@ -147,13 +157,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
             language= LanguageCode.KH;
         }
 
-        if(env!=null && env.equals(Constant.DEMO_ENV)){
-            baseUrl =BaseURL.BASE_URL_DEMO;
-        }
-        if(env!=null && env.equals(Constant.STAGING_ENV)){
-            baseUrl = BaseURL.BASE_URL_STAGGING;
-        }
-
         if(isLightMode){
             bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loding_light_shape));
         }else {
@@ -192,9 +195,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
         startActivity(intent);
 
     }
-
-
-
 
 
     @NonNull

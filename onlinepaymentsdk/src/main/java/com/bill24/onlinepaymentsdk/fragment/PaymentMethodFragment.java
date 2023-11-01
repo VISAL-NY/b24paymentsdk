@@ -42,6 +42,7 @@ import com.bill24.onlinepaymentsdk.helper.StickyHeaderItemDecoration;
 import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodModel;
+import com.bill24.onlinepaymentsdk.model.BillerModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutDetailModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.onlinepaymentsdk.model.ExpiredTransactionModel;
@@ -422,7 +423,7 @@ public class PaymentMethodFragment extends Fragment
 //                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
 //                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
 //                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
-//                //intent.putExtra(Constant.KEY_BILLER,billerModel);
+//                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
 //
 //                startActivity(intent);
 

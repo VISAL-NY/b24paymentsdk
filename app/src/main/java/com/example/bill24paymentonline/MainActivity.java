@@ -139,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
                            "123X",
-                           isLightMode
-
+                           isLightMode,
+"en",""
                    );
 
                    Log.d("tranNo", "onResponse: "+response.body().getData().getTranID());

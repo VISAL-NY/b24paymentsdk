@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -556,7 +557,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            containerBankItemFirstLayer.setBackground(bankItemShape);
 
 
-
            //bank name
            String bankNameColor=darkModeModel.getButton().getBankButton().getTextPrimary();
            String convertBankNameColor=ConvertColorHexa.convertHex(bankNameColor);
@@ -569,7 +569,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            textBankServicePayment_Amount.setTextColor(Color.parseColor(convertBankFeeColor));
            textSemicolon.setTextColor(Color.parseColor(convertBankFeeColor));
            textBankServiceCurrency.setTextColor(Color.parseColor(convertBankFeeColor));
-
 
 
            //favorite background
@@ -604,8 +603,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             }
 
-
-
             textBankServicePayment_Amount.setText(bankPaymentMethodItemModel.getFeeDisplay());
 
 
@@ -632,6 +629,13 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             if(checkoutPageConfigModel.getSetting().isDisplayFee()){
                 containerFee.setVisibility(View.VISIBLE);
             }else {
+                ViewGroup.LayoutParams layoutParams=textBankName.getLayoutParams();
+                layoutParams.width=ViewGroup.LayoutParams.WRAP_CONTENT;
+                layoutParams.height=ViewGroup.LayoutParams.MATCH_PARENT;
+
+                textBankName.setLayoutParams(layoutParams);
+                textBankName.setGravity(Gravity.CENTER);
+
                 containerFee.setVisibility(View.GONE);
             }
         }

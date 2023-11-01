@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         "application/json",
                         "d79f7911b5104f1d86158b7c16f422a7",
                         model
+
                 );
 
         call.enqueue(new Callback<ResponseModel>() {
@@ -139,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                            responseModel.getData().getTranID(),
                            "123X",
                            isLightMode
+
                    );
 
                    Log.d("tranNo", "onResponse: "+response.body().getData().getTranID());

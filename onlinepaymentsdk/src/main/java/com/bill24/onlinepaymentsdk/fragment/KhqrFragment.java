@@ -288,8 +288,9 @@ public class KhqrFragment extends Fragment {
 
         Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) customSnackbar.getView();
         View customView = getLayoutInflater().inflate(R.layout.snackbar_success_custom_layout, null);
-        snackbarLayout.setBackgroundColor(Color.TRANSPARENT);//remove snackbar background
-        snackbarLayout.addView(customView, 0);
+
+        snackbarLayout.setBackgroundColor(getContext().getColor(R.color.snackbar_background_color));//remove snackbar background
+        snackbarLayout.addView(customView);
 
         //update font family
             SetFont font=new SetFont();

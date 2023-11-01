@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:background="@drawable/snackbar_success_custom_shape"
     android:paddingVertical="@dimen/dimen_size10"
-    android:paddingLeft="@dimen/dimen_size30">
+    android:paddingLeft="@dimen/dimen_size20">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/custom_snackbar_icon"
         android:layout_width="wrap_content"

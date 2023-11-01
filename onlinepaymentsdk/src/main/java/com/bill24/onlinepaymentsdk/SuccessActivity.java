@@ -176,8 +176,7 @@ public class SuccessActivity extends AppCompatActivity {
     private void bindData(){
         textTranNo.setText(transactionInfoModel.getTranNo());
         textBankRef.setText(transactionInfoModel.getBankRefId());
-//todo
-        //textToMerchant.setText(billerModel.getBillerDisplayName());
+        textToMerchant.setText(billerModel.getBillerDisplayName());
         textTranDate.setText(transactionInfoModel.getTranDate());
         textTotalAmount.setText(transactionInfoModel.getTranAmountDisplay());
         textCurrency.setText(transactionInfoModel.getCurrency());
@@ -191,7 +190,7 @@ public class SuccessActivity extends AppCompatActivity {
             textBankRefTitle.setText(Translate.BANK_REF_EN);
             textToMerchantTitle.setText(Translate.TO_MERCHANT_EN);
             textTranDateTitle.setText(Translate.TRAN_DATE_EN);
-            textTotalTitle.setText(Translate.TOTAL_AMOUNT_EN);
+            textTotalTitle.setText(Translate.TOTAL_EN);
             textDownload.setText(Translate.DOWNLOAD_EN);
             textShare.setText(Translate.SHARE_EN);
             textDone.setText(Translate.DONE_EN);
@@ -201,7 +200,7 @@ public class SuccessActivity extends AppCompatActivity {
             textBankRefTitle.setText(Translate.BANK_REF_KM);
             textToMerchantTitle.setText(Translate.TO_MERCHANT_KM);
             textTranDateTitle.setText(Translate.TRAN_DATE_KM);
-            textTotalTitle.setText(Translate.TOTAL_AMOUNT_KM);
+            textTotalTitle.setText(Translate.TOTAL_KM);
             textDownload.setText(Translate.DONWLOAD_KM);
             textShare.setText(Translate.SHARE_KM);
             textDone.setText(Translate.DONE_KM);
@@ -270,9 +269,7 @@ public class SuccessActivity extends AppCompatActivity {
             //set value
             transactionNo.setText(transactionInfoModel.getTranNo());
             bankRef.setText(transactionInfoModel.getBankRefId());
-
-            //todo
-           // merchantName.setText(billerModel.getBillerDisplayName());
+            merchantName.setText(billerModel.getBillerDisplayName());
             transactionDate.setText(transactionInfoModel.getTranDate());
             totalAmount.setText(transactionInfoModel.getTranAmountDisplay());
             currency.setText(transactionInfoModel.getCurrency());
@@ -349,7 +346,7 @@ public class SuccessActivity extends AppCompatActivity {
 
         Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) customSnackbar.getView();
         View customView = getLayoutInflater().inflate(R.layout.snackbar_success_custom_layout, null);
-        snackbarLayout.setBackgroundColor(Color.TRANSPARENT);//remove snackbar background
+        snackbarLayout.setBackgroundColor(getColor(R.color.snackbar_background_color));//remove snackbar background
         snackbarLayout.addView(customView, 0);
 
         //update font family
@@ -376,21 +373,21 @@ public class SuccessActivity extends AppCompatActivity {
         String imageTitle="KHQR Image "+formattedDateTime+microseconds;
         String imageUrl= MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,imageTitle,"");
 
-        String saveSuccess="";
-        String saveUnSuceess="";
+        String saveSuccess;
+        String saveUnSuccess;
         if(language.equals(LanguageCode.EN)){
             saveSuccess=Translate.IMAGE_SAVE_EN;
-            saveUnSuceess=Translate.IMAGE_UNSAVE_EN;
+            saveUnSuccess=Translate.IMAGE_UNSAVE_EN;
 
         }else {
             saveSuccess=Translate.IMAGE_SAVE_KM;
-            saveUnSuceess=Translate.IMAGE_UNSAVE_KM;
+            saveUnSuccess=Translate.IMAGE_UNSAVE_KM;
         }
 
         if(imageUrl!=null){
             customSnackBar(R.drawable.check_circle_24px,saveSuccess);
         }else {
-            customSnackBar(R.drawable.bottom_sheet_dash_line_shape,saveUnSuceess);
+            customSnackBar(R.drawable.bottom_sheet_dash_line_shape,saveUnSuccess);
         }
     }
 

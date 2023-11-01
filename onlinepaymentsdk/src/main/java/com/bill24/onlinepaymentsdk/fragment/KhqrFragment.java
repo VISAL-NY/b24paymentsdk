@@ -57,6 +57,7 @@ import com.bill24.onlinepaymentsdk.model.conts.Constant;
 import com.bill24.onlinepaymentsdk.model.conts.CurrencyCode;
 import com.bill24.onlinepaymentsdk.model.conts.LanguageCode;
 import com.bill24.onlinepaymentsdk.model.requestModel.ExpiredRequestModel;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -332,16 +333,20 @@ public class KhqrFragment extends Fragment {
 
 
         if(imageUrl!=null){
-            CustomSnackbar.showSuccessSnackbar(getContext(),view,
+            CustomSnackbar.showSuccessSnackbar(getContext(),
+                    view.findViewById(R.id.container_khqrfragment),
                     R.drawable.check_circle_24px,
-                    saveSuccess,R.color.snackbar_background_success_color,language);
+                    saveSuccess,R.color.snackbar_background_success_color,
+                    Snackbar.LENGTH_SHORT
+                    ,language);
         }else {
             CustomSnackbar.showSuccessSnackbar(
                     getContext(),
-                    view,
+                    view.findViewById(R.id.container_khqrfragment),
                     R.drawable.error_24px,
                     saveUnSuceess,
                     R.color.snackbar_background_error_color,
+                    Snackbar.LENGTH_SHORT,
                     language
             );
         }

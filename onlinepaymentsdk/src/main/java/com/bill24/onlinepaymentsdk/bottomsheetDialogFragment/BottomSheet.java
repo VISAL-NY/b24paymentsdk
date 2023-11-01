@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,9 @@ import com.bill24.onlinepaymentsdk.SuccessActivity;
 import com.bill24.onlinepaymentsdk.core.RequestAPI;
 import com.bill24.onlinepaymentsdk.fragment.PaymentMethodFragment;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
+import com.bill24.onlinepaymentsdk.helper.CustomSnackbar;
 import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
+import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BankPaymentMethodModel;
 import com.bill24.onlinepaymentsdk.model.BillerModel;
 import com.bill24.onlinepaymentsdk.model.CheckoutDetailModel;
@@ -48,6 +51,7 @@ import com.bill24.onlinepaymentsdk.socketIO.model.SocketRespModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +66,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
     private CheckoutDetailRequestModel requestModel;
     private FrameLayout progressBarContainer;
+    private ProgressBar progressBar;
     private LinearLayoutCompat bottomSheet;
     private View dragHandle;
     private boolean isLightMode;
@@ -124,6 +129,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         bottomSheet=view.findViewById(R.id.bottom_sheet);
         progressBarContainer=view.findViewById(R.id.progress_circular);
         dragHandle=view.findViewById(R.id.drag_handle);
+        progressBar=view.findViewById(R.id.progress_indicator);
     }
 
 
@@ -348,14 +354,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        postCheckoutDetail();
+        postCheckoutDetail(view);
 
         //wait broadcast from server
         broadcastFromSocketServer();
 
     }
 
-    private void postCheckoutDetail(){
+    private void postCheckoutDetail(View view){
         RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
         Call<BaseResponse<CheckoutDetailModel>> call=requestAPI.postCheckoutDetail(requestModel);
         call.enqueue(new Callback<BaseResponse<CheckoutDetailModel>>() {
@@ -441,11 +447,29 @@ public class BottomSheet extends BottomSheetDialogFragment {
             @Override
             public void onFailure(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Throwable t) {
 
-                Toast.makeText(getContext(),"Error internal server",Toast.LENGTH_LONG).show();
+                String message;
+                if(language.equals(LanguageCode.EN)){
+                    message= Translate.ERR_SERVER_EN;
+                }else {
+                    message=Translate.ERR_SERVER_KM;
+                }
+
+                CustomSnackbar.showSuccessSnackbar(
+                        getContext(),
+                        view.findViewById(R.id.snackar_bottomsheet_container),
+                                R.drawable.error_24px,
+                                message,
+                        R.color.snackbar_background_error_color,
+                        Snackbar.LENGTH_LONG,
+                        language
+                                );
+
+
+                //Toast.makeText(getContext(),"Error internal server",Toast.LENGTH_LONG).show();
                 Log.d("bottomSheet", "onFailure: "+t.getMessage());
 
                 Handler handler=new Handler();
-                handler.postDelayed(() -> dialog.dismiss(),4000);
+                handler.postDelayed(() -> progressBar.setVisibility(View.GONE),4000);
 
             }
         });

@@ -16,8 +16,9 @@ public class CustomSnackbar {
 
     public static void showSuccessSnackbar(Context context,@Nullable View view,
                                     int image, String  desc, int color,
+                                    int duration,
                                     String language){
-        Snackbar customSnackbar = Snackbar.make(view.findViewById(R.id.container_khqrfragment), "",Snackbar.LENGTH_SHORT);
+        Snackbar customSnackbar = Snackbar.make(view, "",duration);
 
         Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) customSnackbar.getView();
         View customView= LayoutInflater.from(context).inflate(R.layout.snackbar_success_custom_layout,null);

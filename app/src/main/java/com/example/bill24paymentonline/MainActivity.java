@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                            responseModel.getData().getTranID(),
                            "123X",
                            isLightMode,
-"en",""
+"km",""
                    );
 
                    Log.d("tranNo", "onResponse: "+response.body().getData().getTranID());

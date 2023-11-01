@@ -39,6 +39,8 @@ public class Translate {
     public static final String TO_MERCHANT_KM="ទៅកាន់ម្ចាស់អាជីវកម្ម";
     public static final String OR_EN="or";
     public static final String OR_KM="ឬ";
+    public  static final String ERR_SERVER_EN="Error internal server ";
+    public static final String ERR_SERVER_KM="ការតភា្ជប់បណ្ដាញមានបញ្ហា";
 
 
 

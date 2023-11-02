@@ -87,7 +87,7 @@ public class ExpireFragment extends Fragment {
         textTryAgain.setTextColor(Color.parseColor(tryAgainColorHexa));
 
         //shape button
-        String bgButton=lightModeModel.getButton().getRetryButton().getBackgroundColor();
+        String bgButton=lightModeModel.getButton().getBackgroundColor();
         String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
         ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,getContext());
 
@@ -98,13 +98,13 @@ public class ExpireFragment extends Fragment {
         buttonTryAgain.setBackground(selector);
 
         //text button try again
-        String textButtonColor=lightModeModel.getButton().getRetryButton().getTextColor();
+        String textButtonColor=lightModeModel.getButton().getTextColor();
         String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
         textTryagainButton.setTextColor(Color.parseColor(textButtonColorHexa));
 
 
         //dash line
-        String dashLine=lightModeModel.getSecondaryColor().getTextColor();
+        String dashLine=lightModeModel.getIndicatorColor();
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
 
         GradientDrawable gradientDrawable = new GradientDrawable();
@@ -140,7 +140,7 @@ public class ExpireFragment extends Fragment {
         textTryAgain.setTextColor(Color.parseColor(tryAgainColorHexa));
 
         //shape button
-        String bgButton=darkModeModel.getButton().getRetryButton().getBackgroundColor();
+        String bgButton=darkModeModel.getButton().getBackgroundColor();
         String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
         ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,getContext());
         String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
@@ -150,13 +150,13 @@ public class ExpireFragment extends Fragment {
         buttonTryAgain.setBackground(selector);
 
         //text button try again
-        String textButtonColor=darkModeModel.getButton().getRetryButton().getTextColor();
+        String textButtonColor=darkModeModel.getButton().getTextColor();
         String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
         textTryagainButton.setTextColor(Color.parseColor(textButtonColorHexa));
 
 
         //dash line
-        String dashLine=darkModeModel.getSecondaryColor().getTextColor();
+        String dashLine=darkModeModel.getIndicatorColor();
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
 
         GradientDrawable gradientDrawable = new GradientDrawable();

@@ -27,7 +27,6 @@ public interface ApiClient {
     Call<BaseResponse<GenerateLinkDeepLinkModel>> postGenerateDeepLink(
             @Header("Content-Type") String contentType,
             @Header("token") String token,
-            @Header("X-Referrer-Key") String refererKey,
             @Body GenerateDeeplinkRequestModel requestModel
     );
 

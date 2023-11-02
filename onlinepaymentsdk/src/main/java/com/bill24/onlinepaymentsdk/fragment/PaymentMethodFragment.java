@@ -14,6 +14,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -256,7 +257,7 @@ public class PaymentMethodFragment extends Fragment
 
 
         //dash line
-        String dashLineColor=lightModeModel.getSecondaryColor().getTextColor();
+        String dashLineColor=lightModeModel.getIndicatorColor();
         String dashLineColorHexa=ConvertColorHexa.convertHex(dashLineColor);
 
         GradientDrawable gradientDrawable = new GradientDrawable();
@@ -309,7 +310,7 @@ public class PaymentMethodFragment extends Fragment
 
 
         //dash line
-        String dashLineColor=darkModeModel.getSecondaryColor().getTextColor();
+        String dashLineColor=darkModeModel.getIndicatorColor();
         String dashLineColorHexa=ConvertColorHexa.convertHex(dashLineColor);
 
         GradientDrawable gradientDrawable = new GradientDrawable();
@@ -418,14 +419,14 @@ public class PaymentMethodFragment extends Fragment
                 break;
             case Bank.MASTERCARD:
 
-//                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
-//                intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
-//                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
-//                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
-//                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
-//                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
-//
-//                startActivity(intent);
+                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
+                intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
+                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
+                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
+                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
+                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
+
+                startActivity(intent);
 
                 //todo handle when click on mastercard
 
@@ -434,7 +435,10 @@ public class PaymentMethodFragment extends Fragment
                 postExpiredTran(expiredRequestModel);
                 GenerateDeeplinkRequestModel generateDeeplinkRequestModel=new GenerateDeeplinkRequestModel(itemModel.getId(), transactionInfoModel.getTranNo());
 
+                Log.d("tranNo", "OnItemPaymentMethodClick: "+transactionInfoModel.getTranNo());
+
                 RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
+
                 Call<BaseResponse<GenerateLinkDeepLinkModel>> call=requestAPI.postGenerateDeeplink(generateDeeplinkRequestModel);
                 call.enqueue(new Callback<BaseResponse<GenerateLinkDeepLinkModel>>() {
                     @Override
@@ -444,17 +448,17 @@ public class PaymentMethodFragment extends Fragment
                             BaseResponse<GenerateLinkDeepLinkModel> deeplink=response.body();
                             if(deeplink !=null){
                                 generateLinkDeepLinkModel=deeplink.getData();
-                                if(itemModel.isSupportDeeplink()){
+//                                if(itemModel.isSupportDeeplink()){
                                     if(!generateLinkDeepLinkModel.getMobileDeepLink().isEmpty()){
                                         launchDeeplink(generateLinkDeepLinkModel.getMobileDeepLink());
                                         return;
                                     }
-                                }
-                                if(itemModel.isSupportCheckoutPage()){
+                               // }
+                                //if(itemModel.isSupportCheckoutPage()){
                                     if(!generateLinkDeepLinkModel.getWebPaymentLink().isEmpty()){
                                         ((BottomSheet)getParentFragment()).showFragment(new WebViewCheckoutFragment(generateLinkDeepLinkModel.getWebPaymentLink()));
                                     }
-                                }
+                               // }
                             }
                         }
                     }

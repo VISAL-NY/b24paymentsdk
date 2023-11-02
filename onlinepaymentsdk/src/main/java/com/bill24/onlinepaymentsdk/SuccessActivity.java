@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -31,7 +30,6 @@ import com.bill24.onlinepaymentsdk.customShapeDrawable.CustomShape;
 import com.bill24.onlinepaymentsdk.customShapeDrawable.SelectedState;
 import com.bill24.onlinepaymentsdk.helper.ChangLanguage;
 import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
-import com.bill24.onlinepaymentsdk.helper.CustomSnackbar;
 import com.bill24.onlinepaymentsdk.helper.SetFont;
 import com.bill24.onlinepaymentsdk.helper.Translate;
 import com.bill24.onlinepaymentsdk.model.BillerModel;
@@ -46,9 +44,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class SuccessActivity extends AppCompatActivity {
 
@@ -211,7 +206,7 @@ public class SuccessActivity extends AppCompatActivity {
 
     private void dashLine(){
         if(isLightMode){
-            String dashLine=lightModeModel.getSecondaryColor().getTextColor();
+            String dashLine=lightModeModel.getIndicatorColor();
             String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
             GradientDrawable gradientDrawable = new GradientDrawable();
             gradientDrawable.setShape(GradientDrawable.LINE);
@@ -228,7 +223,7 @@ public class SuccessActivity extends AppCompatActivity {
             dashLineThird.setBackground(gradientDrawable);
         }
         else {
-            String dashLine=darkModeModel.getSecondaryColor().getTextColor();
+            String dashLine=darkModeModel.getIndicatorColor();
             String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
             GradientDrawable gradientDrawable = new GradientDrawable();
             gradientDrawable.setShape(GradientDrawable.LINE);
@@ -362,40 +357,42 @@ public class SuccessActivity extends AppCompatActivity {
 
         customSnackbar.show();
     }
-    private void downloadKHQR(Bitmap bitmap){
-        Date now = new Date();
-        long currentTimeInMilliseconds = System.currentTimeMillis();
-        int microseconds = (int) ((currentTimeInMilliseconds % 1000) * 1000);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        String formattedDateTime = dateFormat.format(now);
+    private void downloadInvoice(Bitmap bitmap){
+//        Date now = new Date();
+//        long currentTimeInMilliseconds = System.currentTimeMillis();
+//        int microseconds = (int) ((currentTimeInMilliseconds % 1000) * 1000);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+//        String formattedDateTime = dateFormat.format(now);
 
-        String imageTitle="KHQR Image "+formattedDateTime+microseconds;
+        String imageTitle=transactionInfoModel.getTranNo()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+ transactionInfoModel.getCurrency();
         String imageUrl= MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,imageTitle,"");
 
         String saveSuccess;
         String saveUnSuccess;
         if(language.equals(LanguageCode.EN)){
-            saveSuccess=Translate.IMAGE_SAVE_EN;
-            saveUnSuccess=Translate.IMAGE_UNSAVE_EN;
+            saveSuccess=Translate.INVOICE_SAVE_MESSAGE_EN;
 
-        }else {
-            saveSuccess=Translate.IMAGE_SAVE_KM;
-            saveUnSuccess=Translate.IMAGE_UNSAVE_KM;
+        }
+        else {
+            saveSuccess=Translate.INVOICE_SAVE_MESSAGE_KM;
         }
 
         if(imageUrl!=null){
            customSnackBar(R.drawable.check_circle_24px,saveSuccess,R.color.snackbar_background_success_color);
-        }else {
-            customSnackBar(R.drawable.error_24px,saveUnSuccess,R.color.snackbar_background_error_color);
         }
+//        else {
+//            customSnackBar(R.drawable.error_24px,saveUnSuccess,R.color.snackbar_background_error_color);
+//        }
     }
 
-    private void shareKHQR(Bitmap bitmap){
+    private void shareInvoice(Bitmap bitmap){
         File tempFile = null;
+        String fileName=transactionInfoModel.getTranNo()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
+
         try {
-            tempFile = File.createTempFile("temp_image", ".jpg", this.getCacheDir());
+            tempFile = File.createTempFile(fileName, ".png", this.getCacheDir());
             FileOutputStream fos = new FileOutputStream(tempFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
             Uri uri = FileProvider.getUriForFile(this, Constant.AUTHORITY, tempFile);
@@ -405,7 +402,7 @@ public class SuccessActivity extends AppCompatActivity {
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+            startActivity(Intent.createChooser(shareIntent, "Share Invoice"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -506,7 +503,7 @@ public class SuccessActivity extends AppCompatActivity {
 
     private void buttonDoneShape(){
         if(isLightMode){
-            String bgButton=lightModeModel.getButton().getRetryButton().getBackgroundColor();
+            String bgButton=lightModeModel.getButton().getBackgroundColor();
             String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
             ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,this);
 
@@ -517,13 +514,13 @@ public class SuccessActivity extends AppCompatActivity {
             buttonDoneContainer.setBackground(selector);
 
             //text button try again
-            String textButtonColor=lightModeModel.getButton().getRetryButton().getTextColor();
+            String textButtonColor=lightModeModel.getButton().getTextColor();
             String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
             textDone.setTextColor(Color.parseColor(textButtonColorHexa));
 
         }else {
 
-            String bgButton=darkModeModel.getButton().getRetryButton().getBackgroundColor();
+            String bgButton=darkModeModel.getButton().getBackgroundColor();
             String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
             ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,this);
             String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
@@ -533,7 +530,7 @@ public class SuccessActivity extends AppCompatActivity {
             buttonDoneContainer.setBackground(selector);
 
             //text button try again
-            String textButtonColor=darkModeModel.getButton().getRetryButton().getTextColor();
+            String textButtonColor=darkModeModel.getButton().getTextColor();
             String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
             textDone.setTextColor(Color.parseColor(textButtonColorHexa));
         }
@@ -607,7 +604,7 @@ public class SuccessActivity extends AppCompatActivity {
             Canvas canvas=new Canvas(bitmap);
             layoutImage.draw(canvas);
             //Save Image into Gallerry
-            downloadKHQR(bitmap);
+            downloadInvoice(bitmap);
 
         });
         shareContainer.setOnClickListener(v->{
@@ -615,7 +612,7 @@ public class SuccessActivity extends AppCompatActivity {
             Canvas canvas=new Canvas(bitmap);
             layoutImage.draw(canvas);
 
-            shareKHQR(bitmap);
+            shareInvoice(bitmap);
 
         });
         buttonDoneContainer.setOnClickListener(v->{

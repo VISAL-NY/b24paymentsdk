@@ -367,6 +367,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
         call.enqueue(new Callback<BaseResponse<CheckoutDetailModel>>() {
             @Override
             public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
+
+               response.body();
+
                 if(response.isSuccessful()){
                     List<BankPaymentMethodModel> bankPaymentMethodModelList=
                             (   response.body() !=null &&

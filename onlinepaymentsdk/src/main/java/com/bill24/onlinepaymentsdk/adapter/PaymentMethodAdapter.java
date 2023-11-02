@@ -113,23 +113,35 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         textSectionHeader.setTypeface(typeface);
         textSectionHeader.setTextSize(11);
         textSectionHeader.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
-        textSectionHeader.setTextColor(context.getResources().getColor(R.color.header_font_color));
+        textSectionHeader.setTextColor(context.getColor(R.color.header_font_color));
+
+
+
     }
 
-    private  void applyHeaderStyleLightMode(LinearLayoutCompat headerContainer){
+    private  void applyHeaderStyleLightMode(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
         LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
 
-        String bgHeaderColor=lightModeModel.getLabelBackgroundColor();
+        String bgHeaderColor=lightModeModel.getLabel().getBackgroundColor();
         String bgHeaderColorHexa= ConvertColorHexa.convertHex(bgHeaderColor);
         headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
 
+        String sectionHeaderColor=lightModeModel.getLabel().getTextColor();
+        String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
+
+        sectionHeader.setTextColor(Color.parseColor(sectionHeaderHexa));
     }
-    private  void applyHeaderStyleDarkMode(LinearLayoutCompat headerContainer){
+    private  void applyHeaderStyleDarkMode(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
         DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
 
-        String bgHeaderColor=darkModeModel.getLabelBackgroundColor();
+        String bgHeaderColor=darkModeModel.getLabel().getBackgroundColor();
         String bgHeaderColorHexa=ConvertColorHexa.convertHex(bgHeaderColor);
         headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
+
+        String sectionHeaderColor=darkModeModel.getLabel().getTextColor();
+        String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
+
+        sectionHeader.setTextColor(Color.parseColor(sectionHeaderHexa));
 
     }
 
@@ -173,9 +185,9 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             //applyStyle
             if(isLightMode){
-                applyHeaderStyleLightMode(sectionContainer);
+                applyHeaderStyleLightMode(sectionContainer,textSectionHeader);
             }else {
-                applyHeaderStyleDarkMode(sectionContainer);
+                applyHeaderStyleDarkMode(sectionContainer,textSectionHeader);
             }
 
 
@@ -250,7 +262,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                             boolean isFav=item.isFavorite();
 
-                            //todo handle add to favorite with api
                             if(isFav){
                                 //Toast.makeText(v.getContext(), ""+isFav, Toast.LENGTH_SHORT).show();
                                  postAddToFavorite(item.getId(),isFav);
@@ -341,10 +352,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
                 updateHeaderFont(header.getContext(),textSectionHeader);
 
                 if(isLightMode){
-                    applyHeaderStyleLightMode(sectionHeader);//apply style
+                    applyHeaderStyleLightMode(sectionHeader,textSectionHeader);//apply style
 
                 }else {
-                    applyHeaderStyleDarkMode(sectionHeader);
+                    applyHeaderStyleDarkMode(sectionHeader,textSectionHeader);
                 }
 
 
@@ -386,18 +397,28 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
 
-            String bgHeaderColor=lightModeModel.getLabelBackgroundColor();
+            String bgHeaderColor=lightModeModel.getLabel().getBackgroundColor();
             String bgHeaderColorHexa=ConvertColorHexa.convertHex(bgHeaderColor);
             headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
+
+            String sectionHeaderColor=lightModeModel.getLabel().getTextColor();
+            String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
+
+            textSection.setTextColor(Color.parseColor(sectionHeaderHexa));
 
         }
         void applyHeaderStyleDarkMode(){
 
             DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
 
-            String bgHeaderColor=darkModeModel.getLabelBackgroundColor();
+            String bgHeaderColor=darkModeModel.getLabel().getBackgroundColor();
             String bgHeaderColorHexa=ConvertColorHexa.convertHex(bgHeaderColor);
             headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
+
+            String sectionHeaderColor=darkModeModel.getLabel().getTextColor();
+            String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
+
+            textSection.setTextColor(Color.parseColor(sectionHeaderHexa));
 
         }
         void bindSection(BankPaymentMethodModel section){

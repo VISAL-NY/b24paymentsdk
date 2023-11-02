@@ -14,7 +14,8 @@ public class ButtonModel implements Parcelable{
         favoriteButton = in.readParcelable(FavoriteButtonModel.class.getClassLoader());
         bankButton = in.readParcelable(BankButtonModel.class.getClassLoader());
         actionButton = in.readParcelable(ActionButtonModel.class.getClassLoader());
-        retryButton = in.readParcelable(RetryButtonModel.class.getClassLoader());
+        textColor = in.readString();
+        backgroundColor = in.readString();
     }
 
     public static final Creator<ButtonModel> CREATOR = new Creator<ButtonModel>() {
@@ -60,16 +61,27 @@ public class ButtonModel implements Parcelable{
     @SerializedName("action_button")
     private ActionButtonModel actionButton;
 
-    public RetryButtonModel getRetryButton() {
-        return retryButton;
+    public String getTextColor() {
+        return textColor;
     }
 
-    public void setRetryButton(RetryButtonModel retryButton) {
-        this.retryButton = retryButton;
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
     }
 
-    @SerializedName("retry_button")
-    private RetryButtonModel retryButton;
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    @SerializedName("text_color")
+    private  String textColor;
+    @SerializedName("backgrond_color")
+    private String backgroundColor;
+
 
     @Override
     public int describeContents() {
@@ -81,6 +93,7 @@ public class ButtonModel implements Parcelable{
         parcel.writeParcelable(favoriteButton, i);
         parcel.writeParcelable(bankButton, i);
         parcel.writeParcelable(actionButton, i);
-        parcel.writeParcelable(retryButton, i);
+        parcel.writeString(textColor);
+        parcel.writeString(backgroundColor);
     }
 }

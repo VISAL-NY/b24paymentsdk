@@ -5,6 +5,11 @@ plugins {
 
 
 android {
+
+    lint {
+        disable 'DeprecatedApi'
+    }
+
     namespace 'com.bill24.onlinepaymentsdk'
     compileSdk 34
 
@@ -18,7 +23,6 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             consumerProguardFiles 'proguard-rules.pro'
         }
@@ -62,13 +66,22 @@ dependencies {
 
 publishing {
     publications {
-        maven(MavenPublication){
+        bar(MavenPublication) {
             groupId 'com.bill24'
-            artifactId 'onlinePaymentSdk'
-            version '1.0.0'
+            artifactId 'onlinepaymentsdk'
+            version '0.1'
+            artifact("$buildDir/outputs/aar/onlinepaymentsdk-release.aar")
+        }
+    }
+    repositories {
+        maven {
+            mavenLocal()
+            //url "$buildDir/repo"
         }
     }
 }
+
+
 
 
 

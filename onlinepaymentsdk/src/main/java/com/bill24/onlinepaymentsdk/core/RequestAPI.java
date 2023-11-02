@@ -35,7 +35,7 @@ public class RequestAPI {
     }
     public Call<BaseResponse<GenerateLinkDeepLinkModel>> postGenerateDeeplink(GenerateDeeplinkRequestModel model){
         return RetrofitClient.getInstance(baseUrl).getApiClient().
-                postGenerateDeepLink(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
+                postGenerateDeepLink(Constant.CONTENT_TYPE,Constant.TOKEN,model);
     }
     public Call<BaseResponse<AddToFavoriteModel>> postAddToFavorite(AddToFavoriteRequestModel model){
         return RetrofitClient.getInstance(baseUrl).getApiClient().

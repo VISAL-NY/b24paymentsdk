@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.bill24.onlinepaymentsdk.model.appearance.AlertModel;
 import com.bill24.onlinepaymentsdk.model.appearance.ButtonModel;
+import com.bill24.onlinepaymentsdk.model.appearance.LabelModel;
 import com.bill24.onlinepaymentsdk.model.appearance.PrimaryColorModel;
 import com.bill24.onlinepaymentsdk.model.appearance.SecondaryColorModel;
 import com.google.gson.annotations.SerializedName;
@@ -13,11 +15,12 @@ import com.google.gson.annotations.SerializedName;
 public class DarkModeModel implements Parcelable{
 
 
-    public DarkModeModel(Parcel in) {
+    protected DarkModeModel(Parcel in) {
         primaryColor = in.readParcelable(PrimaryColorModel.class.getClassLoader());
         indicatorColor = in.readString();
         secondaryColor = in.readParcelable(SecondaryColorModel.class.getClassLoader());
-        labelBackgroundColor = in.readString();
+        label = in.readParcelable(LabelModel.class.getClassLoader());
+        alert = in.readParcelable(AlertModel.class.getClassLoader());
         button = in.readParcelable(ButtonModel.class.getClassLoader());
     }
 
@@ -56,13 +59,6 @@ public class DarkModeModel implements Parcelable{
     public void setButton(ButtonModel button) {
         this.button = button;
     }
-    public String getLabelBackgroundColor() {
-        return labelBackgroundColor;
-    }
-
-    public void setLabelBackgroundColor(String labelBackgroundColor) {
-        this.labelBackgroundColor = labelBackgroundColor;
-    }
     public String getIndicatorColor() {
         return indicatorColor;
     }
@@ -71,14 +67,32 @@ public class DarkModeModel implements Parcelable{
         this.indicatorColor = indicatorColor;
     }
 
+    public LabelModel getLabel() {
+        return label;
+    }
+
+    public void setLabel(LabelModel label) {
+        this.label = label;
+    }
+
+    public AlertModel getAlert() {
+        return alert;
+    }
+
+    public void setAlert(AlertModel alert) {
+        this.alert = alert;
+    }
     @SerializedName("primary_color")
     private PrimaryColorModel primaryColor;
     @SerializedName("indicator_color")
     private String indicatorColor;
     @SerializedName("secondary_color")
     private SecondaryColorModel secondaryColor;
-    @SerializedName("label_background_color")
-    private String labelBackgroundColor;
+
+    @SerializedName("label")
+    private LabelModel label;
+    @SerializedName("alert")
+    private AlertModel alert;
     @SerializedName("button")
     private ButtonModel button;
 
@@ -92,7 +106,8 @@ public class DarkModeModel implements Parcelable{
         parcel.writeParcelable(primaryColor, i);
         parcel.writeString(indicatorColor);
         parcel.writeParcelable(secondaryColor, i);
-        parcel.writeString(labelBackgroundColor);
+        parcel.writeParcelable(label, i);
+        parcel.writeParcelable(alert, i);
         parcel.writeParcelable(button, i);
     }
 }

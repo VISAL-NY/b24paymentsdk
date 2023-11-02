@@ -14,7 +14,6 @@ public class BankButtonModel implements Parcelable{
         backgroundColor = in.readString();
         textPrimary = in.readString();
         textSecondary = in.readString();
-        hoverBorder = in.readString();
     }
 
     public static final Creator<BankButtonModel> CREATOR = new Creator<BankButtonModel>() {
@@ -53,13 +52,6 @@ public class BankButtonModel implements Parcelable{
         this.textSecondary = textSecondary;
     }
 
-    public String getHoverBorder() {
-        return hoverBorder;
-    }
-
-    public void setHoverBorder(String hoverBorder) {
-        this.hoverBorder = hoverBorder;
-    }
 
     @SerializedName("background_color")
     private String backgroundColor;
@@ -67,8 +59,6 @@ public class BankButtonModel implements Parcelable{
     private String textPrimary;
     @SerializedName("text_secondary")
     private String textSecondary;
-    @SerializedName("hover_border")
-    private String hoverBorder;
 
     @Override
     public int describeContents() {
@@ -80,6 +70,5 @@ public class BankButtonModel implements Parcelable{
         parcel.writeString(backgroundColor);
         parcel.writeString(textPrimary);
         parcel.writeString(textSecondary);
-        parcel.writeString(hoverBorder);
     }
 }

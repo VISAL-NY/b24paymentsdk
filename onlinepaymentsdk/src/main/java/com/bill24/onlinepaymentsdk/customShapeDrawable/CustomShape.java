@@ -16,8 +16,6 @@ public class CustomShape {
         shape.getPaint().setColor(color); // Set the fill color
         shape.getPaint().setStyle(Paint.Style.FILL);
 
-
-
         return shape;
     }
 

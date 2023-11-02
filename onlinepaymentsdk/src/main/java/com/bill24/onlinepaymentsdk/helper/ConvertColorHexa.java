@@ -3,6 +3,10 @@ package com.bill24.onlinepaymentsdk.helper;
 public class ConvertColorHexa {
         public static String convertHex(String inputHex) {
             // Remove the '#' character if it exists
+            if(inputHex==null || inputHex.isEmpty()){
+                inputHex="#CCCCCC";
+                return  inputHex;
+            }
             if(inputHex.length()>8){
                 inputHex = inputHex.replace("#", "");
                 // Rearrange the characters
@@ -15,11 +19,13 @@ public class ConvertColorHexa {
             }else {
                 return inputHex;
             }
-
-
         }
 
     public static String getFiftyPercentColor(String colorCode) {
+          if(colorCode==null || colorCode.isEmpty()){
+              colorCode="#80CCCCCC";
+              return colorCode;
+          }
 
         if (colorCode.length() < 8) {
             colorCode=colorCode.replace("#","");

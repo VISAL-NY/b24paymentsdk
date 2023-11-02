@@ -19,10 +19,12 @@ public class Translate {
     public static final String TRY_AGAIN_TITLE_KM="សូមព្យាយាមម្តងទៀតដើម្បីបន្តប្រតិបត្តិការ";
     public static final String TRAN_EXPIRE_EN="Transaction expired";
     public static final String TRAN_EXPIRE_KM="ប្រតិបត្តិការបានផុតកំណត់";
-    public static final String IMAGE_SAVE_EN="Save image success !";
-    public static final String IMAGE_SAVE_KM="ទាញយករូបភាពជោគជ័យ !";
-    public static final String IMAGE_UNSAVE_EN="Save image fail !";
-    public static final String IMAGE_UNSAVE_KM="ទាញយករូបភាពមិនជោគជ័យ !";
+    public static final String KHQR_SAVE_MESSAGE_EN ="KHQR saved to Photos";
+    public static final String KHQR_SAVE_MESSAGE_KM ="KHQR ត្រូវបានរក្សាទុកក្នុងរូបថត";
+    public static final String KHQR_UNSAVE_MESSAGE_EN ="KHQR can't save to Photos";
+    public static final String KHQR_UNSAVE_MESSAGE_KM ="KHQR មិនអាចរក្សាទុកបាន";
+    public static final String INVOICE_SAVE_MESSAGE_EN ="Receipt saved to Photos";
+    public static final String INVOICE_SAVE_MESSAGE_KM ="វិក័្កយបត្រត្រូវបានរក្សាទុកក្នុងរូបថត";
     public static final String INVOICE_PAID_DONE_EN="Invoice already paid";
     public static final String INVOICE_PAID_DONE_KM="វិក្កយបត្របានទូទាត់រួចរាល់";
     public static final String DONE_EN="Done";
@@ -39,8 +41,8 @@ public class Translate {
     public static final String TO_MERCHANT_KM="ទៅកាន់ម្ចាស់អាជីវកម្ម";
     public static final String OR_EN="or";
     public static final String OR_KM="ឬ";
-    public  static final String ERR_SERVER_EN="Error internal server ";
-    public static final String ERR_SERVER_KM="ការតភា្ជប់បណ្ដាញមានបញ្ហា";
+    public  static final String ERR_SERVER_EN="system error";
+    public static final String ERR_SERVER_KM="បណ្តាញមានបញ្ហា";
 
 
 

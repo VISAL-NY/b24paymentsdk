@@ -221,8 +221,8 @@ public class KhqrFragment extends Fragment {
                 if(response.isSuccessful()){
                     khqrLoading.setVisibility(View.GONE);
                     BaseResponse<ExpiredTransactionModel> expiredTran=response.body();
-                    String expiredTime=expiredTran.getData().getExpiredDate();
-                    //String expiredTime="2023-10-26 15:54:20";
+                    //String expiredTime=expiredTran.getData().getExpiredDate();
+                    String expiredTime="2023-10-26 15:54:20";
                     try {
                         @SuppressLint("SimpleDateFormat")
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -311,24 +311,21 @@ public class KhqrFragment extends Fragment {
 //    }
 
     private void downloadKHQR(Bitmap bitmap,View view){
-        Date now = new Date();
-        long currentTimeInMilliseconds = System.currentTimeMillis();
-        int microseconds = (int) ((currentTimeInMilliseconds % 1000) * 1000);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
-        String formattedDateTime = dateFormat.format(now);
+//        Date now = new Date();
+//        long currentTimeInMilliseconds = System.currentTimeMillis();
+//        int microseconds = (int) ((currentTimeInMilliseconds % 1000) * 1000);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
+//        String formattedDateTime = dateFormat.format(now);
 
-        String imageTitle="KHQR Image "+formattedDateTime+microseconds;
+        String imageTitle=billerModel.getBillerDisplayName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
         String imageUrl= MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(),bitmap,imageTitle,"");
 
         String saveSuccess="";
-        String saveUnSuceess="";
         if(language.equals(LanguageCode.EN)){
-            saveSuccess=Translate.IMAGE_SAVE_EN;
-            saveUnSuceess=Translate.IMAGE_UNSAVE_EN;
+            saveSuccess=Translate.KHQR_SAVE_MESSAGE_EN;
 
         }else {
-            saveSuccess=Translate.IMAGE_SAVE_KM;
-            saveUnSuceess=Translate.IMAGE_UNSAVE_KM;
+            saveSuccess=Translate.KHQR_SAVE_MESSAGE_KM;
         }
 
 
@@ -339,24 +336,27 @@ public class KhqrFragment extends Fragment {
                     saveSuccess,R.color.snackbar_background_success_color,
                     Snackbar.LENGTH_SHORT
                     ,language);
-        }else {
-            CustomSnackbar.showSuccessSnackbar(
-                    getContext(),
-                    view.findViewById(R.id.container_khqrfragment),
-                    R.drawable.error_24px,
-                    saveUnSuceess,
-                    R.color.snackbar_background_error_color,
-                    Snackbar.LENGTH_SHORT,
-                    language
-            );
         }
+//        else {
+//            CustomSnackbar.showSuccessSnackbar(
+//                    getContext(),
+//                    view.findViewById(R.id.container_khqrfragment),
+//                    R.drawable.error_24px,
+//                    saveUnSuceess,
+//                    R.color.snackbar_background_error_color,
+//                    Snackbar.LENGTH_SHORT,
+//                    language
+//            );
+//        }
     }
     private void shareKHQR(Bitmap bitmap){
         File tempFile = null;
+
+        String fileName=billerModel.getBillerDisplayName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
         try {
-            tempFile = File.createTempFile("temp_image", ".jpg", getContext().getCacheDir());
+            tempFile = File.createTempFile(fileName, ".png", getContext().getCacheDir());
             FileOutputStream fos = new FileOutputStream(tempFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
 
             Uri uri = FileProvider.getUriForFile(getContext(), Constant.AUTHORITY, tempFile);
@@ -366,7 +366,7 @@ public class KhqrFragment extends Fragment {
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+            startActivity(Intent.createChooser(shareIntent, "Share KHQR"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -390,7 +390,7 @@ public class KhqrFragment extends Fragment {
         textOr.setTextColor(Color.parseColor(scanPayColorHexa));
 
         // dash line
-        String dashLine=lightModeModel.getSecondaryColor().getTextColor();
+        String dashLine=lightModeModel.getIndicatorColor();
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
@@ -465,7 +465,7 @@ public class KhqrFragment extends Fragment {
         textOr.setTextColor(Color.parseColor(scanPayColorHexa));
 
         // dash line
-        String dashLine=darkModeModel.getSecondaryColor().getTextColor();
+        String dashLine=darkModeModel.getIndicatorColor();
         String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);

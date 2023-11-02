@@ -7,25 +7,31 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RetryButtonModel  implements Parcelable{
-
-
-    public RetryButtonModel(Parcel in) {
-        backgroundColor = in.readString();
+public class LabelModel implements Parcelable {
+    protected LabelModel(Parcel in) {
         textColor = in.readString();
+        backgroundColor = in.readString();
     }
 
-    public static final Creator<RetryButtonModel> CREATOR = new Creator<RetryButtonModel>() {
+    public static final Creator<LabelModel> CREATOR = new Creator<LabelModel>() {
         @Override
-        public RetryButtonModel createFromParcel(Parcel in) {
-            return new RetryButtonModel(in);
+        public LabelModel createFromParcel(Parcel in) {
+            return new LabelModel(in);
         }
 
         @Override
-        public RetryButtonModel[] newArray(int size) {
-            return new RetryButtonModel[size];
+        public LabelModel[] newArray(int size) {
+            return new LabelModel[size];
         }
     };
+
+    public String getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
+    }
 
     public String getBackgroundColor() {
         return backgroundColor;
@@ -35,17 +41,10 @@ public class RetryButtonModel  implements Parcelable{
         this.backgroundColor = backgroundColor;
     }
 
-    public String getTextColor() {
-        return textColor;
-    }
-
-    public void setTextColor(String textColor) {
-        this.textColor = textColor;
-    }
-    @SerializedName("background_color")
-    private String backgroundColor;
     @SerializedName("text_color")
     private String textColor;
+    @SerializedName("background_color")
+    private String backgroundColor;
 
     @Override
     public int describeContents() {
@@ -54,7 +53,7 @@ public class RetryButtonModel  implements Parcelable{
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(backgroundColor);
         parcel.writeString(textColor);
+        parcel.writeString(backgroundColor);
     }
 }

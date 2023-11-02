@@ -1,5 +1,8 @@
 package com.bill24.onlinepaymentsdk.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +18,34 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bill24.onlinepaymentsdk.R;
+import com.bill24.onlinepaymentsdk.helper.ConvertColorHexa;
+import com.bill24.onlinepaymentsdk.helper.SharePreferenceCustom;
+import com.bill24.onlinepaymentsdk.model.CheckoutPageConfigModel;
+import com.bill24.onlinepaymentsdk.model.appearance.darkMode.DarkModeModel;
+import com.bill24.onlinepaymentsdk.model.appearance.lightMode.LightModeModel;
+import com.bill24.onlinepaymentsdk.model.conts.Constant;
 
 
 public class WebViewCheckoutFragment extends Fragment {
 
     private String url;
+    private CheckoutPageConfigModel checkoutPageConfigModel;
+    private boolean isLightMode=true;
     public WebViewCheckoutFragment(String url){
         this.url=url;
     }
+
+
+    private void getSharePreference(){
+        SharedPreferences preferences= getActivity().getPreferences(Context.MODE_PRIVATE);
+        //checkout page config
+        String checkoutPageConfigJson=preferences.getString(Constant.KEY_CHECKOUT_PAGE_CONFIG,"");
+        checkoutPageConfigModel= SharePreferenceCustom.converJsonToObject(checkoutPageConfigJson, CheckoutPageConfigModel.class);
+
+        //get isLight mode
+        isLightMode=preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,6 +53,23 @@ public class WebViewCheckoutFragment extends Fragment {
         WebView webView=view.findViewById(R.id.web_view_web_checkout);
         ProgressBar progressBar=view.findViewById(R.id.progress_loading_webview);
         FrameLayout containerWebView=view.findViewById(R.id.container_webview);
+        FrameLayout loadingContainer=view.findViewById(R.id.testing_container);
+
+        getSharePreference();
+
+        if(isLightMode){
+            LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
+            String webviewLoadingColor=lightModeModel.getSecondaryColor().getBackgroundColor();
+            String webviewLoadingHexa= ConvertColorHexa.convertHex(webviewLoadingColor);
+
+            loadingContainer.setBackgroundColor(Color.parseColor(webviewLoadingHexa));
+        }else {
+            DarkModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
+            String webviewLoadingColor=lightModeModel.getSecondaryColor().getBackgroundColor();
+            String webviewLoadingHexa= ConvertColorHexa.convertHex(webviewLoadingColor);
+
+            loadingContainer.setBackgroundColor(Color.parseColor(webviewLoadingHexa));
+        }
 
         //set container of webview height to 90%
         int screenHeight=getResources().getDisplayMetrics().heightPixels;

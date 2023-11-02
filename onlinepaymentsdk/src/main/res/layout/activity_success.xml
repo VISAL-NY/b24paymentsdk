@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/success_activity_container"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,277 +11,289 @@
     android:background="@color/white"
     android:orientation="vertical"
     android:gravity="center">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/snackbar_success_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/success_container"
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/snackbar_success_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:background="@drawable/success_container"
-            android:paddingVertical="20dp"
-            android:layout_marginHorizontal="15dp"
-            >
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:src="@drawable/success_icon"
-                android:layout_gravity="center"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_invoice_already_paid_suceess"
+            android:layout_height="match_parent">
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/invoice_already_paid"
-                android:layout_gravity="center"
-                android:layout_marginVertical="20dp"
-                android:gravity="center"
-                android:textColor="@color/black"/>
-
-            <View
-                android:id="@+id/dash_line_first_success"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/dash_line_horizontal"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="10dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_tran_no_title_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/transaction"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_tran_no_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Transaction # "
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/roboto_medium"
-                    android:layout_gravity="right"/>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_marginHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_bank_ref_title_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/bank_ref"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_bank_ref_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Transaction # "
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/roboto_medium"
-                    android:layout_gravity="right"/>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_to_merchant_title_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/to_merchant"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_to_merchant_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Transaction # "
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/roboto_medium"
-                    android:layout_gravity="right"/>
-            </FrameLayout>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_tran_date_title_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/transaction_date"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_tran_date_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Transaction # "
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/roboto_medium"
-                    android:layout_gravity="right"/>
-            </FrameLayout>
-
-            <View
-                android:id="@+id/dash_lin_second_success"
-                android:layout_marginTop="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/dash_line_horizontal"/>
-            <FrameLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_total_title_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/total"/>
+                android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
+                    android:id="@+id/success_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:background="@drawable/success_container"
+                    android:paddingVertical="20dp"
+                    android:layout_marginHorizontal="15dp"
+                    >
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:src="@drawable/success_icon"
+                        android:layout_gravity="center"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/text_total_amount_success"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/text_invoice_already_paid_suceess"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Transaction # "
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/roboto_medium"
-                        android:layout_marginEnd="3dp"
-                        />
+                        android:text="@string/invoice_already_paid"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="20dp"
+                        android:gravity="center"
+                        android:textColor="@color/black"/>
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/text_currency_success"
-                        android:layout_width="wrap_content"
+                    <View
+                        android:id="@+id/dash_line_first_success"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/dash_line_horizontal"/>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/roboto_medium"
-                        android:text="KHR"/>
+                        android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_tran_no_title_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/transaction"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_tran_no_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction # "
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            android:layout_gravity="right"/>
+                    </FrameLayout>
+                    <FrameLayout
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_bank_ref_title_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/bank_ref"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_bank_ref_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction # "
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            android:layout_gravity="right"/>
+                    </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginHorizontal="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_to_merchant_title_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/to_merchant"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_to_merchant_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction # "
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            android:layout_gravity="right"/>
+                    </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginHorizontal="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_tran_date_title_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/transaction_date"/>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_tran_date_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction # "
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_medium"
+                            android:layout_gravity="right"/>
+                    </FrameLayout>
+
+                    <View
+                        android:id="@+id/dash_lin_second_success"
+                        android:layout_marginTop="25dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/dash_line_horizontal"/>
+                    <FrameLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_total_title_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/total"/>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/text_total_amount_success"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Transaction # "
+                                android:textColor="@color/black"
+                                android:fontFamily="@font/roboto_medium"
+                                android:layout_marginEnd="3dp"
+                                />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/text_currency_success"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/black"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="KHR"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </FrameLayout>
+
+                    <View
+                        android:id="@+id/dash_line_third_success"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/dash_line_horizontal"/>
+
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="30dp">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dimen_size12_5"
+                            >
+
+                            <FrameLayout
+                                android:id="@+id/download_container_suceess"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="#C11818"
+                                android:layout_centerHorizontal="true"
+                                >
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/image_download_success"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/download_icon"
+                                    android:layout_gravity="center"
+                                    />
+                            </FrameLayout>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/text_download_success"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/download"
+                                android:layout_below="@+id/download_container_suceess"
+                                android:textSize="11sp"
+                                android:layout_centerHorizontal="true"
+                                android:paddingTop="2dp"
+                                android:textColor="@color/black"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen_size12_5"
+                            >
+                            <FrameLayout
+                                android:id="@+id/share_container_success"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="#B52020"
+                                android:layout_centerHorizontal="true"
+                                >
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/image_share_success"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/share_icon"
+                                    android:layout_gravity="center"
+                                    />
+                            </FrameLayout>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/text_share_success"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/share"
+                                android:textSize="11sp"
+                                android:layout_below="@+id/share_container_success"
+                                android:layout_centerHorizontal="true"
+                                android:paddingTop="2dp"
+                                android:textColor="@color/black"
+                                />
+                        </RelativeLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <FrameLayout
+                        android:id="@+id/button_done_success"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="#D52C2C"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="30dp"
+
+                        >
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_button_done_success"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/done"
+                            android:layout_gravity="center"
+                            />
+
+                    </FrameLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-            </FrameLayout>
-
-            <View
-                android:id="@+id/dash_line_third_success"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@drawable/dash_line_horizontal"/>
+            </androidx.core.widget.NestedScrollView>
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="30dp">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dimen_size12_5"
-                    >
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-                    <FrameLayout
-                        android:id="@+id/download_container_suceess"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="#C11818"
-                        android:layout_centerHorizontal="true"
-                        >
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/image_download_success"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/download_icon"
-                            android:layout_gravity="center"
-                            />
-                    </FrameLayout>
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/text_download_success"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/download"
-                        android:layout_below="@+id/download_container_suceess"
-                        android:textSize="11sp"
-                        android:layout_centerHorizontal="true"
-                        android:paddingTop="2dp"
-                        android:textColor="@color/black"
-                        />
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_size12_5"
-                    >
-                    <FrameLayout
-                        android:id="@+id/share_container_success"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="#B52020"
-                        android:layout_centerHorizontal="true"
-                        >
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/image_share_success"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/share_icon"
-                            android:layout_gravity="center"
-                            />
-                    </FrameLayout>
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/text_share_success"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/share"
-                        android:textSize="11sp"
-                        android:layout_below="@+id/share_container_success"
-                        android:layout_centerHorizontal="true"
-                        android:paddingTop="2dp"
-                        android:textColor="@color/black"
-                        />
-                </RelativeLayout>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <FrameLayout
-                android:id="@+id/button_done_success"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="#D52C2C"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="30dp"
-
-                >
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_button_done_success"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/done"
-                    android:layout_gravity="center"
-                    />
-
-            </FrameLayout>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 

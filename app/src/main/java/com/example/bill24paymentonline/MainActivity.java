@@ -139,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
                            "123X",
-                           isLightMode,
-"km",""
+                           isLightMode
                    );
 
                    Log.d("tranNo", "onResponse: "+response.body().getData().getTranID());

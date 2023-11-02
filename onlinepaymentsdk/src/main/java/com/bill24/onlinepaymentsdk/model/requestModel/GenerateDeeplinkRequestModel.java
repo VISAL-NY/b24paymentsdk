@@ -26,6 +26,6 @@ public class GenerateDeeplinkRequestModel {
 
     @SerializedName("bank_id")
     private String bankId;
-    @SerializedName("transaction_id")
+    @SerializedName("tran_id")
     private String transactionNo;
 }

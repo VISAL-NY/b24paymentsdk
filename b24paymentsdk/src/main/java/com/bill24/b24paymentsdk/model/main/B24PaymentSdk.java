@@ -9,33 +9,33 @@ public class B24PaymentSdk {
     }
     public static void init(
             FragmentManager fragmentManager,
-            String transactionId,
+            String tranId,
             String refererKey,
-            boolean isLightMode,
             String language,
-            String env){
-
-        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,language,env);
-        bottomSheet.show(fragmentManager,bottomSheet.getTag());
-
-    }
-    public static void init(
-            FragmentManager fragmentManager,
-            String transactionId,
-            String refererKey,
             boolean isLightMode,
-            String language){
-        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode,language);
+            String env){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,language,isLightMode,env);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
+    }
+    public static void init(
+            FragmentManager fragmentManager,
+            String tranId,
+            String refererKey,
+            String language,
+            boolean isLightMode
+           ){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,language,isLightMode);
         bottomSheet.show(fragmentManager,bottomSheet.getTag());
 
     }
 
     public static void init(
             FragmentManager fragmentManager,
-            String transactionId,
+            String tranId,
             String refererKey,
             boolean isLightMode){
-        BottomSheet bottomSheet=new BottomSheet(transactionId,refererKey,isLightMode);
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,isLightMode);
         bottomSheet.show(fragmentManager, bottomSheet.getTag());
     }
 

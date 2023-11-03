@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.visal-99</groupId>
     <artifactId>b24paymentsdk</artifactId>
-    <version>4.0.0</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <description>payment online sdk</description>
     <dependencies>

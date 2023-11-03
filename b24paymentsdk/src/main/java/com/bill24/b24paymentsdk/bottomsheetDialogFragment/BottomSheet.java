@@ -70,30 +70,31 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private View dragHandle;
     private boolean isLightMode;
     private BottomSheetDialog dialog;
-    private String transactionId,refererKey,language,env, baseUrl="";
+    private String tranId,refererKey,language,env, baseUrl="";
     public BottomSheet(
-            String transactionId,
+            String tranId,
             String refererKey,
             boolean isLightMode){
-        this.transactionId=transactionId;
+        this.tranId=tranId;
         this.refererKey=refererKey;
         this.isLightMode=isLightMode;
 
         if(env==null || env.isEmpty()){
             baseUrl =BaseURL.BASE_URL_DEMO;
         }
-        requestModel=new CheckoutDetailRequestModel(transactionId);
+        requestModel=new CheckoutDetailRequestModel(this.tranId);
     }
+
     public BottomSheet(
-            String transactionId,
+            String tranId,
             String refererKey,
-            boolean isLightMode,
             String language,
+            boolean isLightMode,
             String env){
-        this.transactionId=transactionId;
+        this.tranId=tranId;
         this.refererKey=refererKey;
-        this.isLightMode=isLightMode;
         this.language=language;
+        this.isLightMode=isLightMode;
         this.env=env;
 
         if(env.equals(Constant.DEMO_ENV)){
@@ -104,23 +105,25 @@ public class BottomSheet extends BottomSheetDialogFragment {
             baseUrl=BaseURL.BASE_URL_DEMO;
         }
 
-        requestModel=new CheckoutDetailRequestModel(this.transactionId);
+        requestModel=new CheckoutDetailRequestModel(this.tranId);
     }
     public BottomSheet(
-            String transactionId,
+            String tranId,
             String refererKey,
-            boolean isLightMode,
-            String language){
-        this.transactionId=transactionId;
+            String language,
+            boolean isLightMode
+           ){
+        this.tranId=tranId;
         this.refererKey=refererKey;
-        this.isLightMode=isLightMode;
         this.language=language;
+        this.isLightMode=isLightMode;
+
 
         if(env==null || env.isEmpty()){
             baseUrl =BaseURL.BASE_URL_DEMO;
         }
 
-        requestModel=new CheckoutDetailRequestModel(this.transactionId);
+        requestModel=new CheckoutDetailRequestModel(this.tranId);
     }
 
 
@@ -156,7 +159,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         super.onStart();
 
         //connect to socket
-        connectSocketIO(transactionId);
+        connectSocketIO(tranId);
 
         if(language==null || language.isEmpty()){
             language= LanguageCode.KH;

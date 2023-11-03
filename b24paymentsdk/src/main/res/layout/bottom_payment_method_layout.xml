@@ -4,7 +4,7 @@
     android:layout_gravity="bottom"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_size75"
-    android:layout_marginBottom="30dp"
+    android:layout_marginBottom="10dp"
     android:background="#D83838">
     <FrameLayout
         android:id="@+id/bottom_dash_line_container"

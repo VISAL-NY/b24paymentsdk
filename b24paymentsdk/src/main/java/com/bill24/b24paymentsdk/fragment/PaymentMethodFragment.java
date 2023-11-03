@@ -35,6 +35,7 @@ import com.bill24.b24paymentsdk.core.RequestAPI;
 import com.bill24.b24paymentsdk.helper.ChangLanguage;
 import com.bill24.b24paymentsdk.helper.ConnectivityState;
 import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
+import com.bill24.b24paymentsdk.helper.CustomSnackbar;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.SharePreferenceCustom;
 import com.bill24.b24paymentsdk.helper.StickyHeaderItemDecoration;
@@ -53,9 +54,11 @@ import com.bill24.b24paymentsdk.model.baseResponseModel.BaseResponse;
 import com.bill24.b24paymentsdk.model.conts.Bank;
 import com.bill24.b24paymentsdk.model.conts.Constant;
 import com.bill24.b24paymentsdk.model.conts.LanguageCode;
+import com.bill24.b24paymentsdk.model.conts.StatusCode;
 import com.bill24.b24paymentsdk.model.requestModel.ExpiredRequestModel;
 import com.bill24.b24paymentsdk.model.requestModel.GenerateDeeplinkRequestModel;
 import com.google.android.material.divider.MaterialDivider;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -326,8 +329,6 @@ public class PaymentMethodFragment extends Fragment
         bottomDashLine.setBackground(gradientDrawable);
 
 
-
-
     }
 
 
@@ -341,8 +342,6 @@ public class PaymentMethodFragment extends Fragment
         getPreference();
 
         ChangLanguage.setLanguage(language,getContext());
-
-
 
     }
 
@@ -420,14 +419,32 @@ public class PaymentMethodFragment extends Fragment
                 break;
             case Bank.MASTERCARD:
 
-                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
-                intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
-                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
-                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
-                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
-                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
+                String message;
+                if(language.equals(LanguageCode.EN)){
+                    message=Translate.ERR_SERVER_EN;
+                }else {
+                    message=Translate.ERR_SERVER_KM;
+                }
 
-                startActivity(intent);
+                CustomSnackbar.showSuccessSnackbar(
+                        getContext(),
+                        getView().findViewById(R.id.snackbar_payment_method),
+                        R.drawable.error_24px,
+                        message,
+                        R.color.snackbar_background_error_color,
+                        Snackbar.LENGTH_LONG,
+                        language
+                );
+
+
+//                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
+//                intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
+//                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
+//                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
+//                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
+//                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
+//
+//                startActivity(intent);
 
                 //todo handle when click on mastercard
 
@@ -445,20 +462,35 @@ public class PaymentMethodFragment extends Fragment
                     @Override
                     public void onResponse(Call<BaseResponse<GenerateLinkDeepLinkModel>> call, Response<BaseResponse<GenerateLinkDeepLinkModel>> response) {
                         GenerateLinkDeepLinkModel generateLinkDeepLinkModel;
+
                         if(response.isSuccessful()){
                             BaseResponse<GenerateLinkDeepLinkModel> deeplink=response.body();
-                            if(deeplink !=null){
+                            if(deeplink.getCode().equals(StatusCode.SUCCESS)){
                                 generateLinkDeepLinkModel=deeplink.getData();
-//
                                     if(!generateLinkDeepLinkModel.getMobileDeepLink().isEmpty()){
                                         launchDeeplink(generateLinkDeepLinkModel.getMobileDeepLink());
                                         return;
                                     }
-
                                     if(!generateLinkDeepLinkModel.getWebPaymentLink().isEmpty()){
                                         ((BottomSheet)getParentFragment()).showFragment(new WebViewCheckoutFragment(generateLinkDeepLinkModel.getWebPaymentLink()));
                                     }
+                            }else {
+                                String message;
+                                if(language.equals(LanguageCode.EN)){
+                                    message=Translate.ERR_SERVER_EN;
+                                }else {
+                                    message=Translate.ERR_SERVER_KM;
+                                }
 
+                                CustomSnackbar.showSuccessSnackbar(
+                                        getContext(),
+                                        getView().findViewById(R.id.snackbar_payment_method),
+                                        R.drawable.error_24px,
+                                        message,
+                                        R.color.snackbar_background_error_color,
+                                        Snackbar.LENGTH_LONG,
+                                        language
+                                        );
                             }
                         }
                     }

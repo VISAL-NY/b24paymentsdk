@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 import com.bill24.b24paymentsdk.main.B24PaymentSdk;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(v->{
 
+            //Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
 
            // Bill24OnlinePayment.init(getSupportFragmentManager(),"D249813B02B3","123",true);
 
@@ -114,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
             requestModel.setChannelCode(ChannelCode);
             requestModel.setUserRef(userRef);
             requestModel.setCustomers(customerList);
+
+
 
             initTranV2(requestModel);
 

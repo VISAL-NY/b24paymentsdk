@@ -130,6 +130,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
 
         sectionHeader.setTextColor(Color.parseColor(sectionHeaderHexa));
+
     }
     private  void applyHeaderStyleDarkMode(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
         DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
@@ -144,8 +145,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         sectionHeader.setTextColor(Color.parseColor(sectionHeaderHexa));
 
     }
-
-
 
     private void updateItemFont(Context context){
 //      SetFont font=new SetFont();

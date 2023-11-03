@@ -275,7 +275,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
                                             dialog.dismiss();
                                         }
-
                                     }
 
                                     else {
@@ -286,7 +285,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                 }
 
                             }
-
                         }
 
                         @Override
@@ -298,7 +296,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 }catch (Exception e){
                     Log.d("broadcasterror", "call: "+e.getMessage());
                 }
-
             }
         });
     }

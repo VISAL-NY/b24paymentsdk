@@ -13,6 +13,11 @@
 #}
 -keep class com.bill24.b24paymentsdk.*.**{*;}
 -keepclassmembers class com.bill24.b24paymentsdk.model.main.B24PaymentSdk{*;}
+-keepclassmembers class com.bill24.b24paymentsdk.model.main.B24PaymentSdk{
+        public static void init(androidx.fragment.app.FragmentManager, java.lang.String, java.lang.String, java.lang.String, boolean, java.lang.String);
+           public static void init(androidx.fragment.app.FragmentManager, java.lang.String, java.lang.String, java.lang.String, boolean);
+           public static void init(androidx.fragment.app.FragmentManager, java.lang.String, java.lang.String, boolean);
+}
 -dontwarn com.google.android.material.R$id
 
 # Uncomment this to preserve the line number information for

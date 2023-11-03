@@ -8,11 +8,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-import com.bill24.onlinepaymentsdk.model.main.Bill24OnlinePayment;
+
+import com.bill24.b24paymentsdk.model.main.B24PaymentSdk;
 import com.example.bill24paymentonline.model.Customer;
-import com.example.bill24paymentonline.model.Data;
 import com.example.bill24paymentonline.model.RequestModel;
 import com.example.bill24paymentonline.model.ResponseModel;
 import com.example.bill24paymentonline.model.RetrofitClientApp;
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                if(response.isSuccessful()){
                    responseModel=response.body();
-                   Bill24OnlinePayment.init(
+                   B24PaymentSdk.init(
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
                            "123X",

@@ -1,4 +1,4 @@
-package com.bill24.b24paymentsdk.model.main;
+package com.bill24.b24paymentsdk.main;
 
 import androidx.fragment.app.FragmentManager;
 

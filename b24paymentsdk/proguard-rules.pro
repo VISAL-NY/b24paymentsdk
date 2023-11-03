@@ -11,13 +11,18 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep class com.bill24.b24paymentsdk.*.**{*;}
--keepclassmembers class com.bill24.b24paymentsdk.model.main.B24PaymentSdk{*;}
--keepclassmembers class com.bill24.b24paymentsdk.model.main.B24PaymentSdk{
-        public static void init(androidx.fragment.app.FragmentManager, java.lang.String, java.lang.String, java.lang.String, boolean, java.lang.String);
-           public static void init(androidx.fragment.app.FragmentManager, java.lang.String, java.lang.String, java.lang.String, boolean);
-           public static void init(androidx.fragment.app.FragmentManager, java.lang.String, java.lang.String, boolean);
-}
+#-keep class com.bill24.b24paymentsdk.*.**{*;}
+-keep class com.bill24.b24paymentsdk.model.**{*;}
+-keep class com.bill24.b24paymentsdk.adapter.**{*;}
+-keep class com.bill24.b24paymentsdk.bottomsheetDialogFragment.**{*;}
+-keep class com.bill24.b24paymentsdk.core.**{*;}
+-keep class com.bill24.b24paymentsdk.customShapeDrawable.**{*;}
+-keep class com.bill24.b24paymentsdk.fragment.**{*;}
+-keep class com.bill24.b24paymentsdk.helper.**{*;}
+-keep class com.bill24.b24paymentsdk.model.**{*;}
+-keep class com.bill24.b24paymentsdk.socketIO.**{*;}
+-keep class com.bill24.b24paymentsdk.SuccessActivity{*;}
+
 -dontwarn com.google.android.material.R$id
 
 # Uncomment this to preserve the line number information for

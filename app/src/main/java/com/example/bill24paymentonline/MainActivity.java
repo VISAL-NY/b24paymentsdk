@@ -10,7 +10,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 
-import com.bill24.b24paymentsdk.model.main.B24PaymentSdk;
+import com.bill24.b24paymentsdk.main.B24PaymentSdk;
 import com.example.bill24paymentonline.model.Customer;
 import com.example.bill24paymentonline.model.RequestModel;
 import com.example.bill24paymentonline.model.ResponseModel;

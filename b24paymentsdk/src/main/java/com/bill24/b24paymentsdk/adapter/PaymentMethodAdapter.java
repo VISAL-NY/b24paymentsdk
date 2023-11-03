@@ -461,34 +461,26 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             ShapeDrawable shape=CustomShape.applyShape(Color.TRANSPARENT,8,itemView.getContext());
             bankImageBackground.setBackground(shape);
 
-
-
             if(isLightMode){
                 applyStyleShapeLightMode(itemView.getContext());
 
             }else {
                 applyStyleShapeDarkMode(itemView.getContext());
             }
-
         }
-
-
 
         void applyStyleShapeLightMode(Context context){
 
             LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
 
-//           card bank item
+           // card bank item
             String bgBankItemColor=lightModeModel.getButton().getBankButton().getBackgroundColor();
             String convertBgBankItemColor= ConvertColorHexa.convertHex(bgBankItemColor);
 
             ShapeDrawable bankItemShape= CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),12,context);
-
-
             String selectColor=ConvertColorHexa.getFiftyPercentColor(bgBankItemColor);
 
             ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),12,context);
-
 
             ShapeDrawable normal=new ShapeDrawable();
             normal.getPaint().setColor(Color.TRANSPARENT);
@@ -508,7 +500,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             containerBankItemFirstLayer.setBackground(bankItemShape);
 
 
-         //bank name
+            //bank name
             String bankNameColor=lightModeModel.getButton().getBankButton().getTextPrimary();
             String convertBankNameColor=ConvertColorHexa.convertHex(bankNameColor);
             textBankName.setTextColor(Color.parseColor(convertBankNameColor));
@@ -522,7 +514,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
 
-        //favorite background
+            //favorite background
             String bgFavButton=lightModeModel.getButton().getFavoriteButton().getBackgroundColor();
             if(bgFavButton.isEmpty() || bgFavButton.isBlank()){
                 bgFavButton="#57BC1E1E";
@@ -667,14 +659,4 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
        void OnItemPaymentMethodClick(BankPaymentMethodItemModel id);
     }
 
-//    private String formatCurrency(double amount,String currency){
-//        NumberFormat currencyFormat=NumberFormat.getNumberInstance();
-//        if(currency.equals(CurrencyCode.KHR)){
-//            return currencyFormat.format(amount);
-//        }else {
-//            DecimalFormat decimalFormat=new DecimalFormat("#,##0.00");
-//            return  decimalFormat.format(amount);
-//        }
-//
-//    }
 }

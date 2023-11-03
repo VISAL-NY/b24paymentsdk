@@ -343,7 +343,7 @@ public class KhqrFragment extends Fragment {
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
 //        String formattedDateTime = dateFormat.format(now);
 
-        String imageTitle=billerModel.getBillerDisplayName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
+        String imageTitle=billerModel.getBillerName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
         String imageUrl= MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(),bitmap,imageTitle,"");
 
         String saveSuccess;
@@ -378,7 +378,7 @@ public class KhqrFragment extends Fragment {
     private void shareKHQR(Bitmap bitmap){
         File tempFile = null;
 
-        String fileName=billerModel.getBillerDisplayName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
+        String fileName=billerModel.getBillerName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
         try {
             tempFile = File.createTempFile(fileName, ".png", getContext().getCacheDir());
             FileOutputStream fos = new FileOutputStream(tempFile);

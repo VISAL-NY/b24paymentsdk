@@ -168,7 +168,7 @@ public class SuccessActivity extends AppCompatActivity {
     private void bindData(){
         textTranNo.setText(transactionInfoModel.getTranNo());
         textBankRef.setText(transactionInfoModel.getBankRefId());
-        textToMerchant.setText(billerModel.getBillerDisplayName());
+        textToMerchant.setText(billerModel.getBillerName());
         textTranDate.setText(transactionInfoModel.getTranDate());
         textTotalAmount.setText(transactionInfoModel.getTranAmountDisplay());
         textCurrency.setText(transactionInfoModel.getCurrency());
@@ -261,7 +261,7 @@ public class SuccessActivity extends AppCompatActivity {
             //set value
             transactionNo.setText(transactionInfoModel.getTranNo());
             bankRef.setText(transactionInfoModel.getBankRefId());
-            merchantName.setText(billerModel.getBillerDisplayName());
+            merchantName.setText(billerModel.getBillerName());
             transactionDate.setText(transactionInfoModel.getTranDate());
             totalAmount.setText(transactionInfoModel.getTranAmountDisplay());
             currency.setText(transactionInfoModel.getCurrency());
@@ -368,7 +368,6 @@ public class SuccessActivity extends AppCompatActivity {
         String imageUrl= MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,imageTitle,"");
 
         String saveSuccess;
-        String saveUnSuccess;
         if(language.equals(LanguageCode.EN)){
             saveSuccess=Translate.INVOICE_SAVE_MESSAGE_EN;
 

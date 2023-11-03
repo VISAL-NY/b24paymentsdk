@@ -449,17 +449,16 @@ public class PaymentMethodFragment extends Fragment
                             BaseResponse<GenerateLinkDeepLinkModel> deeplink=response.body();
                             if(deeplink !=null){
                                 generateLinkDeepLinkModel=deeplink.getData();
-//                                if(itemModel.isSupportDeeplink()){
+//
                                     if(!generateLinkDeepLinkModel.getMobileDeepLink().isEmpty()){
                                         launchDeeplink(generateLinkDeepLinkModel.getMobileDeepLink());
                                         return;
                                     }
-                               // }
-                                //if(itemModel.isSupportCheckoutPage()){
+
                                     if(!generateLinkDeepLinkModel.getWebPaymentLink().isEmpty()){
                                         ((BottomSheet)getParentFragment()).showFragment(new WebViewCheckoutFragment(generateLinkDeepLinkModel.getWebPaymentLink()));
                                     }
-                               // }
+
                             }
                         }
                     }

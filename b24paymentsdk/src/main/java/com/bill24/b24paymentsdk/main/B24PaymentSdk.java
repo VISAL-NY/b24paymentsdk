@@ -1,5 +1,6 @@
 package com.bill24.b24paymentsdk.main;
 
+import androidx.annotation.Keep;
 import androidx.fragment.app.FragmentManager;
 
 import com.bill24.b24paymentsdk.bottomsheetDialogFragment.BottomSheet;
@@ -7,7 +8,8 @@ import com.bill24.b24paymentsdk.bottomsheetDialogFragment.BottomSheet;
 public class B24PaymentSdk {
     public B24PaymentSdk(){
     }
-    public static void init(
+    @Keep
+    public static void initSdk(
             FragmentManager fragmentManager,
             String tranId,
             String refererKey,
@@ -18,7 +20,8 @@ public class B24PaymentSdk {
         bottomSheet.show(fragmentManager,bottomSheet.getTag());
 
     }
-    public static void init(
+    @Keep
+    public static void initSdk(
             FragmentManager fragmentManager,
             String tranId,
             String refererKey,
@@ -29,8 +32,8 @@ public class B24PaymentSdk {
         bottomSheet.show(fragmentManager,bottomSheet.getTag());
 
     }
-
-    public static void init(
+    @Keep
+    public static void initSdk(
             FragmentManager fragmentManager,
             String tranId,
             String refererKey,

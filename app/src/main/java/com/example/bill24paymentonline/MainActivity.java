@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                if(response.isSuccessful()){
                    responseModel=response.body();
-                   B24PaymentSdk.init(
+                   B24PaymentSdk.initSdk(
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
                            "123X",

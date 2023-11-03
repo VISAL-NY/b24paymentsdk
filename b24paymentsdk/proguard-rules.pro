@@ -12,6 +12,7 @@
 #   public *;
 #}
 -keep class com.bill24.b24paymentsdk.*.**{*;}
+-keepclassmembers class com.bill24.b24paymentsdk.model.main.B24PaymentSdk{*;}
 -dontwarn com.google.android.material.R$id
 
 # Uncomment this to preserve the line number information for

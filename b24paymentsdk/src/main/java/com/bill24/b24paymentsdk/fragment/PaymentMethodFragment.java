@@ -34,22 +34,19 @@ import com.bill24.b24paymentsdk.bottomsheetDialogFragment.BottomSheet;
 import com.bill24.b24paymentsdk.core.RequestAPI;
 import com.bill24.b24paymentsdk.helper.ChangLanguage;
 import com.bill24.b24paymentsdk.helper.ConnectivityState;
-import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
 import com.bill24.b24paymentsdk.helper.CustomSnackbar;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.SharePreferenceCustom;
 import com.bill24.b24paymentsdk.helper.StickyHeaderItemDecoration;
 import com.bill24.b24paymentsdk.helper.Translate;
+import com.bill24.b24paymentsdk.helper.translateLanguage.TranslateLanguage;
 import com.bill24.b24paymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.b24paymentsdk.model.BankPaymentMethodModel;
 import com.bill24.b24paymentsdk.model.BillerModel;
-import com.bill24.b24paymentsdk.model.CheckoutDetailModel;
 import com.bill24.b24paymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.b24paymentsdk.model.ExpiredTransactionModel;
 import com.bill24.b24paymentsdk.model.GenerateLinkDeepLinkModel;
 import com.bill24.b24paymentsdk.model.TransactionInfoModel;
-import com.bill24.b24paymentsdk.model.appearance.darkMode.DarkModeModel;
-import com.bill24.b24paymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.b24paymentsdk.model.baseResponseModel.BaseResponse;
 import com.bill24.b24paymentsdk.model.conts.Bank;
 import com.bill24.b24paymentsdk.model.conts.Constant;
@@ -57,6 +54,7 @@ import com.bill24.b24paymentsdk.model.conts.LanguageCode;
 import com.bill24.b24paymentsdk.model.conts.StatusCode;
 import com.bill24.b24paymentsdk.model.requestModel.ExpiredRequestModel;
 import com.bill24.b24paymentsdk.model.requestModel.GenerateDeeplinkRequestModel;
+import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -73,7 +71,7 @@ public class PaymentMethodFragment extends Fragment
     private RecyclerView recyclerViewPaymentMethod;
     private AppCompatTextView textVersion,
             textTotalAmount,textCurrency,textPaymentMethod,
-            textTotalAmountTitle,texBill24,textPowerby;
+            textTotalAmountTitle, textBill24,textPowerby;
     private MaterialDivider verticalDivider;
     private LinearLayoutCompat containerPaymentMethod;
     private FrameLayout bottomPaymentContainer,bottomDashLine;
@@ -82,7 +80,6 @@ public class PaymentMethodFragment extends Fragment
     private CheckoutPageConfigModel checkoutPageConfigModel=new CheckoutPageConfigModel();
     private String refererKey,language,baseUrl;
     private boolean isLightMode;
-    private CheckoutDetailModel checkoutDetailModel=new CheckoutDetailModel();
     public PaymentMethodFragment(){
 
     }
@@ -95,7 +92,7 @@ public class PaymentMethodFragment extends Fragment
         textCurrency=view.findViewById(R.id.text_total_amount_currency);
         textTotalAmount =view.findViewById(R.id.text_total_amount);
         containerPaymentMethod=view.findViewById(R.id.container_payment_method);
-        texBill24=view.findViewById(R.id.bill24);
+        textBill24 =view.findViewById(R.id.bill24);
         textPowerby=view.findViewById(R.id.text_power_by);
         verticalDivider=view.findViewById(R.id.vertical_divider);
         bottomPaymentContainer=view.findViewById(R.id.bottom_payment_method_container);
@@ -109,26 +106,21 @@ public class PaymentMethodFragment extends Fragment
 
     private void toggleBill24(){
         if(checkoutPageConfigModel.isDisplayBill24Info()){
-            texBill24.setVisibility(View.VISIBLE);
+            textBill24.setVisibility(View.VISIBLE);
             textPowerby.setVisibility(View.VISIBLE);
             verticalDivider.setVisibility(View.VISIBLE);
 
         }else {
-            texBill24.setVisibility(View.GONE);
+            textBill24.setVisibility(View.GONE);
             textPowerby.setVisibility(View.GONE);
             verticalDivider.setVisibility(View.GONE);
         }
     }
 
     private void translateLanguage(){
-        if(language.equals(LanguageCode.EN)){
-            textPaymentMethod.setText(Translate.PAYMENT_METHOD_EN);
-            textTotalAmountTitle.setText(Translate.TOTAL_AMOUNT_EN);
-        }
-        if(language.equals(LanguageCode.KH)){
-            textPaymentMethod.setText(Translate.PAYMENT_METHOD_KM);
-            textTotalAmountTitle.setText(Translate.TOTAL_AMOUNT_KM);
-        }
+        TranslateLanguage tranLang=TranslateLanguage.translateLanguage(language);
+        textPaymentMethod.setText(tranLang.getPaymentMethod());
+        textTotalAmountTitle.setText(tranLang.getTotalAmount());
     }
 
     private void updateFont(){
@@ -138,7 +130,7 @@ public class PaymentMethodFragment extends Fragment
         textPaymentMethod.setTypeface(typeface);
         textPaymentMethod.setTextSize(16);
         textPaymentMethod.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
-        textPaymentMethod.setTextColor(getResources().getColor(R.color.header_font_color));
+        //textPaymentMethod.setTextColor(ContextCompat.getColor(getContext(),R.color.header_font_color));
 
         textTotalAmountTitle.setTypeface(typeface);
         textTotalAmountTitle.setTextSize(13);
@@ -165,7 +157,7 @@ public class PaymentMethodFragment extends Fragment
             recyclerViewPaymentMethod.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerViewPaymentMethod.setAdapter(adapter);
             //Set Header to Sticky
-            StickyHeaderItemDecoration stickyHeaderItemDecoration=new StickyHeaderItemDecoration((StickyHeaderItemDecoration.StickyHeaderInterface)adapter);
+            StickyHeaderItemDecoration stickyHeaderItemDecoration=new StickyHeaderItemDecoration(adapter);
             recyclerViewPaymentMethod.addItemDecoration(stickyHeaderItemDecoration);
         }
     }
@@ -176,20 +168,20 @@ public class PaymentMethodFragment extends Fragment
            // PackageInfo packageInfo=getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0);
             //String version=packageInfo.versionName;
             //int versionCode=packageInfo.versionCode;
-            String version="1.0.0";
-            String versionCode="0";
-            textVersion.setText("V" + version + "." + versionCode);
+            textBill24.setText(Constant.BILL24);
+            textVersion.setText(Constant.VERSION);
     }
     private void postExpiredTran(ExpiredRequestModel model){
         RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
         Call<BaseResponse<ExpiredTransactionModel>> call=requestAPI.postExpireTran(model);
-        call.enqueue(new Callback<BaseResponse<ExpiredTransactionModel>>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<BaseResponse<ExpiredTransactionModel>> call, Response<BaseResponse<ExpiredTransactionModel>> response) {
+            public void onResponse(@NonNull Call<BaseResponse<ExpiredTransactionModel>> call, @NonNull Response<BaseResponse<ExpiredTransactionModel>> response) {
 
             }
+
             @Override
-            public void onFailure(Call<BaseResponse<ExpiredTransactionModel>> call, Throwable t) {
+            public void onFailure(@NonNull Call<BaseResponse<ExpiredTransactionModel>> call, @NonNull Throwable t) {
 
             }
         });
@@ -225,49 +217,34 @@ public class PaymentMethodFragment extends Fragment
 
     }
 
+    private void applyTheme(){
+        CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
 
-    private void applyStyleLightMode(){
-        LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
+        //header
+        textPaymentMethod.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
 
-        //text header
-        String headerColor=lightModeModel.getLabel().getTextColor();
-        String convertHeaderColor= ConvertColorHexa.convertHex(headerColor);
-        textPaymentMethod.setTextColor(Color.parseColor(convertHeaderColor));;
+        //recyclerview
+        recyclerViewPaymentMethod.setBackgroundColor(Color.parseColor(customTheme.getSecondaryBackgroundColor()));
 
-        //recyclerView bg
-        String bgRecylcerView=lightModeModel.getSecondaryColor().getBackgroundColor();
-        String bgRecyclerViewHexa=ConvertColorHexa.convertHex(bgRecylcerView);
-        recyclerViewPaymentMethod.setBackgroundColor(Color.parseColor(bgRecyclerViewHexa));
-
-        //bottom Container
-        bottomPaymentContainer.setBackgroundColor(Color.parseColor(bgRecyclerViewHexa));
-
-        // total amount text power_by bill24 version
-        String totalAmountTitleColor=lightModeModel.getSecondaryColor().getTextColor();
-        String totalAmountTitleHexa=ConvertColorHexa.convertHex(totalAmountTitleColor);
-        textTotalAmountTitle.setTextColor(Color.parseColor(totalAmountTitleHexa));
-        textPowerby.setTextColor(Color.parseColor(totalAmountTitleHexa));
-        texBill24.setTextColor(Color.parseColor(totalAmountTitleHexa));
-        verticalDivider.setDividerColor(Color.parseColor(totalAmountTitleHexa));
-        textVersion.setTextColor(Color.parseColor(totalAmountTitleHexa));
+        //bottom
+        bottomPaymentContainer.setBackgroundColor(Color.parseColor(customTheme.getSecondaryBackgroundColor()));
+        textTotalAmountTitle.setTextColor(Color.parseColor(customTheme.getSecondaryTextColor()));
+        textPowerby.setTextColor(Color.parseColor(customTheme.getSecondaryTextColor()));
+        textBill24.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
+        verticalDivider.setDividerColor(Color.parseColor(customTheme.getPrimaryTextColor()));
+        textVersion.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
 
         //total amount currency
-        String totalAmountColor=lightModeModel.getPrimaryColor().getTextColor();
-        String totalAmountHexa=ConvertColorHexa.convertHex(totalAmountColor);
-        textTotalAmount.setTextColor(Color.parseColor(totalAmountHexa));
-        textCurrency.setTextColor(Color.parseColor(totalAmountHexa));
-
-
-        //dash line
-        String dashLineColor=lightModeModel.getIndicatorColor();
-        String dashLineColorHexa=ConvertColorHexa.convertHex(dashLineColor);
+        textTotalAmountTitle.setTextColor(Color.parseColor(customTheme.getSecondaryTextColor()));
+        textTotalAmount.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
+        textCurrency.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
 
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.RECTANGLE);
         int width=(int) (1 * getContext().getResources().getDisplayMetrics().density);
         int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
         gradientDrawable.setStroke(width,
-                Color.parseColor(dashLineColorHexa),
+                Color.parseColor(customTheme.getIndicatorColor()),
                 dashWidthHeight,
                 dashWidthHeight);
         int cornerRadius=(int)(18 *getContext().getResources().getDisplayMetrics().density); // Set the stroke color and width
@@ -275,62 +252,7 @@ public class PaymentMethodFragment extends Fragment
         gradientDrawable.setDither(true);
         bottomDashLine.setBackground(gradientDrawable);
 
-
-
-
     }
-    private void applyStyleDarkMode(){
-        DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-
-        //text header
-        String headerColor=darkModeModel.getLabel().getTextColor();
-        String convertHeaderColor= ConvertColorHexa.convertHex(headerColor);
-        textPaymentMethod.setTextColor(Color.parseColor(convertHeaderColor));
-
-        //recyclerView bg
-        String bgRecylcerView=darkModeModel.getSecondaryColor().getBackgroundColor();
-        String bgRecyclerViewHexa=ConvertColorHexa.convertHex(bgRecylcerView);
-        recyclerViewPaymentMethod.setBackgroundColor(Color.parseColor(bgRecyclerViewHexa));
-
-        //bottom Container
-        bottomPaymentContainer.setBackgroundColor(Color.parseColor(bgRecyclerViewHexa));
-
-        // total amount text power_by bill24 version
-        String totalAmountTitleColor=darkModeModel.getSecondaryColor().getTextColor();
-        String totalAmountTitleHexa=ConvertColorHexa.convertHex(totalAmountTitleColor);
-        textTotalAmountTitle.setTextColor(Color.parseColor(totalAmountTitleHexa));
-        textPowerby.setTextColor(Color.parseColor(totalAmountTitleHexa));
-        texBill24.setTextColor(Color.parseColor(totalAmountTitleHexa));
-        verticalDivider.setDividerColor(Color.parseColor(totalAmountTitleHexa));
-        textVersion.setTextColor(Color.parseColor(totalAmountTitleHexa));
-
-        //total amount currency
-        String totalAmountColor=darkModeModel.getPrimaryColor().getTextColor();
-        String totalAmountHexa=ConvertColorHexa.convertHex(totalAmountColor);
-        textTotalAmount.setTextColor(Color.parseColor(totalAmountHexa));
-        textCurrency.setTextColor(Color.parseColor(totalAmountHexa));
-
-
-        //dash line
-        String dashLineColor=darkModeModel.getIndicatorColor();
-        String dashLineColorHexa=ConvertColorHexa.convertHex(dashLineColor);
-
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        int width=(int) (1 * getContext().getResources().getDisplayMetrics().density);
-        int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
-        gradientDrawable.setStroke(width,
-                Color.parseColor(dashLineColorHexa),
-                dashWidthHeight,
-                dashWidthHeight);
-        int cornerRadius=(int)(18 *getContext().getResources().getDisplayMetrics().density); // Set the stroke color and width
-        gradientDrawable.setCornerRadius(cornerRadius); // Set the corner radius
-        gradientDrawable.setDither(true);
-        bottomDashLine.setBackground(gradientDrawable);
-
-
-    }
-
 
 
     @Override
@@ -340,6 +262,8 @@ public class PaymentMethodFragment extends Fragment
         connectivityState=new ConnectivityState(this);//Init BroadCastReceiver
 
         getPreference();
+
+
 
         ChangLanguage.setLanguage(language,getContext());
 
@@ -357,12 +281,8 @@ public class PaymentMethodFragment extends Fragment
 
         bindView();
 
-        //initStyle
-        if (isLightMode){
-            applyStyleLightMode();
-        }else {
-            applyStyleDarkMode();
-        }
+        //apply theme
+        applyTheme();
 
         //translate
         translateLanguage();
@@ -376,7 +296,7 @@ public class PaymentMethodFragment extends Fragment
         //show hide bill24
         toggleBill24();
 
-        texBill24.setOnClickListener(v->{
+        textBill24.setOnClickListener(v->{
             Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(Constant.BILL24_URL));
             startActivity(intent);
         });
@@ -425,7 +345,6 @@ public class PaymentMethodFragment extends Fragment
                 }else {
                     message=Translate.ERR_SERVER_KM;
                 }
-
                 CustomSnackbar.showSuccessSnackbar(
                         getContext(),
                         getView().findViewById(R.id.snackbar_payment_method),
@@ -437,14 +356,14 @@ public class PaymentMethodFragment extends Fragment
                 );
 
 
-//                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
-//                intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
-//                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
-//                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
-//                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
-//                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
-//
-//                startActivity(intent);
+                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
+                intent.putExtra(Constant.KEY_LANGUAGE_CODE,language);
+                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
+                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
+                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
+                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
+
+                startActivity(intent);
 
                 //todo handle when click on mastercard
 
@@ -458,28 +377,29 @@ public class PaymentMethodFragment extends Fragment
                 RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
 
                 Call<BaseResponse<GenerateLinkDeepLinkModel>> call=requestAPI.postGenerateDeeplink(generateDeeplinkRequestModel);
-                call.enqueue(new Callback<BaseResponse<GenerateLinkDeepLinkModel>>() {
+                call.enqueue(new Callback<>() {
                     @Override
-                    public void onResponse(Call<BaseResponse<GenerateLinkDeepLinkModel>> call, Response<BaseResponse<GenerateLinkDeepLinkModel>> response) {
+                    public void onResponse(@NonNull Call<BaseResponse<GenerateLinkDeepLinkModel>> call, @NonNull Response<BaseResponse<GenerateLinkDeepLinkModel>> response) {
                         GenerateLinkDeepLinkModel generateLinkDeepLinkModel;
 
-                        if(response.isSuccessful()){
-                            BaseResponse<GenerateLinkDeepLinkModel> deeplink=response.body();
-                            if(deeplink.getCode().equals(StatusCode.SUCCESS)){
-                                generateLinkDeepLinkModel=deeplink.getData();
-                                    if(!generateLinkDeepLinkModel.getMobileDeepLink().isEmpty()){
-                                        launchDeeplink(generateLinkDeepLinkModel.getMobileDeepLink());
-                                        return;
-                                    }
-                                    if(!generateLinkDeepLinkModel.getWebPaymentLink().isEmpty()){
-                                        ((BottomSheet)getParentFragment()).showFragment(new WebViewCheckoutFragment(generateLinkDeepLinkModel.getWebPaymentLink()));
-                                    }
-                            }else {
+                        if (response.isSuccessful()) {
+                            BaseResponse<GenerateLinkDeepLinkModel> deeplink = response.body();
+                            assert deeplink != null;
+                            if (deeplink.getCode().equals(StatusCode.SUCCESS)) {
+                                generateLinkDeepLinkModel = deeplink.getData();
+                                if (!generateLinkDeepLinkModel.getMobileDeepLink().isEmpty()) {
+                                    launchDeeplink(generateLinkDeepLinkModel.getMobileDeepLink());
+                                    return;
+                                }
+                                if (!generateLinkDeepLinkModel.getWebPaymentLink().isEmpty()) {
+                                    ((BottomSheet) getParentFragment()).showFragment(new WebViewCheckoutFragment(generateLinkDeepLinkModel.getWebPaymentLink()));
+                                }
+                            } else {
                                 String message;
-                                if(language.equals(LanguageCode.EN)){
-                                    message=Translate.ERR_SERVER_EN;
-                                }else {
-                                    message=Translate.ERR_SERVER_KM;
+                                if (language.equals(LanguageCode.EN)) {
+                                    message = Translate.ERR_SERVER_EN;
+                                } else {
+                                    message = Translate.ERR_SERVER_KM;
                                 }
 
                                 CustomSnackbar.showSuccessSnackbar(
@@ -490,13 +410,14 @@ public class PaymentMethodFragment extends Fragment
                                         R.color.snackbar_background_error_color,
                                         Snackbar.LENGTH_LONG,
                                         language
-                                        );
+                                );
                             }
                         }
                     }
+
                     @Override
-                    public void onFailure(Call<BaseResponse<GenerateLinkDeepLinkModel>> call, Throwable t) {
-                        Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onFailure(@NonNull Call<BaseResponse<GenerateLinkDeepLinkModel>> call, @NonNull Throwable t) {
+                        Toast.makeText(getContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

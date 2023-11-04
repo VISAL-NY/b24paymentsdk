@@ -110,6 +110,26 @@ public class BottomSheet extends BottomSheetDialogFragment {
     public BottomSheet(
             String tranId,
             String refererKey,
+            boolean isLightMode,
+            String env){
+        this.tranId=tranId;
+        this.refererKey=refererKey;
+        this.isLightMode=isLightMode;
+        this.env=env;
+
+        if(env.equals(Constant.DEMO_ENV)){
+            baseUrl=BaseURL.BASE_URL_DEMO;
+        }else if(env.equals(Constant.STAGING_ENV)){
+            baseUrl=BaseURL.BASE_URL_STAGGING;
+        }else {
+            baseUrl=BaseURL.BASE_URL_DEMO;
+        }
+
+        requestModel=new CheckoutDetailRequestModel(this.tranId);
+    }
+    public BottomSheet(
+            String tranId,
+            String refererKey,
             String language,
             boolean isLightMode
            ){

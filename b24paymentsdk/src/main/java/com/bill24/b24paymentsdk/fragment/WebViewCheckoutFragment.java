@@ -1,8 +1,6 @@
 package com.bill24.b24paymentsdk.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bill24.b24paymentsdk.R;
-import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
-import com.bill24.b24paymentsdk.helper.SharePreferenceCustom;
-import com.bill24.b24paymentsdk.model.CheckoutPageConfigModel;
-import com.bill24.b24paymentsdk.model.appearance.darkMode.DarkModeModel;
-import com.bill24.b24paymentsdk.model.appearance.lightMode.LightModeModel;
-import com.bill24.b24paymentsdk.model.conts.Constant;
 
 
 public class WebViewCheckoutFragment extends Fragment {
 
-    private String url;
+    private final String url;
     public WebViewCheckoutFragment(String url){
         this.url=url;
     }
+    @SuppressLint("SetJavaScriptEnabled")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

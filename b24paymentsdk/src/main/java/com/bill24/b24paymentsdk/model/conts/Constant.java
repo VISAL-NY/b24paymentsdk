@@ -15,4 +15,6 @@ public class Constant {
     public static final String KEY_REFERER_KEY="referer-key";
     public static final String BILL24_URL="https://bill24.com.kh/";
     public static final String IS_LIGHT_MODE="is-light-mode";
+    public static final String BILL24="Bill24";
+    public static final String VERSION="V1.0.0.0";
 }

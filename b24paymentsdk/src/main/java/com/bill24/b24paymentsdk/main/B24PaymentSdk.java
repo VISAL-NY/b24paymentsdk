@@ -19,6 +19,16 @@ public class B24PaymentSdk {
         bottomSheet.show(fragmentManager,bottomSheet.getTag());
 
     }
+    public static void initSdk(
+            FragmentManager fragmentManager,
+            String tranId,
+            String refererKey,
+            boolean isLightMode,
+            String env){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,isLightMode,env);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
+    }
 
     public static void initSdk(
             FragmentManager fragmentManager,

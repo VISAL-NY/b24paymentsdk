@@ -28,17 +28,15 @@ import com.bill24.b24paymentsdk.helper.ChangLanguage;
 import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.SharePreferenceCustom;
-import com.bill24.b24paymentsdk.helper.Translate;
+import com.bill24.b24paymentsdk.helper.translateLanguage.TranslateLanguage;
 import com.bill24.b24paymentsdk.model.CheckoutPageConfigModel;
-import com.bill24.b24paymentsdk.model.appearance.darkMode.DarkModeModel;
-import com.bill24.b24paymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.b24paymentsdk.model.conts.Constant;
-import com.bill24.b24paymentsdk.model.conts.LanguageCode;
+import com.bill24.b24paymentsdk.theme.CustomTheme;
 
 public class ExpireFragment extends Fragment {
     private FrameLayout buttonTryAgain;
     private AppCompatTextView textTryagainButton;
-    private AppCompatTextView textTranExpired,textTryAgain,expireDashLine;
+    private AppCompatTextView textTranHasExpired,textTryAgain,expireDashLine;
     private String transactionId,refererKey,language;
     private CheckoutPageConfigModel checkoutPageConfigModel;
     private LinearLayoutCompat expireContainer;
@@ -48,7 +46,7 @@ public class ExpireFragment extends Fragment {
     }
     private void initView(View view){
         buttonTryAgain=view.findViewById(R.id.button_try_again);
-        textTranExpired=view.findViewById(R.id.text_expire_title);
+        textTranHasExpired =view.findViewById(R.id.text_expire_title);
         textTryAgain=view.findViewById(R.id.text_try_again_title);
         expireContainer=view.findViewById(R.id.expire_container);
         textTryagainButton=view.findViewById(R.id.text_button_try_again);
@@ -57,9 +55,9 @@ public class ExpireFragment extends Fragment {
     private void updateFont(){
         SetFont font=new SetFont();
         Typeface typeface=font.setFont(getContext(),language);
-        textTranExpired.setTypeface(typeface);
-        textTranExpired.setTextSize(16);
-        textTranExpired.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
+        textTranHasExpired.setTypeface(typeface);
+        textTranHasExpired.setTextSize(16);
+        textTranHasExpired.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
 
         textTryAgain.setTypeface(typeface);
         textTryAgain.setTextSize(14);
@@ -68,110 +66,40 @@ public class ExpireFragment extends Fragment {
         textTryagainButton.setTextSize(13);
     }
 
-    private void applyStyleShapeLightMode(){
-        LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
-
-        //expire container
-        String bgExpireContainer=lightModeModel.getSecondaryColor().getBackgroundColor();
-        String bgExpireContainerHexa= ConvertColorHexa.convertHex(bgExpireContainer);
-        expireContainer.setBackgroundColor(Color.parseColor(bgExpireContainerHexa));
-
-        //text transaction expire
-        String tranExpireColor=lightModeModel.getPrimaryColor().getTextColor();
-        String tranExpireColorHexa=ConvertColorHexa.convertHex(tranExpireColor);
-        textTranExpired.setTextColor(Color.parseColor(tranExpireColorHexa));
-
-        //text try again
-        String tryAgainColor=lightModeModel.getButton().getActionButton().getTextColor();
-        String tryAgainColorHexa=ConvertColorHexa.convertHex(tryAgainColor);
-        textTryAgain.setTextColor(Color.parseColor(tryAgainColorHexa));
+    private  void applyTheme(){
+        CustomTheme custom=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+        expireContainer.setBackgroundColor(Color.parseColor(custom.getSecondaryBackgroundColor()));
+        textTranHasExpired.setTextColor(Color.parseColor(custom.getPrimaryTextColor()));
+        textTryAgain.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
 
         //shape button
-        String bgButton=lightModeModel.getButton().getBackgroundColor();
-        String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
-        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,getContext());
+        ShapeDrawable normalShape= CustomShape.applyShape(
+                Color.parseColor(custom.getButtonBackgroundColor()),
+                10,getContext());
 
-        String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
-        ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),10,getContext());
+        String selectorColor=ConvertColorHexa.getFiftyPercentColor(custom.getButtonBackgroundColor());
 
-        StateListDrawable selector= SelectedState.selectedSate(shape,buttonSelected);
+        ShapeDrawable selectorShape=CustomShape.applyShape(
+                Color.parseColor(selectorColor),10,getContext()
+        );
+
+        StateListDrawable selector= SelectedState.selectedSate(normalShape,selectorShape);
         buttonTryAgain.setBackground(selector);
 
-        //text button try again
-        String textButtonColor=lightModeModel.getButton().getTextColor();
-        String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
-        textTryagainButton.setTextColor(Color.parseColor(textButtonColorHexa));
-
-
-        //dash line
-        String dashLine=lightModeModel.getIndicatorColor();
-        String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
+        //text button
+        textTryagainButton.setTextColor(Color.parseColor(custom.getButtonTextColor()));
 
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
         int dashWidthHeight = (int) (5 * getContext().getResources().getDisplayMetrics().density);
         int width = (int) (1 * getContext().getResources().getDisplayMetrics().density);
         gradientDrawable.setStroke(width,
-                Color.parseColor(dashLineHexa),
+                Color.parseColor(custom.getIndicatorColor()),
                 dashWidthHeight,
                 dashWidthHeight); // Set the stroke color and width// Set the corner radius
         gradientDrawable.setDither(true);
         expireDashLine.setBackground(gradientDrawable);
-
-
-
     }
-    private void applyStyleShapeDarkMode(){
-        DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-
-        //expire container
-        String bgExpireContainer=darkModeModel.getSecondaryColor().getBackgroundColor();
-        String bgExpireContainerHexa= ConvertColorHexa.convertHex(bgExpireContainer);
-        expireContainer.setBackgroundColor(Color.parseColor(bgExpireContainerHexa));
-
-        //text transaction expire
-        String tranExpireColor=darkModeModel.getPrimaryColor().getTextColor();
-        String tranExpireColorHexa=ConvertColorHexa.convertHex(tranExpireColor);
-        textTranExpired.setTextColor(Color.parseColor(tranExpireColorHexa));
-
-        //text try again
-        String tryAgainColor=darkModeModel.getSecondaryColor().getTextColor();
-        String tryAgainColorHexa=ConvertColorHexa.convertHex(tryAgainColor);
-        textTryAgain.setTextColor(Color.parseColor(tryAgainColorHexa));
-
-        //shape button
-        String bgButton=darkModeModel.getButton().getBackgroundColor();
-        String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
-        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,getContext());
-        String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
-        ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),10,getContext());
-
-        StateListDrawable selector= SelectedState.selectedSate(shape,buttonSelected);
-        buttonTryAgain.setBackground(selector);
-
-        //text button try again
-        String textButtonColor=darkModeModel.getButton().getTextColor();
-        String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
-        textTryagainButton.setTextColor(Color.parseColor(textButtonColorHexa));
-
-
-        //dash line
-        String dashLine=darkModeModel.getIndicatorColor();
-        String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
-
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.LINE);
-        int dashWidthHeight = (int) (5 * getContext().getResources().getDisplayMetrics().density);
-        int width = (int) (1 * getContext().getResources().getDisplayMetrics().density);
-        gradientDrawable.setStroke(width,
-                Color.parseColor(dashLineHexa),
-                dashWidthHeight,
-                dashWidthHeight); // Set the stroke color and width// Set the corner radius
-        gradientDrawable.setDither(true);
-        expireDashLine.setBackground(gradientDrawable);
-
-    }
-
 
     private  void  getSharePreference(){
         SharedPreferences preferences=getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -188,15 +116,10 @@ public class ExpireFragment extends Fragment {
     }
 
     private void translateLanguage(){
-        if (language.equals(LanguageCode.EN)){
-            textTranExpired.setText(Translate.TRAN_EXPIRE_EN);
-            textTryAgain.setText(Translate.TRY_AGAIN_TITLE_EN);
-            textTryagainButton.setText(Translate.TRY_AGAIN_EN);
-        }else {
-            textTranExpired.setText(Translate.TRAN_EXPIRE_KM);
-            textTryAgain.setText(Translate.TRY_AGAIN_TITLE_KM);
-            textTryagainButton.setText(Translate.TRY_AGAIN_KM);
-        }
+        TranslateLanguage tranLang=TranslateLanguage.translateLanguage(language);
+        textTranHasExpired.setText(tranLang.getTranHasExpired());
+        textTryAgain.setText(tranLang.getTryAgainToContinue());
+        textTryagainButton.setText(tranLang.getTryAgain());
     }
 
     @Override
@@ -218,12 +141,8 @@ public class ExpireFragment extends Fragment {
         //Update Font
         updateFont();
 
-        //apply style shape
-        if(isLightMode){
-                applyStyleShapeLightMode();
-        }else {
-            applyStyleShapeDarkMode();
-        }
+        //apply theme shape
+        applyTheme();
 
 
         buttonTryAgain.setOnClickListener(v->{

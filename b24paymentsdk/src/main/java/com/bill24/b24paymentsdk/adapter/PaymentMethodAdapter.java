@@ -35,20 +35,18 @@ import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.StickyHeaderItemDecoration;
 import com.bill24.b24paymentsdk.helper.Translate;
+import com.bill24.b24paymentsdk.helper.translateLanguage.TranslateLanguage;
 import com.bill24.b24paymentsdk.model.AddToFavoriteModel;
 import com.bill24.b24paymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.b24paymentsdk.model.BankPaymentMethodModel;
 import com.bill24.b24paymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.b24paymentsdk.model.TransactionInfoModel;
-import com.bill24.b24paymentsdk.model.appearance.darkMode.DarkModeModel;
-import com.bill24.b24paymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.b24paymentsdk.model.baseResponseModel.BaseResponse;
 import com.bill24.b24paymentsdk.model.conts.Constant;
-import com.bill24.b24paymentsdk.model.conts.CurrencyCode;
 import com.bill24.b24paymentsdk.model.conts.LanguageCode;
 import com.bill24.b24paymentsdk.model.requestModel.AddToFavoriteRequestModel;
+import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -69,9 +67,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
     private LinearLayoutCompat sectionContainer;
     private AppCompatTextView textSectionHeader,
             textBankName;
-//            textServiceTitle,
-//            textServiceAmount,
-//            textCurrency;
     private String tranasctionId, refererKey,language,baseUrl;
     private boolean isLightMode;
 
@@ -101,10 +96,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private void initItemView(View view){
         textBankName=view.findViewById(R.id.text_bank_name);
-
-        //textServiceTitle=view.findViewById(R.id.text_payment_service_title);
-        //textServiceAmount=view.findViewById(R.id.text_payment_service_amount);
-        //textCurrency=view.findViewById(R.id.text_payment_service_amount);
     }
 
     private void updateHeaderFont(Context context,AppCompatTextView textSectionHeader){
@@ -119,30 +110,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     }
 
-    private  void applyHeaderStyleLightMode(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
-        LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
+    private void applyHeaderTheme(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
+        CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
 
-        String bgHeaderColor=lightModeModel.getLabel().getBackgroundColor();
-        String bgHeaderColorHexa= ConvertColorHexa.convertHex(bgHeaderColor);
-        headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
-
-        String sectionHeaderColor=lightModeModel.getLabel().getTextColor();
-        String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
-
-        sectionHeader.setTextColor(Color.parseColor(sectionHeaderHexa));
-
-    }
-    private  void applyHeaderStyleDarkMode(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
-        DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-
-        String bgHeaderColor=darkModeModel.getLabel().getBackgroundColor();
-        String bgHeaderColorHexa=ConvertColorHexa.convertHex(bgHeaderColor);
-        headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
-
-        String sectionHeaderColor=darkModeModel.getLabel().getTextColor();
-        String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
-
-        sectionHeader.setTextColor(Color.parseColor(sectionHeaderHexa));
+        headerContainer.setBackgroundColor(Color.parseColor(customTheme.getLabelBackgroundColor()));
+        sectionHeader.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
 
     }
 
@@ -160,14 +132,14 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         Call<BaseResponse<AddToFavoriteModel>> call= RetrofitClient.getInstance(baseUrl).
                 getApiClient().postAddToFavorite(Constant.CONTENT_TYPE,Constant.TOKEN,refererKey,model);
 
-        call.enqueue(new Callback<BaseResponse<AddToFavoriteModel>>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<BaseResponse<AddToFavoriteModel>> call, Response<BaseResponse<AddToFavoriteModel>> response) {
-               // response.body();
+            public void onResponse(@NonNull Call<BaseResponse<AddToFavoriteModel>> call, @NonNull Response<BaseResponse<AddToFavoriteModel>> response) {
+                // response.body();
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<AddToFavoriteModel>> call, Throwable t) {
+            public void onFailure(@NonNull Call<BaseResponse<AddToFavoriteModel>> call, @NonNull Throwable t) {
 
             }
         });
@@ -182,17 +154,12 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             textSectionHeader=view.findViewById(R.id.text_section_header);
             sectionContainer=view.findViewById(R.id.section_header_container);
 
-            //applyStyle
-            if(isLightMode){
-                applyHeaderStyleLightMode(sectionContainer,textSectionHeader);
-            }else {
-                applyHeaderStyleDarkMode(sectionContainer,textSectionHeader);
-            }
+            //apply header theme
 
+            applyHeaderTheme(sectionContainer,textSectionHeader);
 
             //Update Font
             updateHeaderFont(view.getContext(),textSectionHeader);
-
 
 
             return new SectionViewHolder(view);
@@ -282,7 +249,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
    }
 
-
     @Override
     public int getItemCount()
     {
@@ -350,12 +316,10 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
                 updateHeaderFont(header.getContext(),textSectionHeader);
 
-                if(isLightMode){
-                    applyHeaderStyleLightMode(sectionHeader,textSectionHeader);//apply style
 
-                }else {
-                    applyHeaderStyleDarkMode(sectionHeader,textSectionHeader);
-                }
+                //apply header theme
+                applyHeaderTheme(sectionHeader,textSectionHeader);
+
 
 
                 return;
@@ -383,50 +347,22 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             textSection=itemView.findViewById(R.id.text_section_header);
             headerContainer=itemView.findViewById(R.id.section_header_container);
 
-            if(isLightMode){
-                applyHeaderStyleLightMode();
-
-            }else {
-                applyHeaderStyleDarkMode();
-            }
+            applyHeaderTheme();
         }
 
+        void applyHeaderTheme(){
+            CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
 
-         void applyHeaderStyleLightMode(){
-
-            LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
-
-            String bgHeaderColor=lightModeModel.getLabel().getBackgroundColor();
-            String bgHeaderColorHexa=ConvertColorHexa.convertHex(bgHeaderColor);
-            headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
-
-            String sectionHeaderColor=lightModeModel.getLabel().getTextColor();
-            String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
-
-            textSection.setTextColor(Color.parseColor(sectionHeaderHexa));
-
+            headerContainer.setBackgroundColor(Color.parseColor(customTheme.getLabelBackgroundColor()));
+            textSection.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
         }
-        void applyHeaderStyleDarkMode(){
 
-            DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-
-            String bgHeaderColor=darkModeModel.getLabel().getBackgroundColor();
-            String bgHeaderColorHexa=ConvertColorHexa.convertHex(bgHeaderColor);
-            headerContainer.setBackgroundColor(Color.parseColor(bgHeaderColorHexa));
-
-            String sectionHeaderColor=darkModeModel.getLabel().getTextColor();
-            String sectionHeaderHexa=ConvertColorHexa.convertHex(sectionHeaderColor);
-
-            textSection.setTextColor(Color.parseColor(sectionHeaderHexa));
-
-        }
         void bindSection(BankPaymentMethodModel section){
             if(language.equals(LanguageCode.EN)){
                 textSection.setText(section.getSection());
             }else {
                 textSection.setText(section.getSectionKh());
             }
-
         }
     }
 
@@ -460,26 +396,18 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             ShapeDrawable shape=CustomShape.applyShape(Color.TRANSPARENT,8,itemView.getContext());
             bankImageBackground.setBackground(shape);
 
-            if(isLightMode){
-                applyStyleShapeLightMode(itemView.getContext());
-
-            }else {
-                applyStyleShapeDarkMode(itemView.getContext());
-            }
+            applyItemTheme(itemView.getContext());
         }
 
-        void applyStyleShapeLightMode(Context context){
+        void applyItemTheme(Context context){
+            CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+            ShapeDrawable bankItemShape=CustomShape.applyShape(Color.parseColor(
+                    customTheme.getBankButtonBackgroundColor()),12,context);
 
-            LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
-
-           // card bank item
-            String bgBankItemColor=lightModeModel.getButton().getBankButton().getBackgroundColor();
-            String convertBgBankItemColor= ConvertColorHexa.convertHex(bgBankItemColor);
-
-            ShapeDrawable bankItemShape= CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),12,context);
-            String selectColor=ConvertColorHexa.getFiftyPercentColor(bgBankItemColor);
-
-            ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),12,context);
+            String selectorColor=ConvertColorHexa.getFiftyPercentColor(customTheme.getBankButtonBackgroundColor());
+            ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(
+                   selectorColor ),12,context
+            );
 
             ShapeDrawable normal=new ShapeDrawable();
             normal.getPaint().setColor(Color.TRANSPARENT);
@@ -500,115 +428,40 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
             //bank name
-            String bankNameColor=lightModeModel.getButton().getBankButton().getTextPrimary();
-            String convertBankNameColor=ConvertColorHexa.convertHex(bankNameColor);
-            textBankName.setTextColor(Color.parseColor(convertBankNameColor));
+            textBankName.setTextColor(Color.parseColor(
+                    customTheme.getBankButtonTextPrimaryColor()));
 
-            //bank fee
-            String bankFeeColor=lightModeModel.getButton().getBankButton().getTextSecondary();
-            String convertBankFeeColor=ConvertColorHexa.convertHex(bankFeeColor);
-            textBankFee.setTextColor(Color.parseColor(convertBankFeeColor));
-            textBankServicePayment_Amount.setTextColor(Color.parseColor(convertBankFeeColor));
-            textSemicolon.setTextColor(Color.parseColor(convertBankFeeColor));
+            textBankFee.setTextColor(Color.parseColor(
+                    customTheme.getBanButtonTextSecondaryColor()));
+            textBankServicePayment_Amount.setTextColor(Color.parseColor(
+                    customTheme.getBanButtonTextSecondaryColor()));
 
+            textSemicolon.setTextColor(Color.parseColor(customTheme.getBanButtonTextSecondaryColor()));
 
+            //favorite shape and theme
+            ShapeDrawable favButtonShape=CustomShape.applyShape(
+                    Color.parseColor(customTheme.getFavoriteButtonBackgroundColor()),
+                            6,context);
+            String favBtnSelectorColor=ConvertColorHexa.getFiftyPercentColor(
+                    customTheme.getFavoriteButtonBackgroundColor()
+            );
+            ShapeDrawable favBtnSelector=CustomShape.applyShape(
+                    Color.parseColor(favBtnSelectorColor),
+                    6,context);
 
-            //favorite background
-            String bgFavButton=lightModeModel.getButton().getFavoriteButton().getBackgroundColor();
-            if(bgFavButton.isEmpty() || bgFavButton.isBlank()){
-                bgFavButton="#57BC1E1E";
-            }else {
-                bgFavButton=lightModeModel.getButton().getFavoriteButton().getBackgroundColor();
-            }
-            String convertBgFavButton=ConvertColorHexa.convertHex(bgFavButton);
-            ShapeDrawable favButton=CustomShape.applyShape(Color.parseColor(convertBgFavButton),6,context);
-
-            String favButtonSelected=ConvertColorHexa.getFiftyPercentColor(bgFavButton);
-            ShapeDrawable favButtonSelectColor=CustomShape.applyShape(Color.parseColor(favButtonSelected),6,context);
-            StateListDrawable favSelector=SelectedState.selectedSate(favButton,favButtonSelectColor);
+            StateListDrawable favSelector=SelectedState.selectedSate(favButtonShape,favBtnSelector);
             addToFavoriteContainer.setBackground(favSelector);
 
-        //favorite icon
-            String faviconColor=lightModeModel.getButton().getFavoriteButton().getTextColor();
-            String convertFaviconColor=ConvertColorHexa.convertHex(faviconColor);
-            ColorFilter colorFilterFavicon=new PorterDuffColorFilter(Color.parseColor(convertFaviconColor), PorterDuff.Mode.SRC_ATOP);
-            imageFavIcon.setColorFilter(colorFilterFavicon);
+            //favorite icon
+            ColorFilter colorFilter=new PorterDuffColorFilter(
+                    Color.parseColor(customTheme.getFavoriteButtonTextColor()),PorterDuff.Mode.SRC_ATOP);
+            imageFavIcon.setColorFilter(colorFilter);
+
 
         }
-
-       void applyStyleShapeDarkMode(Context context){
-
-           DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-
-           //card bank item
-           String bgBankItemColor=darkModeModel.getButton().getBankButton().getBackgroundColor();
-           String convertBgBankItemColor= ConvertColorHexa.convertHex(bgBankItemColor);
-
-           ShapeDrawable bankItemShape=CustomShape.applyShape(Color.parseColor(convertBgBankItemColor),12,context);
-
-
-           String selectColor=ConvertColorHexa.getFiftyPercentColor(bgBankItemColor);
-
-           ShapeDrawable bankItemSelected=CustomShape.applyShape(Color.parseColor(selectColor),12,context);
-
-
-           ShapeDrawable normal=new ShapeDrawable();
-           normal.getPaint().setColor(Color.TRANSPARENT);
-
-           StateListDrawable selector = new StateListDrawable();
-           selector.addState(new int[]{android.R.attr.state_pressed}, bankItemSelected); // Selected state
-           selector.addState(new int[]{}, normal);
-           containerBankItemSecondLayer.setBackground(selector);
-
-
-           int elevation=(int)(5*context.getResources().getDisplayMetrics().density);
-           containerBankItemFirstLayer.setElevation(elevation);
-           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-               int shadow =Color.argb(36,183,190,203);
-               int shadowPX = (int) (shadow * context.getResources().getDisplayMetrics().density);
-               containerBankItemFirstLayer.setOutlineSpotShadowColor(shadowPX);
-           }
-           containerBankItemFirstLayer.setBackground(bankItemShape);
-
-
-           //bank name
-           String bankNameColor=darkModeModel.getButton().getBankButton().getTextPrimary();
-           String convertBankNameColor=ConvertColorHexa.convertHex(bankNameColor);
-           textBankName.setTextColor(Color.parseColor(convertBankNameColor));
-
-           //bank fee
-           String bankFeeColor=darkModeModel.getButton().getBankButton().getTextSecondary();
-           String convertBankFeeColor=ConvertColorHexa.convertHex(bankFeeColor);
-           textBankFee.setTextColor(Color.parseColor(convertBankFeeColor));
-           textBankServicePayment_Amount.setTextColor(Color.parseColor(convertBankFeeColor));
-           textSemicolon.setTextColor(Color.parseColor(convertBankFeeColor));
-
-
-           //favorite background
-           String bgFavButton=darkModeModel.getButton().getFavoriteButton().getBackgroundColor();
-           if(bgFavButton.isEmpty() || bgFavButton.isBlank()){
-               bgFavButton="#57BC1E1E";
-           }else {
-               bgFavButton=darkModeModel.getButton().getFavoriteButton().getBackgroundColor();
-           }
-           String convertBgFavButton=ConvertColorHexa.convertHex(bgFavButton);
-           ShapeDrawable favButton=CustomShape.applyShape(Color.parseColor(convertBgFavButton),6,context);
-           String favButtonSelected=ConvertColorHexa.getFiftyPercentColor(bgFavButton);
-           ShapeDrawable favButtonSelectColor=CustomShape.applyShape(Color.parseColor(favButtonSelected),6,context);
-
-           StateListDrawable favSelector= SelectedState.selectedSate(favButton,favButtonSelectColor);
-
-           addToFavoriteContainer.setBackground(favSelector);
-
-           //favorite icon
-           String faviconColor=darkModeModel.getButton().getFavoriteButton().getTextColor();
-           String convertFaviconColor=ConvertColorHexa.convertHex(faviconColor);
-           ColorFilter colorFilterFavicon=new PorterDuffColorFilter(Color.parseColor(convertFaviconColor), PorterDuff.Mode.SRC_ATOP);
-           imageFavIcon.setColorFilter(colorFilterFavicon);
-
-       }
         @SuppressLint("SetTextI18n")
         void bindItem(BankPaymentMethodItemModel bankPaymentMethodItemModel){
+
             if(language.equals(LanguageCode.EN)){
                 textBankName.setText(bankPaymentMethodItemModel.getName());
                 textBankFee.setText(Translate.FEE_EN);
@@ -623,7 +476,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             textBankServicePayment_Amount.setText(bankPaymentMethodItemModel.getFeeDisplay());
 
-
+            //load image from internet
             Picasso.get().load(bankPaymentMethodItemModel.getLogo())
                     .placeholder(R.drawable.placeholder_image)
                     .into(imageBankIcon) ;

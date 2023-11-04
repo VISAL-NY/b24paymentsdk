@@ -16,7 +16,7 @@ public class RetrofitClientApp {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpClient.addInterceptor(loggingInterceptor);
 
-        Retrofit retrofit=new Retrofit.Builder().baseUrl("http://dc.oone.bz:40015/")
+        Retrofit retrofit=new Retrofit.Builder().baseUrl("https://merchantapi-demo.bill24.io/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build()).build();
         apiClient=retrofit.create(ApiClientApp.class);

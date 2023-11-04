@@ -85,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
             String deviceCode="devicode";
             String desc="decription";
             String cancelUrl="";
-            String redirect="https://www.google.com/";
+            String redirect="https://bill24.com.kh/";
             String ChannelCode="CH1";
-            String branchCode="";
-            String branchName="";
-            String customerCode="";
+            String branchCode="01";
+            String branchName="BBB";
+            String customerCode="C01";
             String customerName="Mithona";
             String customerLatin="Mithona";
             String customerbillNo="";
@@ -128,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
         Call<ResponseModel> call= RetrofitClientApp.getInstance().
                 getApiClientApp().initTranV2(
                         "application/json",
-                        "d79f7911b5104f1d86158b7c16f422a7",
+                        "1f78ef77601c4ca7a66f7392ac4f9d1d",//5537
+                       // "b05da7819de348668cf1d1acee7a6364",//3655
                         model
 
                 );
@@ -136,13 +137,16 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-               if(response.isSuccessful()){
+                if(response.isSuccessful()){
                    responseModel=response.body();
                    B24PaymentSdk.initSdk(
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
                            "123X",
-                           isLightMode
+                           "km",
+                           isLightMode,
+                           "en"
+
                    );
 
                    Log.d("tranNo", "onResponse: "+response.body().getData().getTranID());
@@ -151,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("tranError", "onFailure: "+t.getMessage());
 
             }
         });

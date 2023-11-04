@@ -1,5 +1,6 @@
 package com.bill24.b24paymentsdk;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -32,13 +33,13 @@ import com.bill24.b24paymentsdk.helper.ChangLanguage;
 import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.Translate;
+import com.bill24.b24paymentsdk.helper.translateLanguage.TranslateLanguage;
 import com.bill24.b24paymentsdk.model.BillerModel;
 import com.bill24.b24paymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.b24paymentsdk.model.TransactionInfoModel;
-import com.bill24.b24paymentsdk.model.appearance.darkMode.DarkModeModel;
-import com.bill24.b24paymentsdk.model.appearance.lightMode.LightModeModel;
 import com.bill24.b24paymentsdk.model.conts.Constant;
 import com.bill24.b24paymentsdk.model.conts.LanguageCode;
+import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -64,8 +65,6 @@ public class SuccessActivity extends AppCompatActivity {
     private boolean isLightMode;
     private AppCompatImageView imageShare,imageDownload;
     private LinearLayoutCompat successActivityContainer;
-    private LightModeModel lightModeModel;
-    private DarkModeModel darkModeModel;
 
     private void initView(){
         textInvoiceAlreadyPaid=findViewById(R.id.text_invoice_already_paid_suceess);
@@ -103,10 +102,6 @@ public class SuccessActivity extends AppCompatActivity {
         billerModel=getIntent().getParcelableExtra(Constant.KEY_BILLER);
 
         ChangLanguage.setLanguage(language,this);
-
-        lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
-        darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-
 
     }
 
@@ -176,27 +171,16 @@ public class SuccessActivity extends AppCompatActivity {
     }
 
     private void translateLanguage(){
-        if(language.equals(LanguageCode.EN)){
-            textInvoiceAlreadyPaid.setText(Translate.INVOICE_PAID_DONE_EN);
-            textTranNoTitle.setText(Translate.TRANSACTION_EN);
-            textBankRefTitle.setText(Translate.BANK_REF_EN);
-            textToMerchantTitle.setText(Translate.TO_MERCHANT_EN);
-            textTranDateTitle.setText(Translate.TRAN_DATE_EN);
-            textTotalTitle.setText(Translate.TOTAL_EN);
-            textDownload.setText(Translate.DOWNLOAD_EN);
-            textShare.setText(Translate.SHARE_EN);
-            textDone.setText(Translate.DONE_EN);
-        }else {
-            textInvoiceAlreadyPaid.setText(Translate.INVOICE_PAID_DONE_KM);
-            textTranNoTitle.setText(Translate.TRANSACTION_KM);
-            textBankRefTitle.setText(Translate.BANK_REF_KM);
-            textToMerchantTitle.setText(Translate.TO_MERCHANT_KM);
-            textTranDateTitle.setText(Translate.TRAN_DATE_KM);
-            textTotalTitle.setText(Translate.TOTAL_KM);
-            textDownload.setText(Translate.DONWLOAD_KM);
-            textShare.setText(Translate.SHARE_KM);
-            textDone.setText(Translate.DONE_KM);
-        }
+        TranslateLanguage tranLang=TranslateLanguage.translateLanguage(language);
+        textInvoiceAlreadyPaid.setText(tranLang.getInvoicePaidDone());
+        textTranNoTitle.setText(tranLang.getTransactionNo());
+        textBankRefTitle.setText(tranLang.getBankRef());
+        textToMerchantTitle.setText(tranLang.getToMerchant());
+        textTranDateTitle.setText(tranLang.getTransactionDate());
+        textTotalTitle.setText(tranLang.getTotal());
+        textDownload.setText(tranLang.getDownload());
+        textShare.setText(tranLang.getShare());
+        textDone.setText(tranLang.getDone());
     }
     private void launchDeeplink(String url){
         Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -204,51 +188,91 @@ public class SuccessActivity extends AppCompatActivity {
 
     }
 
-    private void dashLine(){
-        if(isLightMode){
-            String dashLine=lightModeModel.getIndicatorColor();
-            String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
-            GradientDrawable gradientDrawable = new GradientDrawable();
-            gradientDrawable.setShape(GradientDrawable.LINE);
-            //int width=(int) (1 * getResources().getDisplayMetrics().density);
-            //int dashWidthHeight=(int) (5 * getResources().getDisplayMetrics().density);
+    private void applyTheme(){
 
-            gradientDrawable.setStroke(1,
-                    Color.parseColor(dashLineHexa),
-                    15,
-                    15);
+        // dash line
+        CustomTheme custom=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setShape(GradientDrawable.LINE);
 
-            dashLineFirst.setBackground(gradientDrawable);
-            dashLineSecond.setBackground(gradientDrawable);
-            dashLineThird.setBackground(gradientDrawable);
-        }
-        else {
-            String dashLine=darkModeModel.getIndicatorColor();
-            String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
-            GradientDrawable gradientDrawable = new GradientDrawable();
-            gradientDrawable.setShape(GradientDrawable.LINE);
-            //int width=(int)(1 * this.getResources().getDisplayMetrics().density);
-            //int dashWidthHeight=(int)(5 * this.getResources().getDisplayMetrics().density);
+        gradientDrawable.setStroke(1,
+                Color.parseColor(custom.getIndicatorColor()),
+                15,
+                15);
 
-            gradientDrawable.setStroke(1,
-                    Color.parseColor(dashLineHexa),
-                    15,
-                    15);
+        dashLineFirst.setBackground(gradientDrawable);
+        dashLineSecond.setBackground(gradientDrawable);
+        dashLineThird.setBackground(gradientDrawable);
 
-            dashLineFirst.setBackground(gradientDrawable);
-            dashLineSecond.setBackground(gradientDrawable);
-            dashLineThird.setBackground(gradientDrawable);
-        }
+        //success container
+        successActivityContainer.setBackgroundColor(Color.parseColor(
+                custom.getSecondaryBackgroundColor()));
 
+        ShapeDrawable shape= CustomShape.applyShape(
+                Color.parseColor(custom.getPrimaryBackgroundColor()),20,this);
+        successContainer.setBackground(shape);
 
+        //download share
+        ShapeDrawable normalShape= CustomShape.applyShape(
+                Color.parseColor(custom.getActionButtonBackgroundColor()),
+                10,this);
+
+        String selectorColor=ConvertColorHexa.getFiftyPercentColor(
+                custom.getActionButtonBackgroundColor());
+
+        ShapeDrawable selectorShape=CustomShape.applyShape(Color.parseColor(
+                selectorColor),10,this);
+
+        StateListDrawable selectorDownload= SelectedState.selectedSate(normalShape,selectorShape);
+        downloadContainer.setBackground(selectorDownload);
+
+        StateListDrawable selectorShare=SelectedState.selectedSate(normalShape,selectorShape);
+        shareContainer.setBackground(selectorShare);
+
+        //apply icon color
+        ColorFilter colorFilter=new PorterDuffColorFilter(
+                Color.parseColor(custom.getActionButtonTextColor()), PorterDuff.Mode.SRC_ATOP);
+        imageShare.setColorFilter(colorFilter);
+        imageDownload.setColorFilter(colorFilter);
+
+        //text download share
+        textDownload.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textShare.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+
+        //button done
+        ShapeDrawable btnDoneNormalShape= CustomShape.applyShape(
+                Color.parseColor(custom.getButtonBackgroundColor()),10,this);
+        String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(
+                custom.getButtonBackgroundColor());
+        ShapeDrawable btnDoneSelectorShape=CustomShape.applyShape(Color.parseColor(buttonSelectColor),
+                10,this);
+
+        StateListDrawable selector= SelectedState.selectedSate(btnDoneNormalShape,btnDoneSelectorShape);
+        buttonDoneContainer.setBackground(selector);
+        textDone.setTextColor(Color.parseColor(custom.getButtonTextColor()));
+
+        //apply text theme
+        textInvoiceAlreadyPaid.setTextColor(Color.parseColor(custom.getPrimaryTextColor()));
+        textTranNoTitle.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textBankRefTitle.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textToMerchantTitle.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textTranDateTitle.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textTotalTitle.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textTranNo.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textBankRef.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textToMerchant.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textTranDate.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textTotalAmount.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
+        textTotalAmount.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
+        textCurrency.setTextColor(Color.parseColor(custom.getSecondaryTextColor()));
     }
 
-    private Bitmap convertLayoutToImage(View view){
+    private Bitmap convertLayoutToImage(@NonNull View view){
         AppCompatTextView invoiceAlreayPaid=view.findViewById(R.id.text_invoice_already_paid_share);
         AppCompatTextView tranNoTitle=view.findViewById(R.id.text_tran_no_title_share);
         AppCompatTextView bankRefTitle=view.findViewById(R.id.text_bank_ref_title_share);
         AppCompatTextView toMerchantTitle=view.findViewById(R.id.text_to_merchant_title_share);
-        AppCompatTextView tranDateTitle=view.findViewById(R.id.text_to_merchant_title_share);
+        AppCompatTextView tranDateTitle=view.findViewById(R.id.text_tran_date_title_share);
         AppCompatTextView totalTitle=view.findViewById(R.id.text_total_title_share);
         AppCompatTextView transactionNo=view.findViewById(R.id.text_tran_no_share);
         AppCompatTextView bankRef=view.findViewById(R.id.text_bank_ref_share);
@@ -270,21 +294,15 @@ public class SuccessActivity extends AppCompatActivity {
             SetFont font=new SetFont();
             Typeface typeface=font.setFont(this,language);
 
-            if(language.equals(LanguageCode.EN)){
-                invoiceAlreayPaid.setText(Translate.INVOICE_PAID_DONE_EN);
-                tranNoTitle.setText(Translate.TRANSACTION_EN);
-                bankRefTitle.setText(Translate.BANK_REF_EN);
-                toMerchantTitle.setText(Translate.TO_MERCHANT_EN);
-                tranDateTitle.setText(Translate.TRAN_DATE_EN);
-                totalTitle.setText(Translate.TOTAL_EN);
-            }else {
-                invoiceAlreayPaid.setText(Translate.INVOICE_PAID_DONE_KM);
-                tranNoTitle.setText(Translate.TRANSACTION_KM);
-                bankRefTitle.setText(Translate.BANK_REF_KM);
-                toMerchantTitle.setText(Translate.TO_MERCHANT_KM);
-                tranDateTitle.setText(Translate.TRAN_DATE_KM);
-                totalTitle.setText(Translate.TOTAL_KM);
-            }
+            //translate
+            TranslateLanguage tranLang=TranslateLanguage.translateLanguage(language);
+            invoiceAlreayPaid.setText(tranLang.getInvoicePaidDone());
+            tranNoTitle.setText(tranLang.getTransactionNo());
+            bankRefTitle.setText(tranLang.getBankRef());
+            toMerchantTitle.setText(tranLang.getToMerchant());
+            tranDateTitle.setText(tranLang.getTransactionDate());
+            totalTitle.setText(tranLang.getTotal());
+
 
             invoiceAlreayPaid.setTypeface(typeface);
             invoiceAlreayPaid.setTextSize(16);
@@ -358,11 +376,6 @@ public class SuccessActivity extends AppCompatActivity {
         customSnackbar.show();
     }
     private void downloadInvoice(Bitmap bitmap){
-//        Date now = new Date();
-//        long currentTimeInMilliseconds = System.currentTimeMillis();
-//        int microseconds = (int) ((currentTimeInMilliseconds % 1000) * 1000);
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-//        String formattedDateTime = dateFormat.format(now);
 
         String imageTitle=transactionInfoModel.getTranNo()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+ transactionInfoModel.getCurrency();
         String imageUrl= MediaStore.Images.Media.insertImage(this.getContentResolver(),bitmap,imageTitle,"");
@@ -385,11 +398,12 @@ public class SuccessActivity extends AppCompatActivity {
     }
 
     private void shareInvoice(Bitmap bitmap){
-        File tempFile = null;
+        File tempFile;
         String fileName=transactionInfoModel.getTranNo()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
 
         try {
-            tempFile = File.createTempFile(fileName, ".png", this.getCacheDir());
+            //tempFile = File.createTempFile(fileName, ".png", this.getCacheDir());
+            tempFile=new File(getCacheDir(),fileName+".png");
             FileOutputStream fos = new FileOutputStream(tempFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
@@ -407,179 +421,6 @@ public class SuccessActivity extends AppCompatActivity {
         }
     }
 
-    private void successContainerShape(){
-
-        if(isLightMode){
-
-            String successActivityColor=lightModeModel.getSecondaryColor().getBackgroundColor();
-            String successActivityHexa=ConvertColorHexa.convertHex(successActivityColor);
-            successActivityContainer.setBackgroundColor(Color.parseColor(successActivityHexa));
-
-
-            String successContainerColor=lightModeModel.getPrimaryColor().getBackgroundColor();
-            String successContainerHexa= ConvertColorHexa.convertHex(successContainerColor);
-            ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(successContainerHexa),20,this);
-            successContainer.setBackground(shape);
-        }else {
-            String successActivityColor=darkModeModel.getSecondaryColor().getBackgroundColor();
-            String successActivityHexa=ConvertColorHexa.convertHex(successActivityColor);
-            successActivityContainer.setBackgroundColor(Color.parseColor(successActivityHexa));
-
-            String successContainerColor=darkModeModel.getPrimaryColor().getBackgroundColor();
-            String successContainerHexa= ConvertColorHexa.convertHex(successContainerColor);
-            ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(successContainerHexa),20,this);
-            successContainer.setBackground(shape);
-        }
-    }
-
-    private void downloadShareContainerShape(){
-        if(isLightMode){
-
-            String bgDownloadShare=lightModeModel.getButton().getActionButton().getBackgroundColor();
-            String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
-
-            ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),10,this);
-            String downloadShareSelectedColor=ConvertColorHexa.getFiftyPercentColor(bgDownloadShare);
-            ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),10,this);
-
-
-            StateListDrawable selectorDownload= SelectedState.selectedSate(shape,shape1);
-            downloadContainer.setBackground(selectorDownload);
-
-            StateListDrawable selectorShare=SelectedState.selectedSate(shape,shape1);
-
-            shareContainer.setBackground(selectorShare);
-
-            //apply icon color
-            String iconColor=lightModeModel.getButton().getActionButton().getTextColor();
-            String iconColorHexa=ConvertColorHexa.convertHex(iconColor);
-            ColorFilter colorFilterFavicon=new PorterDuffColorFilter(Color.parseColor(iconColorHexa), PorterDuff.Mode.SRC_ATOP);
-            imageShare.setColorFilter(colorFilterFavicon);
-            imageDownload.setColorFilter(colorFilterFavicon);
-
-            //download share
-            String downloadShareColor=lightModeModel.getSecondaryColor().getTextColor();
-            String downloadShareHexa=ConvertColorHexa.convertHex(downloadShareColor);
-
-            textDownload.setTextColor(Color.parseColor(downloadShareHexa));
-            textShare.setTextColor(Color.parseColor(downloadShareHexa));
-        }else {
-
-
-            String bgDownloadShare=darkModeModel.getButton().getActionButton().getBackgroundColor();
-            String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
-
-            ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),10,this);
-            String downloadShareSelectedColor=ConvertColorHexa.getFiftyPercentColor(bgDownloadShare);
-            ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),10,this);
-
-
-            StateListDrawable selectorDownload= SelectedState.selectedSate(shape,shape1);
-            downloadContainer.setBackground(selectorDownload);
-
-            StateListDrawable selectorShare=SelectedState.selectedSate(shape,shape1);
-
-
-            shareContainer.setBackground(selectorShare);
-
-            //apply icon color
-            String iconColor=darkModeModel.getButton().getActionButton().getTextColor();
-            String iconColorHexa=ConvertColorHexa.convertHex(iconColor);
-            ColorFilter colorFilterFavicon=new PorterDuffColorFilter(Color.parseColor(iconColorHexa), PorterDuff.Mode.SRC_ATOP);
-            imageShare.setColorFilter(colorFilterFavicon);
-            imageDownload.setColorFilter(colorFilterFavicon);
-
-            //download share
-            String downloadShareColor=darkModeModel.getSecondaryColor().getTextColor();
-            String downloadShareHexa=ConvertColorHexa.convertHex(downloadShareColor);
-
-            textDownload.setTextColor(Color.parseColor(downloadShareHexa));
-            textShare.setTextColor(Color.parseColor(downloadShareHexa));
-
-        }
-
-    }
-
-    private void buttonDoneShape(){
-        if(isLightMode){
-            String bgButton=lightModeModel.getButton().getBackgroundColor();
-            String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
-            ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,this);
-
-            String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
-            ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),10,this);
-
-            StateListDrawable selector= SelectedState.selectedSate(shape,buttonSelected);
-            buttonDoneContainer.setBackground(selector);
-
-            //text button try again
-            String textButtonColor=lightModeModel.getButton().getTextColor();
-            String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
-            textDone.setTextColor(Color.parseColor(textButtonColorHexa));
-
-        }else {
-
-            String bgButton=darkModeModel.getButton().getBackgroundColor();
-            String bgButtonHexa=ConvertColorHexa.convertHex(bgButton);
-            ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgButtonHexa),10,this);
-            String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(bgButton);
-            ShapeDrawable buttonSelected=CustomShape.applyShape(Color.parseColor(buttonSelectColor),10,this);
-
-            StateListDrawable selector= SelectedState.selectedSate(shape,buttonSelected);
-            buttonDoneContainer.setBackground(selector);
-
-            //text button try again
-            String textButtonColor=darkModeModel.getButton().getTextColor();
-            String textButtonColorHexa=ConvertColorHexa.convertHex(textButtonColor);
-            textDone.setTextColor(Color.parseColor(textButtonColorHexa));
-        }
-
-    }
-
-
-    private void applyTextStyle(){
-        if(isLightMode){
-            String invoiceTitleColor=lightModeModel.getPrimaryColor().getTextColor();
-            String invoiceHaxa=ConvertColorHexa.convertHex(invoiceTitleColor);
-            textInvoiceAlreadyPaid.setTextColor(Color.parseColor(invoiceHaxa));
-
-            String otherTextColor=lightModeModel.getSecondaryColor().getTextColor();
-            String otherTextColorHexa=ConvertColorHexa.convertHex(otherTextColor);
-            textTranNoTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textBankRefTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textToMerchantTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTranDateTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTotalTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTranNo.setTextColor(Color.parseColor(otherTextColorHexa));
-            textBankRef.setTextColor(Color.parseColor(otherTextColorHexa));
-            textToMerchant.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTranDate.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTotalAmount.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTotalAmount.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
-            textCurrency.setTextColor(Color.parseColor(otherTextColorHexa));
-
-        }
-        else {
-            String invoiceTitleColor=darkModeModel.getPrimaryColor().getTextColor();
-            String invoiceHaxa=ConvertColorHexa.convertHex(invoiceTitleColor);
-            textInvoiceAlreadyPaid.setTextColor(Color.parseColor(invoiceHaxa));
-
-            String otherTextColor=darkModeModel.getSecondaryColor().getTextColor();
-            String otherTextColorHexa=ConvertColorHexa.convertHex(otherTextColor);
-            textTranNoTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textBankRefTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textToMerchantTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTranDateTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTotalTitle.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTranNo.setTextColor(Color.parseColor(otherTextColorHexa));
-            textBankRef.setTextColor(Color.parseColor(otherTextColorHexa));
-            textToMerchant.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTranDate.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTotalAmount.setTextColor(Color.parseColor(otherTextColorHexa));
-            textTotalAmount.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
-            textCurrency.setTextColor(Color.parseColor(otherTextColorHexa));
-        }
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -587,15 +428,13 @@ public class SuccessActivity extends AppCompatActivity {
 
         initView();
         getDataIntent();
-        dashLine();
+
+        applyTheme();//apply theme
+
         translateLanguage();
         bindData();
 
         updateFont();
-        successContainerShape();
-        downloadShareContainerShape();
-        buttonDoneShape();
-        applyTextStyle();
 
         View layoutImage=getLayoutInflater().inflate(R.layout.download_share_success_image_layout,null);
         downloadContainer.setOnClickListener(v->{

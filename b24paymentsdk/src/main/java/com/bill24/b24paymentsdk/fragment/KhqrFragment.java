@@ -33,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -47,6 +48,7 @@ import com.bill24.b24paymentsdk.helper.CustomSnackbar;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.SharePreferenceCustom;
 import com.bill24.b24paymentsdk.helper.Translate;
+import com.bill24.b24paymentsdk.helper.translateLanguage.TranslateLanguage;
 import com.bill24.b24paymentsdk.model.BillerModel;
 import com.bill24.b24paymentsdk.model.CheckoutPageConfigModel;
 import com.bill24.b24paymentsdk.model.ExpiredTransactionModel;
@@ -59,6 +61,7 @@ import com.bill24.b24paymentsdk.model.conts.CurrencyCode;
 import com.bill24.b24paymentsdk.model.conts.LanguageCode;
 import com.bill24.b24paymentsdk.model.conts.StatusCode;
 import com.bill24.b24paymentsdk.model.requestModel.ExpiredRequestModel;
+import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
@@ -218,26 +221,28 @@ public class KhqrFragment extends Fragment {
         ExpiredRequestModel requestModel=new ExpiredRequestModel(transactionId);
         Call<BaseResponse<ExpiredTransactionModel>> call =requestAPI.postExpireTran(requestModel);
 
-        call.enqueue(new Callback<BaseResponse<ExpiredTransactionModel>>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<BaseResponse<ExpiredTransactionModel>> call, Response<BaseResponse<ExpiredTransactionModel>> response) {
+            public void onResponse(@NonNull Call<BaseResponse<ExpiredTransactionModel>> call, @NonNull Response<BaseResponse<ExpiredTransactionModel>> response) {
 
-                if(response.isSuccessful()){
-                    if(response.body().getCode().equals(StatusCode.SUCCESS)){
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    if (response.body().getCode().equals(StatusCode.SUCCESS)) {
                         khqrLoading.setVisibility(View.GONE);
-                        BaseResponse<ExpiredTransactionModel> expiredTran=response.body();
-                        String expiredTime=expiredTran.getData().getExpiredDate();
+                        BaseResponse<ExpiredTransactionModel> expiredTran = response.body();
+                        String expiredTime = expiredTran.getData().getExpiredDate();
                         //String expiredTime="2023-10-26 15:54:20";
                         try {
                             @SuppressLint("SimpleDateFormat")
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            Date expiredDate=dateFormat.parse(expiredTime);
-                            Date currentDate=new Date();
-                            long timeDifferenceMillisecond=expiredDate.getTime() - currentDate.getTime();
+                            Date expiredDate = dateFormat.parse(expiredTime);
+                            Date currentDate = new Date();
+                            assert expiredDate != null;
+                            long timeDifferenceMillisecond = expiredDate.getTime() - currentDate.getTime();
 
-                            if(timeDifferenceMillisecond > 1800000){//30 minutes
+                            if (timeDifferenceMillisecond > 1800000) {//30 minutes
                                 containerLoadingTime.setVisibility(View.INVISIBLE);
-                            }else {
+                            } else {
                                 containerLoadingTime.setVisibility(View.VISIBLE);
                             }
 
@@ -246,14 +251,13 @@ public class KhqrFragment extends Fragment {
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         }
-                    }
-                    else {
+                    } else {
                         String saveSuccess;
-                        if(language.equals(LanguageCode.EN)){
-                            saveSuccess=Translate.ERR_SERVER_EN;
+                        if (language.equals(LanguageCode.EN)) {
+                            saveSuccess = Translate.ERR_SERVER_EN;
 
-                        }else {
-                            saveSuccess=Translate.ERR_SERVER_KM;
+                        } else {
+                            saveSuccess = Translate.ERR_SERVER_KM;
                         }
 
                         //hide progress bar
@@ -262,22 +266,20 @@ public class KhqrFragment extends Fragment {
                         CustomSnackbar.showSuccessSnackbar(getContext(),
                                 view.findViewById(R.id.container_khqrfragment),
                                 R.drawable.error_24px,
-                                saveSuccess,R.color.snackbar_background_error_color,
+                                saveSuccess, R.color.snackbar_background_error_color,
                                 Snackbar.LENGTH_LONG
-                                ,language);
+                                , language);
                     }
-                }
-
-                else {
-                    Log.d("extend time", "onResponse: "+response.code());
+                } else {
+                    Log.d("extend time", "onResponse: " + response.code());
                     //Toast.makeText(getContext(),"Code : "+response.code(),Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<ExpiredTransactionModel>> call, Throwable t) {
-                Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<BaseResponse<ExpiredTransactionModel>> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -337,11 +339,6 @@ public class KhqrFragment extends Fragment {
 //    }
 
     private void downloadKHQR(Bitmap bitmap,View view){
-//        Date now = new Date();
-//        long currentTimeInMilliseconds = System.currentTimeMillis();
-//        int microseconds = (int) ((currentTimeInMilliseconds % 1000) * 1000);
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
-//        String formattedDateTime = dateFormat.format(now);
 
         String imageTitle=billerModel.getBillerName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
         String imageUrl= MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(),bitmap,imageTitle,"");
@@ -376,11 +373,12 @@ public class KhqrFragment extends Fragment {
 //        }
     }
     private void shareKHQR(Bitmap bitmap){
-        File tempFile = null;
+        File tempFile;
 
         String fileName=billerModel.getBillerName()+"-"+transactionInfoModel.getTranAmountDisplay()+" "+transactionInfoModel.getCurrency();
         try {
-            tempFile = File.createTempFile(fileName, ".png", getContext().getCacheDir());
+            //tempFile = File.createTempFile(fileName, ".png");
+            tempFile=new File(getContext().getCacheDir(),fileName +".png");
             FileOutputStream fos = new FileOutputStream(tempFile);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
@@ -398,171 +396,64 @@ public class KhqrFragment extends Fragment {
         }
     }
 
+    private void  applyThemeShape(){
+        CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
 
-    private void applyStyleShapeLightMode(){
+        khqrContainer.setBackgroundColor(Color.parseColor(customTheme.getSecondaryBackgroundColor()));
+        textScanToPay.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
+        textOr.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
 
-        LightModeModel lightModeModel= checkoutPageConfigModel.getAppearance().getLightMode();
-
-
-    //khqr container
-       String bgKhqrContainerColor=lightModeModel.getSecondaryColor().getBackgroundColor();
-       String bgKhqrContainerHexa= ConvertColorHexa.convertHex(bgKhqrContainerColor);
-       khqrContainer.setBackgroundColor(Color.parseColor(bgKhqrContainerHexa));
-
-       //text scan text or
-        String scanPayColor=lightModeModel.getPrimaryColor().getTextColor();
-        String scanPayColorHexa=ConvertColorHexa.convertHex(scanPayColor);
-        textScanToPay.setTextColor(Color.parseColor(scanPayColorHexa));
-        textOr.setTextColor(Color.parseColor(scanPayColorHexa));
-
-        // dash line
-        String dashLine=lightModeModel.getIndicatorColor();
-        String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
+        //dash line
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.LINE);
         int width=(int)(1*getContext().getResources().getDisplayMetrics().density);
         int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
 
         gradientDrawable.setStroke(width,
-                Color.parseColor(dashLineHexa),
+                Color.parseColor(customTheme.getIndicatorColor()),
                 dashWidthHeight,
                 dashWidthHeight); // Set the stroke color and width// Set the corner radius
 
         dashLineLeft.setBackground(gradientDrawable);
         dashLineRight.setBackground(gradientDrawable);
 
-
         //count time
-        String countTimeColor=lightModeModel.getSecondaryColor().getTextColor();
-        String countTimeColorHexa=ConvertColorHexa.convertHex(countTimeColor);
-        textCountDownTime.setTextColor(Color.parseColor(countTimeColorHexa));
-
-
-
-
-       //apply shape
-       String bgDownloadShare=lightModeModel.getButton().getActionButton().getBackgroundColor();
-       String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
-
-        ShapeDrawable shape= CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),10,getContext());
-        String downloadShareSelectedColor=ConvertColorHexa.getFiftyPercentColor(bgDownloadShare);
-        ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),10,getContext());
-
-
-        StateListDrawable selectorDownload= SelectedState.selectedSate(shape,shape1);
-        downloadContainer.setBackground(selectorDownload);
-
-        StateListDrawable selectorShare=SelectedState.selectedSate(shape,shape1);
-
-
-        shareContainer.setBackground(selectorShare);
-
-       //apply icon color
-        String iconColor=lightModeModel.getButton().getActionButton().getTextColor();
-        String iconColorHexa=ConvertColorHexa.convertHex(iconColor);
-        ColorFilter colorFilterFavicon=new PorterDuffColorFilter(Color.parseColor(iconColorHexa), PorterDuff.Mode.SRC_ATOP);
-        imageShare.setColorFilter(colorFilterFavicon);
-        imageDownload.setColorFilter(colorFilterFavicon);
+        textCountDownTime.setTextColor(Color.parseColor(customTheme.getSecondaryTextColor()));
 
         //download share
-        String downloadShareColor=lightModeModel.getSecondaryColor().getTextColor();
-        String downloadShareHexa=ConvertColorHexa.convertHex(downloadShareColor);
+        ShapeDrawable normalShape=CustomShape.applyShape(
+                Color.parseColor(customTheme.getActionButtonBackgroundColor()),
+                        10,getContext());
 
-        textDownload.setTextColor(Color.parseColor(downloadShareHexa));
-        textShare.setTextColor(Color.parseColor(downloadShareHexa));
+        String selectorColor=ConvertColorHexa.getFiftyPercentColor(
+                customTheme.getActionButtonBackgroundColor());
 
-    }
+        ShapeDrawable selectorShape=CustomShape.applyShape(
+                Color.parseColor(selectorColor),
+                10,getContext()
+        );
 
-
-    private void applyStyleShapeDarkMode(){
-
-        DarkModeModel darkModeModel= checkoutPageConfigModel.getAppearance().getDarkMode();
-
-
-        //khqr container
-        String bgKhqrContainerColor=darkModeModel.getSecondaryColor().getBackgroundColor();
-        String bgKhqrContainerHexa=ConvertColorHexa.convertHex(bgKhqrContainerColor);
-        khqrContainer.setBackgroundColor(Color.parseColor(bgKhqrContainerHexa));
-
-        //text scan text or
-        String scanPayColor=darkModeModel.getPrimaryColor().getTextColor();
-        String scanPayColorHexa=ConvertColorHexa.convertHex(scanPayColor);
-        textScanToPay.setTextColor(Color.parseColor(scanPayColorHexa));
-        textOr.setTextColor(Color.parseColor(scanPayColorHexa));
-
-        // dash line
-        String dashLine=darkModeModel.getIndicatorColor();
-        String dashLineHexa=ConvertColorHexa.convertHex(dashLine);
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.LINE);
-        int width=(int)(1*getContext().getResources().getDisplayMetrics().density);
-        int dashWidthHeight=(int)(5*getContext().getResources().getDisplayMetrics().density);
-
-        gradientDrawable.setStroke(width,
-                Color.parseColor(dashLineHexa),
-                dashWidthHeight,
-                dashWidthHeight);
-
-        dashLineLeft.setBackground(gradientDrawable);
-        dashLineRight.setBackground(gradientDrawable);
-
-
-        //count time
-        String countTimeColor=darkModeModel.getSecondaryColor().getTextColor();
-        String countTimeColorHexa=ConvertColorHexa.convertHex(countTimeColor);
-        textCountDownTime.setTextColor(Color.parseColor(countTimeColorHexa));
-
-
-
-
-        //apply shape
-        String bgDownloadShare=darkModeModel.getButton().getActionButton().getBackgroundColor();
-        String bgDownloadShareHexa=ConvertColorHexa.convertHex(bgDownloadShare);
-
-
-        ShapeDrawable shape=CustomShape.applyShape(Color.parseColor(bgDownloadShareHexa),10,getContext());
-        String downloadShareSelectedColor=ConvertColorHexa.getFiftyPercentColor(bgDownloadShare);
-        ShapeDrawable shape1=CustomShape.applyShape(Color.parseColor(downloadShareSelectedColor),10,getContext());
-
-
-        StateListDrawable selectorDownload= SelectedState.selectedSate(shape,shape1);
+        StateListDrawable selectorDownload=SelectedState.selectedSate(normalShape,selectorShape);
         downloadContainer.setBackground(selectorDownload);
-
-        StateListDrawable selectorShare=SelectedState.selectedSate(shape,shape1);
-
-
+        StateListDrawable selectorShare=SelectedState.selectedSate(normalShape,selectorShape);
         shareContainer.setBackground(selectorShare);
 
-        //apply icon color
-        String iconColor=darkModeModel.getButton().getActionButton().getTextColor();
-        String iconColorHexa=ConvertColorHexa.convertHex(iconColor);
-        ColorFilter colorFilterFavicon=new PorterDuffColorFilter(Color.parseColor(iconColorHexa), PorterDuff.Mode.SRC_ATOP);
-        imageShare.setColorFilter(colorFilterFavicon);
-        imageDownload.setColorFilter(colorFilterFavicon);
-
-        //download share
-        String downloadShareColor=darkModeModel.getSecondaryColor().getTextColor();
-        String downloadShareHexa=ConvertColorHexa.convertHex(downloadShareColor);
-
-        textDownload.setTextColor(Color.parseColor(downloadShareHexa));
-        textShare.setTextColor(Color.parseColor(downloadShareHexa));
-
+        ColorFilter colorFilter=new PorterDuffColorFilter(
+                Color.parseColor(customTheme.getActionButtonTextColor()),
+                PorterDuff.Mode.SRC_ATOP);
+        imageShare.setColorFilter(colorFilter);
+        imageDownload.setColorFilter(colorFilter);
+        textDownload.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
+        textShare.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
 
     }
 
     private void translateLanguage(){
-        if(language.equals(LanguageCode.KH)){
-            textDownload.setText(Translate.DONWLOAD_KM);
-            textScanToPay.setText(Translate.SCAN_TO_PAY_KM);
-            textShare.setText(Translate.SHARE_KM);
-            textOr.setText(Translate.OR_KM);
-        }
-        else {
-            textDownload.setText(Translate.DOWNLOAD_EN);
-            textScanToPay.setText(Translate.SCAN_TO_PAY_EN);
-            textShare.setText(Translate.SHARE_EN);
-            textOr.setText(Translate.OR_EN);
-        }
+        TranslateLanguage translateLanguage=TranslateLanguage.translateLanguage(language);
+            textDownload.setText(translateLanguage.getDownload());
+            textScanToPay.setText(translateLanguage.getScanToPay());
+            textShare.setText(translateLanguage.getShare());
+            textOr.setText(translateLanguage.getOr());
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -586,13 +477,9 @@ public class KhqrFragment extends Fragment {
 
 
 
-        //applyStyle
-        if(isLightMode){
-            applyStyleShapeLightMode();
+        //apply theme shape
+        applyThemeShape();
 
-        }else {
-            applyStyleShapeDarkMode();
-        }
 
         //apply khqr card corner
         ShapeDrawable khqrCard=CustomShape.applyShape(Color.WHITE,30,getContext());
@@ -609,15 +496,15 @@ public class KhqrFragment extends Fragment {
         containerQrCode.setBackground(containerQrcode);
 
         ShapeDrawable khqrBg=CustomShape.applyShape(
-                getResources().getColor(R.color.khqr_backgound_color),30,getContext());
+                ContextCompat.getColor(getContext(),R.color.khqr_backgound_color),30,getContext());
         khqrBackground.setBackground(khqrBg);
 
 
 
         postExtendExpiredTime(view);//get expired date from api
 
+        // get layout to conver to image
         View layoutImage=getLayoutInflater().inflate(R.layout.download_share_card_khqr_image_layout,null);
-
         downloadContainer.setOnClickListener(v->{
              Bitmap bitmap=convertLayoutToImage(layoutImage);
              Canvas canvas=new Canvas(bitmap);

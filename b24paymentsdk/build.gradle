@@ -83,7 +83,7 @@ publishing {
     }
     repositories {               // << --- ADD This
         maven {
-            url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            url = uri("https://s01.oss.sonatype.org/")
             credentials {
                 username = "TLIP0CeP"
                 password ="oehtRxNAdxPLcY6PCJwo2cjWtyoFomWCGdEC6Cj29PwW"

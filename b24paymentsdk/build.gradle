@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             consumerProguardFiles 'proguard-rules.pro'
             consumerProguardFiles "consumer-rules.pro"
@@ -61,19 +61,18 @@ dependencies {
 
     }
 }
-
 // 5. Publishing:
-//publishing {
-//    publications {
-//        aar(MavenPublication) {
-//            groupId = 'com.github.visal-99'
-//            artifactId = 'b24paymentsdk'
-//            version = "1.0.0"
-//        }
-//    }
-//    repositories {               // << --- ADD This
-//        maven {
-//            url "https://jitpack.io"
-//        }
-//    }
-//}
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId = 'com.github.visal-99'
+            artifactId = 'b24paymentsdk'
+            version = "1.0.0"
+        }
+    }
+    repositories {               // << --- ADD This
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+}

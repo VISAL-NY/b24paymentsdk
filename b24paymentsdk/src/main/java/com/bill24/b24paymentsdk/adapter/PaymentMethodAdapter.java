@@ -107,6 +107,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         textSectionHeader.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
         textSectionHeader.setTextColor(context.getColor(R.color.header_font_color));
 
+
     }
 
     private void applyHeaderTheme(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
@@ -310,8 +311,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             if (currentPos == headerPosition) {
                 if (language.equals(LanguageCode.EN)) {
                     textSectionHeader.setText(section.getSection());
+
                 } else {
+
                     textSectionHeader.setText(section.getSectionKh());
+
                 }
                 updateHeaderFont(header.getContext(),textSectionHeader);
 

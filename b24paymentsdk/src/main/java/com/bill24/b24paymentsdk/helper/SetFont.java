@@ -1,17 +1,8 @@
 package com.bill24.b24paymentsdk.helper;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
-import android.text.style.StyleSpan;
-import android.text.style.TypefaceSpan;
 
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.bill24.b24paymentsdk.R;
@@ -29,6 +20,5 @@ public class SetFont {
         }
         return typeface;
     }
-
 
 }

@@ -67,12 +67,19 @@ dependencies {
 // 5. Publishing:
 publishing {
     publications {
-        maven(MavenPublication) {
+        arr(MavenPublication) {
             groupId = 'com.github.visal-99'
             artifactId = 'b24paymentsdk'
             version = "1.0.0"
-            pom {
-                description = 'payment online'
+//            artifact("$buildDir/outputs/arr/b24paymentsdk.arr")
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
             }
         }
     }

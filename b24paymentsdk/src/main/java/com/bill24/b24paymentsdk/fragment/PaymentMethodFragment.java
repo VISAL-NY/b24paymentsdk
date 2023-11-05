@@ -356,14 +356,14 @@ public class PaymentMethodFragment extends Fragment
                 );
 
 
-                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
-                intent.putExtra(Constant.KEY_LANGUAGE_CODE,language);
-                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
-                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
-                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
-                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
-
-                startActivity(intent);
+//                Intent intent=new Intent(requireActivity(), SuccessActivity.class);
+//                intent.putExtra(Constant.KEY_LANGUAGE_CODE,language);
+//                intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
+//                intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
+//                intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
+//                intent.putExtra(Constant.KEY_BILLER,new BillerModel());
+//
+//                startActivity(intent);
 
                 //todo handle when click on mastercard
 

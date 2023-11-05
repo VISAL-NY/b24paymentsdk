@@ -48,6 +48,7 @@ import com.bill24.b24paymentsdk.model.requestModel.AddToFavoriteRequestModel;
 import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,8 +106,6 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         textSectionHeader.setTextSize(11);
         textSectionHeader.setPaintFlags(Paint.FAKE_BOLD_TEXT_FLAG);
         textSectionHeader.setTextColor(context.getColor(R.color.header_font_color));
-
-
 
     }
 

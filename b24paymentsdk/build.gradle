@@ -3,10 +3,6 @@ plugins {
      id 'maven-publish'
 }
 
-group = 'com.github.visal-99'
-version = '1.0.0'
-
-
 android {
 
     namespace 'com.bill24.b24paymentsdk'
@@ -24,6 +20,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             consumerProguardFiles 'proguard-rules.pro'
+            consumerProguardFiles "consumer-rules.pro"
         }
     }
     compileOptions {
@@ -84,7 +81,6 @@ dependencies {
 //            groupId = 'com.github.visal-99'
 //            artifactId = 'b24paymentsdk'
 //            version = "1.0.0"
-//            artifact("$buildDir/outputs/aar/b24paymentsdk-release.aar")
 //            pom{
 //                name = 'b24paymentsdk'   // Replace with your library's name
 //                description = 'provide payment online'

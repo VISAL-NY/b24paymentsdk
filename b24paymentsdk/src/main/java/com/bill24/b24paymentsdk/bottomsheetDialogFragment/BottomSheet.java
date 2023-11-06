@@ -71,6 +71,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private boolean isLightMode;
     private BottomSheetDialog dialog;
     private String tranId,refererKey,language,env, baseUrl="";
+    private CheckoutPageConfigModel checkoutPageConfigModel;
     public BottomSheet(
             String tranId,
             String refererKey,
@@ -375,6 +376,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         postCheckoutDetail(view);
 
+        //set bottomsheet radius
+        setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
+
         //wait broadcast from server
         broadcastFromSocketServer();
 
@@ -417,7 +421,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                     response.body().getData().getTransInfo() : new TransactionInfoModel();
 
                     //CheckoutPageConfig
-                    CheckoutPageConfigModel checkoutPageConfigModel=
+                    checkoutPageConfigModel=
                             (
                                     response.body()!=null &&
                                             response.body().getData() !=null &&
@@ -425,11 +429,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                             ) ?
                                     response.body().getData().getCheckoutPageConfig() : new CheckoutPageConfigModel();
 
-
-
-
-                    //set bottomsheet radius
-                    setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
 
 
                     //set getlanuage

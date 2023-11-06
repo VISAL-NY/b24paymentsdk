@@ -393,7 +393,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
 
                 if(response.isSuccessful()){
-                    if(!(response.body().equals(StatusCode.SUCCESS))){
+                    if(!response.body().equals(StatusCode.SUCCESS)){
                         String message;
                         if(language.equals(LanguageCode.EN)){
                             message= Translate.ERR_SERVER_EN;
@@ -481,7 +481,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         new Handler().postDelayed(() -> {
                             hideProgressIndicator();//Hide Progress Indicator
                         },100);
-
 
                         Log.d("checkoutDetail", "onResponse: "+transactionInfoModel.getKhqrString());
 

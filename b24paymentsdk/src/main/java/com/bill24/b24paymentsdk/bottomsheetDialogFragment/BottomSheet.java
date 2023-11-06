@@ -337,7 +337,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         if(isLightMode){
             ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
+           // String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
+            String bottomSheetColor="#AB1B52";
             String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
 
 

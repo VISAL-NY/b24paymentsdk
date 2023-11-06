@@ -393,25 +393,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
 
                 if(response.isSuccessful()){
-                    if(!response.body().equals(StatusCode.SUCCESS)){
-                        String message;
-                        if(language.equals(LanguageCode.EN)){
-                            message= Translate.ERR_SERVER_EN;
-                        }else {
-                            message=Translate.ERR_SERVER_KM;
-                        }
-
-                        CustomSnackbar.showSuccessSnackbar(
-                                getContext(),
-                                getView().findViewById(R.id.snackar_bottomsheet_container),
-                                R.drawable.error_24px,
-                                message,
-                                R.color.snackbar_background_error_color,
-                                Snackbar.LENGTH_LONG,
-                                language
-                        );
-
-                    }else {
+                    if(response.body().equals(StatusCode.SUCCESS)){
                         List<BankPaymentMethodModel> bankPaymentMethodModelList=
                                 (   response.body() !=null &&
                                         response.body().getData() !=null &&
@@ -483,6 +465,34 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         },100);
 
                         Log.d("checkoutDetail", "onResponse: "+transactionInfoModel.getKhqrString());
+
+                    }else {
+
+
+                        String message;
+                        if(language.equals(LanguageCode.EN)){
+                            message= Translate.ERR_SERVER_EN;
+                        }else {
+                            message=Translate.ERR_SERVER_KM;
+                        }
+
+                        CustomSnackbar.showSuccessSnackbar(
+                                getContext(),
+                                getView().findViewById(R.id.snackar_bottomsheet_container),
+                                R.drawable.error_24px,
+                                message,
+                                R.color.snackbar_background_error_color,
+                                Snackbar.LENGTH_LONG,
+                                language
+                        );
+
+
+
+
+
+
+
+
 
                     }
 

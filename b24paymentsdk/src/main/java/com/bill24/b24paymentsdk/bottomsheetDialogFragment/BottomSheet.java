@@ -47,6 +47,7 @@ import com.bill24.b24paymentsdk.model.requestModel.CheckoutDetailRequestModel;
 import com.bill24.b24paymentsdk.socketIO.EVentName;
 import com.bill24.b24paymentsdk.socketIO.SocketManager;
 import com.bill24.b24paymentsdk.socketIO.model.SocketRespModel;
+import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -71,7 +72,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private boolean isLightMode;
     private BottomSheetDialog dialog;
     private String tranId,refererKey,language,env, baseUrl="";
-    private CheckoutPageConfigModel checkoutPageConfigModel;
     public BottomSheet(
             String tranId,
             String refererKey,
@@ -328,20 +328,25 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 cornerRadiusPX, cornerRadiusPX, cornerRadiusPX, cornerRadiusPX, 0, 0, 0, 0
         };
 
-        if(isLightMode){
-            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
-            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
+        ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+        viewGroup.setBackground(shapeDrawable);
 
-            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
-            viewGroup.setBackground(shapeDrawable);
-        }else {
-            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getDarkMode().getSecondaryColor().getBackgroundColor();
-            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
-            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
-            viewGroup.setBackground(shapeDrawable);
-        }
+
+//        if(isLightMode){
+//            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+//            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
+//            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
+//
+//
+//            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
+//            viewGroup.setBackground(shapeDrawable);
+//        }else {
+//            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+//            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getDarkMode().getSecondaryColor().getBackgroundColor();
+//            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
+//            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
+//            viewGroup.setBackground(shapeDrawable);
+//        }
     }
     @Nullable
     @Override
@@ -375,9 +380,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         postCheckoutDetail(view);
-
-        //set bottomsheet radius
-        setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
 
         //wait broadcast from server
         broadcastFromSocketServer();
@@ -421,7 +423,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                     response.body().getData().getTransInfo() : new TransactionInfoModel();
 
                     //CheckoutPageConfig
-                    checkoutPageConfigModel=
+                    CheckoutPageConfigModel checkoutPageConfigModel=
                             (
                                     response.body()!=null &&
                                             response.body().getData() !=null &&
@@ -429,6 +431,11 @@ public class BottomSheet extends BottomSheetDialogFragment {
                             ) ?
                                     response.body().getData().getCheckoutPageConfig() : new CheckoutPageConfigModel();
 
+
+
+
+                    //set bottomsheet radius
+                    setRadiusCorner(getContext(),bottomSheet,12,checkoutPageConfigModel);
 
 
                     //set getlanuage

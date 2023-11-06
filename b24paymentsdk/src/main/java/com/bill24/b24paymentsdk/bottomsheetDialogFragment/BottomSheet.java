@@ -452,17 +452,27 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);
 
                         createDraghanle(Color.parseColor(dragHanleHexa));
+
+                        if(!bankPaymentMethodModelList.isEmpty()){
+                            setSharePreference(bankPaymentMethodModelList,transactionInfoModel,checkoutPageConfigModel,billerModel,language);//Store value in sharePreference
+                            showFragment(new PaymentMethodFragment());//Go to Fragment PaymentMethod
+                        }
                     }else {
                         DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
                         String dragHandle=darkModeModel.getIndicatorColor();
                         String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);
                         createDraghanle(Color.parseColor(dragHanleHexa));
+
+                        if(!bankPaymentMethodModelList.isEmpty()){
+                            setSharePreference(bankPaymentMethodModelList,transactionInfoModel,checkoutPageConfigModel,billerModel,language);//Store value in sharePreference
+                            showFragment(new PaymentMethodFragment());//Go to Fragment PaymentMethod
+                        }
                     }
 
-                    if(!bankPaymentMethodModelList.isEmpty()){
-                        setSharePreference(bankPaymentMethodModelList,transactionInfoModel,checkoutPageConfigModel,billerModel,language);//Store value in sharePreference
-                        showFragment(new PaymentMethodFragment());//Go to Fragment PaymentMethod
-                    }
+//                    if(!bankPaymentMethodModelList.isEmpty()){
+//                        setSharePreference(bankPaymentMethodModelList,transactionInfoModel,checkoutPageConfigModel,billerModel,language);//Store value in sharePreference
+//                        showFragment(new PaymentMethodFragment());//Go to Fragment PaymentMethod
+//                    }
 
                     new Handler().postDelayed(() -> {
                         hideProgressIndicator();//Hide Progress Indicator

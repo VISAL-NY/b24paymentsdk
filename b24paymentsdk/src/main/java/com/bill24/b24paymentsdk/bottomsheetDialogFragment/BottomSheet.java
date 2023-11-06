@@ -332,14 +332,10 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 cornerRadiusPX, cornerRadiusPX, cornerRadiusPX, cornerRadiusPX, 0, 0, 0, 0
         };
 
-//        ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-//        viewGroup.setBackground(shapeDrawable);
-
 
         if(isLightMode){
             ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-           // String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
-            String bottomSheetColor="#AB1B52";
+            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
             String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
 
 
@@ -397,13 +393,14 @@ public class BottomSheet extends BottomSheetDialogFragment {
             public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
 
                 if(response.isSuccessful()){
-                    if(response.body().equals(StatusCode.SUCCESS)){
+                    if(!(response.body().equals(StatusCode.SUCCESS))){
                         String message;
                         if(language.equals(LanguageCode.EN)){
                             message= Translate.ERR_SERVER_EN;
                         }else {
                             message=Translate.ERR_SERVER_KM;
                         }
+
                         CustomSnackbar.showSuccessSnackbar(
                                 getContext(),
                                 getView().findViewById(R.id.snackar_bottomsheet_container),
@@ -413,6 +410,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                 Snackbar.LENGTH_LONG,
                                 language
                         );
+
                     }else {
                         List<BankPaymentMethodModel> bankPaymentMethodModelList=
                                 (   response.body() !=null &&

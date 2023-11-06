@@ -393,7 +393,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
             public void onResponse(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Response<BaseResponse<CheckoutDetailModel>> response) {
 
                 if(response.isSuccessful()){
-                    if(response.body().equals(StatusCode.SUCCESS)){
+                    assert response.body() != null;
+                    if(response.body().getCode().equals(StatusCode.SUCCESS)){
                         List<BankPaymentMethodModel> bankPaymentMethodModelList=
                                 (   response.body() !=null &&
                                         response.body().getData() !=null &&
@@ -467,7 +468,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         Log.d("checkoutDetail", "onResponse: "+transactionInfoModel.getKhqrString());
 
                     }else {
-
 
                         String message;
                         if(language.equals(LanguageCode.EN)){

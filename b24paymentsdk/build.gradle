@@ -3,6 +3,9 @@ plugins {
      id 'maven-publish'
 }
 
+group = 'com.github.visal-99'
+version = '1.0.0'
+
 
 android {
 
@@ -62,6 +65,17 @@ dependencies {
 }
 
 
+//shadowJar {
+//    baseName = 'b24paymentsdk'
+//    classifier = 'release'
+//
+//    from sourceSets.main.output
+//    configurations = [project.configurations.runtimeClasspath]
+//}
+//
+//artifacts {
+//    archives shadowJar
+//}
 
 // 5. Publishing:
 //publishing {

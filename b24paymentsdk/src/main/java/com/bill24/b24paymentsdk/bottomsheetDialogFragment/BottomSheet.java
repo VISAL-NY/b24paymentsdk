@@ -72,6 +72,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private boolean isLightMode;
     private BottomSheetDialog dialog;
     private String tranId,refererKey,language,env, baseUrl="";
+    private CheckoutPageConfigModel checkoutPageConfigModel=new CheckoutPageConfigModel();
     public BottomSheet(
             String tranId,
             String refererKey,
@@ -181,6 +182,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         //connect to socket
         connectSocketIO(tranId);
+
+        postCheckoutDetail();
 
         if(language==null || language.isEmpty()){
             language= LanguageCode.KH;
@@ -328,25 +331,25 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 cornerRadiusPX, cornerRadiusPX, cornerRadiusPX, cornerRadiusPX, 0, 0, 0, 0
         };
 
-        ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-        viewGroup.setBackground(shapeDrawable);
+//        ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+//        viewGroup.setBackground(shapeDrawable);
 
 
-//        if(isLightMode){
-//            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-//            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
-//            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
-//
-//
-//            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
-//            viewGroup.setBackground(shapeDrawable);
-//        }else {
-//            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
-//            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getDarkMode().getSecondaryColor().getBackgroundColor();
-//            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
-//            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
-//            viewGroup.setBackground(shapeDrawable);
-//        }
+        if(isLightMode){
+            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
+            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
+
+
+            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
+            viewGroup.setBackground(shapeDrawable);
+        }else {
+            ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+            String bottomSheetColor=checkoutPageConfigModel.getAppearance().getDarkMode().getSecondaryColor().getBackgroundColor();
+            String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
+            shapeDrawable.getPaint().setColor(Color.parseColor(bottomSheetHexa)); // Set your background color here
+            viewGroup.setBackground(shapeDrawable);
+        }
     }
     @Nullable
     @Override
@@ -379,14 +382,12 @@ public class BottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        postCheckoutDetail(view);
-
         //wait broadcast from server
         broadcastFromSocketServer();
 
     }
 
-    private void postCheckoutDetail(View view){
+    private void postCheckoutDetail(){
         RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
         Call<BaseResponse<CheckoutDetailModel>> call=requestAPI.postCheckoutDetail(requestModel);
         call.enqueue(new Callback<BaseResponse<CheckoutDetailModel>>() {
@@ -423,7 +424,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                     response.body().getData().getTransInfo() : new TransactionInfoModel();
 
                     //CheckoutPageConfig
-                    CheckoutPageConfigModel checkoutPageConfigModel=
+                     checkoutPageConfigModel=
                             (
                                     response.body()!=null &&
                                             response.body().getData() !=null &&
@@ -470,7 +471,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                     Log.d("checkoutDetail", "onResponse: "+transactionInfoModel.getKhqrString());
                 }
 
-
             }
             @Override
             public void onFailure(@NonNull Call<BaseResponse<CheckoutDetailModel>> call, @NonNull Throwable t) {
@@ -484,7 +484,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
                 CustomSnackbar.showSuccessSnackbar(
                         getContext(),
-                        view.findViewById(R.id.snackar_bottomsheet_container),
+                        getView().findViewById(R.id.snackar_bottomsheet_container),
                                 R.drawable.error_24px,
                                 message,
                         R.color.snackbar_background_error_color,

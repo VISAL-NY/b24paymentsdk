@@ -184,7 +184,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         //connect to socket
         connectSocketIO(tranId);
 
-        postCheckoutDetail();
+
 
         if(language==null || language.isEmpty()){
             language= LanguageCode.KH;
@@ -381,6 +381,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        postCheckoutDetail();
 
         //wait broadcast from server
         broadcastFromSocketServer();

@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bill24.b24paymentsdk.R;
 import com.bill24.b24paymentsdk.bottomsheetDialogFragment.BottomSheet;
@@ -391,10 +393,13 @@ public class KhqrFragment extends Fragment {
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             startActivity(Intent.createChooser(shareIntent, "Share KHQR"));
+
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     private void  applyThemeShape(){
         CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
@@ -428,14 +433,14 @@ public class KhqrFragment extends Fragment {
         String selectorColor=ConvertColorHexa.getFiftyPercentColor(
                 customTheme.getActionButtonBackgroundColor());
 
-        ShapeDrawable selectorShape=CustomShape.applyShape(
-                Color.parseColor(selectorColor),
-                10,getContext()
-        );
+//        ShapeDrawable selectorShape=CustomShape.applyShape(
+//                Color.parseColor(selectorColor),
+//                10,getContext()
+//        );
 
-        StateListDrawable selectorDownload=SelectedState.selectedSate(normalShape,selectorShape);
+        StateListDrawable selectorDownload=SelectedState.selectedSate(normalShape,normalShape);
         downloadContainer.setBackground(selectorDownload);
-        StateListDrawable selectorShare=SelectedState.selectedSate(normalShape,selectorShape);
+        StateListDrawable selectorShare=SelectedState.selectedSate(normalShape,normalShape);
         shareContainer.setBackground(selectorShare);
 
         ColorFilter colorFilter=new PorterDuffColorFilter(
@@ -458,6 +463,8 @@ public class KhqrFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         getSharePreference();
 
         ChangLanguage.setLanguage(language,getContext());
@@ -488,7 +495,7 @@ public class KhqrFragment extends Fragment {
             int shadowPX=(int) (shadowColor*getContext().getResources().getDisplayMetrics().density);
             khqrCardContainer.setOutlineSpotShadowColor(shadowPX);
         }
-        int elevation=(int)(40*getContext().getResources().getDisplayMetrics().density);
+        int elevation=(int)(40 * getContext().getResources().getDisplayMetrics().density);
         khqrCardContainer.setElevation(elevation);
         khqrCardContainer.setBackground(khqrCard);
 
@@ -498,7 +505,6 @@ public class KhqrFragment extends Fragment {
         ShapeDrawable khqrBg=CustomShape.applyShape(
                 ContextCompat.getColor(getContext(),R.color.khqr_backgound_color),30,getContext());
         khqrBackground.setBackground(khqrBg);
-
 
 
         postExtendExpiredTime(view);//get expired date from api
@@ -524,7 +530,8 @@ public class KhqrFragment extends Fragment {
 
         });
 
-
         return view;
     }
+
+
 }

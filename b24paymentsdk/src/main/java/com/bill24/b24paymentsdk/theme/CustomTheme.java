@@ -150,69 +150,119 @@ public class CustomTheme {
         this.banButtonTextSecondaryColor = banButtonTextSecondaryColor;
     }
 
-    private String primaryTextColor;
-    private String primaryBackgroundColor;
-    private  String secondaryTextColor;
-    private String secondaryBackgroundColor;
-    private String indicatorColor;
-
-    private String labelTextColor;
-    private String labelBackgroundColor;
-    private String alertTextColor;
-    private String alertBackgroundColor;
-    private String favoriteButtonTextColor;
+    private String primaryTextColor="#375C94";
+    private String primaryBackgroundColor="#FFFFFF";
+    private  String secondaryTextColor="#9E9E9E";
+    private String secondaryBackgroundColor="#FBFBFB";
+    private String indicatorColor="#E0E0E0";
+    private String labelTextColor="#707070";
+    private String labelBackgroundColor="#F7F7F7";
+    private String alertTextColor="#57BC1E";
+    private String alertBackgroundColor="#1F57BC1E";
+    private String favoriteButtonTextColor="#1F57BC1E";
     private String favoriteButtonBackgroundColor="#1F57BC1E";
-    private String bankButtonTextPrimaryColor;
-    private String banButtonTextSecondaryColor;
-    private String bankButtonBackgroundColor;
-    private String actionButtonTextColor;
-    private String actionButtonBackgroundColor;
-    private String buttonTextColor;
-    private String buttonBackgroundColor;
+    private String bankButtonTextPrimaryColor="#171716";
+    private String banButtonTextSecondaryColor="#707070";
+    private String bankButtonBackgroundColor="#FFFFFF";
+    private String actionButtonTextColor="#0476FB";
+    private String actionButtonBackgroundColor="#2B0476FB";
+    private String buttonTextColor="#FFFFFF";
+    private String buttonBackgroundColor="#528A36";
 
 
     public static CustomTheme getThemeFromAPI(boolean isLightMode, CheckoutPageConfigModel checkoutPageConfigModel){
         CustomTheme customTheme=new CustomTheme();
+
         if(isLightMode){
             LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
 
-            String priTextColor=lightModeModel.getPrimaryColor().getTextColor();
+            String priTextColor;
+            if(lightModeModel.getPrimaryColor().getTextColor().isEmpty() || lightModeModel.getPrimaryColor().getTextColor().isBlank()){
+                priTextColor=customTheme.getPrimaryTextColor();
+            }else {
+                priTextColor=lightModeModel.getPrimaryColor().getTextColor();
+            }
             String priTextColorHexa=ConvertColorHexa.convertHex(priTextColor);
             customTheme.setPrimaryTextColor(priTextColorHexa);
 
-            String priBackColor=lightModeModel.getPrimaryColor().getBackgroundColor();
+            String priBackColor;
+            if(lightModeModel.getPrimaryColor().getBackgroundColor().isBlank() || lightModeModel.getPrimaryColor().getBackgroundColor().isEmpty()){
+                priBackColor=customTheme.getPrimaryBackgroundColor();
+            }else {
+                priBackColor=lightModeModel.getPrimaryColor().getBackgroundColor();
+            }
             String priBackColorHexa=ConvertColorHexa.convertHex(priBackColor);
             customTheme.setPrimaryBackgroundColor(priBackColorHexa);
 
-            String secTextColor=lightModeModel.getSecondaryColor().getTextColor();
+            String secTextColor;
+            if(lightModeModel.getSecondaryColor().getTextColor().isEmpty() || lightModeModel.getSecondaryColor().getTextColor().isBlank()){
+                secTextColor=customTheme.getSecondaryTextColor();
+            }else {
+                secTextColor=lightModeModel.getSecondaryColor().getTextColor();
+            }
             String secTextColorHexa=ConvertColorHexa.convertHex(secTextColor);
             customTheme.setSecondaryTextColor(secTextColorHexa);
 
-            String secBackColor=lightModeModel.getSecondaryColor().getBackgroundColor();
+            String secBackColor;
+            if(lightModeModel.getSecondaryColor().getBackgroundColor().isBlank() || lightModeModel.getSecondaryColor().getBackgroundColor().isEmpty()){
+                secBackColor=customTheme.getSecondaryBackgroundColor();
+            }else {
+                secBackColor=lightModeModel.getSecondaryColor().getBackgroundColor();
+            }
             String secBackColorHexa=ConvertColorHexa.convertHex(secBackColor);
             customTheme.setSecondaryBackgroundColor(secBackColorHexa);
 
-            String indicColor=lightModeModel.getIndicatorColor();
+            String indicColor;
+            if(lightModeModel.getIndicatorColor().isEmpty() || lightModeModel.getIndicatorColor().isBlank()){
+                indicColor= customTheme.getIndicatorColor();
+            }else {
+                indicColor=lightModeModel.getIndicatorColor();
+            }
             String indicColorHexa=ConvertColorHexa.convertHex(indicColor);
             customTheme.setIndicatorColor(indicColorHexa);
 
-            String labelTextColor=lightModeModel.getLabel().getTextColor();
+            String labelTextColor;
+            if(lightModeModel.getLabel().getTextColor().isBlank() || lightModeModel.getLabel().getTextColor().isEmpty()){
+                labelTextColor= customTheme.getLabelTextColor();
+            }else {
+                labelTextColor=lightModeModel.getLabel().getTextColor();
+            }
             String labelTextColorHexa=ConvertColorHexa.convertHex(labelTextColor);
             customTheme.setLabelTextColor(labelTextColorHexa);
 
-            String labalBackColor=lightModeModel.getLabel().getBackgroundColor();
+            String labalBackColor;
+            if(lightModeModel.getLabel().getBackgroundColor().isEmpty() || lightModeModel.getLabel().getBackgroundColor().isBlank()){
+                labalBackColor=customTheme.getLabelBackgroundColor();
+            }else {
+                labalBackColor=lightModeModel.getLabel().getBackgroundColor();
+            }
             String labelBackColorHexa=ConvertColorHexa.convertHex(labalBackColor);
             customTheme.setLabelBackgroundColor(labelBackColorHexa);
 
-            String alertTextColor=lightModeModel.getAlert().getTextColor();
+            String alertTextColor;
+            if(lightModeModel.getAlert().getTextColor().isBlank() || lightModeModel.getAlert().getTextColor().isEmpty()){
+                alertTextColor= customTheme.getAlertTextColor();
+            }else {
+                alertTextColor=lightModeModel.getAlert().getTextColor();
+            }
             String alertTextColorHexa=ConvertColorHexa.convertHex(alertTextColor);
             customTheme.setAlertTextColor(alertTextColorHexa);
 
-            String alertBackColor=lightModeModel.getAlert().getBackgroundColor();
+            String alertBackColor;
+            if(lightModeModel.getAlert().getBackgroundColor().isEmpty() || lightModeModel.getAlert().getBackgroundColor().isBlank()){
+                alertBackColor=customTheme.getAlertBackgroundColor();
+            }else {
+                alertBackColor=lightModeModel.getAlert().getBackgroundColor();
+            }
             String alertBackColorHexa=ConvertColorHexa.convertHex(alertBackColor);
             customTheme.setAlertBackgroundColor(alertBackColorHexa);
 
-            String favButtonTextColor=lightModeModel.getButton().getFavoriteButton().getTextColor();
+            String favButtonTextColor;
+            if(lightModeModel.getButton().getFavoriteButton().getTextColor().isBlank() || lightModeModel.getButton().getFavoriteButton().getTextColor().isEmpty()){
+                favButtonTextColor= customTheme.getFavoriteButtonTextColor();
+            }else {
+                favButtonTextColor=lightModeModel.getButton().getFavoriteButton().getTextColor();
+            }
             String favButtonTextColorHexa=ConvertColorHexa.convertHex(favButtonTextColor);
             customTheme.setFavoriteButtonTextColor(favButtonTextColorHexa);
 
@@ -229,31 +279,66 @@ public class CustomTheme {
             String favButtonBackColorHexa=ConvertColorHexa.convertHex(favButtonBackColor);
             customTheme.setFavoriteButtonBackgroundColor(favButtonBackColorHexa);
 
-            String bankBtnTextPriColor=lightModeModel.getButton().getBankButton().getTextPrimary();
+            String bankBtnTextPriColor;
+            if(lightModeModel.getButton().getBankButton().getTextPrimary().isEmpty() || lightModeModel.getButton().getBankButton().getTextPrimary().isBlank()){
+                bankBtnTextPriColor= customTheme.getBankButtonTextPrimaryColor();
+            }else {
+                bankBtnTextPriColor=lightModeModel.getButton().getBankButton().getTextPrimary();
+            }
             String bankBtnTextPriColorHexa=ConvertColorHexa.convertHex(bankBtnTextPriColor);
             customTheme.setBankButtonTextPrimaryColor(bankBtnTextPriColorHexa);
 
-            String bankBtnTextSecColor=lightModeModel.getButton().getBankButton().getTextSecondary();
+            String bankBtnTextSecColor;
+            if(lightModeModel.getButton().getBankButton().getTextSecondary().isBlank() || lightModeModel.getButton().getBankButton().getTextSecondary().isEmpty()){
+                bankBtnTextSecColor= customTheme.getBanButtonTextSecondaryColor();
+            }else {
+                bankBtnTextSecColor=lightModeModel.getButton().getBankButton().getTextSecondary();
+            }
             String bankBtnTextSecColorHexa=ConvertColorHexa.convertHex(bankBtnTextSecColor);
             customTheme.setBanButtonTextSecondaryColor(bankBtnTextSecColorHexa);
 
-            String bankBtnBackColor=lightModeModel.getButton().getBankButton().getBackgroundColor();
+            String bankBtnBackColor;
+            if(lightModeModel.getButton().getBankButton().getBackgroundColor().isEmpty() || lightModeModel.getButton().getBankButton().getBackgroundColor().isBlank()){
+                bankBtnBackColor=customTheme.getBankButtonBackgroundColor();
+            }else {
+                bankBtnBackColor=lightModeModel.getButton().getBankButton().getBackgroundColor();
+            }
             String bankBtnBackColorHexa=ConvertColorHexa.convertHex(bankBtnBackColor);
             customTheme.setBankButtonBackgroundColor(bankBtnBackColorHexa);
 
-            String actBtnTextColor=lightModeModel.getButton().getActionButton().getTextColor();
+            String actBtnTextColor;
+            if(lightModeModel.getButton().getActionButton().getTextColor().isBlank() || lightModeModel.getButton().getActionButton().getTextColor().isEmpty()){
+                actBtnTextColor=customTheme.getActionButtonTextColor();
+            }else {
+                actBtnTextColor=lightModeModel.getButton().getActionButton().getTextColor();
+            }
             String actBtnTextColorHexa=ConvertColorHexa.convertHex(actBtnTextColor);
             customTheme.setActionButtonTextColor(actBtnTextColorHexa);
 
-            String actBtnBackColor=lightModeModel.getButton().getActionButton().getBackgroundColor();
+            String actBtnBackColor;
+            if(lightModeModel.getButton().getActionButton().getBackgroundColor().isEmpty() || lightModeModel.getButton().getActionButton().getBackgroundColor().isBlank()){
+                actBtnBackColor=customTheme.getActionButtonBackgroundColor();
+            }else {
+                actBtnBackColor=lightModeModel.getButton().getActionButton().getBackgroundColor();
+            }
             String actBtnBackColorHexa=ConvertColorHexa.convertHex(actBtnBackColor);
             customTheme.setActionButtonBackgroundColor(actBtnBackColorHexa);
 
-            String btnTextColor=lightModeModel.getButton().getTextColor();
+            String btnTextColor;
+            if(lightModeModel.getButton().getTextColor().isBlank() || lightModeModel.getButton().getTextColor().isEmpty()){
+                btnTextColor=customTheme.getButtonTextColor();
+            }else {
+                btnTextColor=lightModeModel.getButton().getTextColor();
+            }
             String btnTextColorHexa=ConvertColorHexa.convertHex(btnTextColor);
             customTheme.setButtonTextColor(btnTextColorHexa);
 
-            String btnBackColor=lightModeModel.getButton().getBackgroundColor();
+            String btnBackColor;
+            if(lightModeModel.getButton().getBackgroundColor().isEmpty() || lightModeModel.getButton().getBackgroundColor().isBlank()){
+                btnBackColor=customTheme.getButtonBackgroundColor();
+            }else {
+                btnBackColor=lightModeModel.getButton().getBackgroundColor();
+            }
             String btnBackColorHexa=ConvertColorHexa.convertHex(btnBackColor);
             customTheme.setButtonBackgroundColor(btnBackColorHexa);
 
@@ -261,75 +346,169 @@ public class CustomTheme {
         }else {
             DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
 
-            String priTextColor=darkModeModel.getPrimaryColor().getTextColor();
+            String priTextColor;
+            if(darkModeModel.getPrimaryColor().getTextColor().isEmpty() || darkModeModel.getPrimaryColor().getTextColor().isBlank()){
+                priTextColor=customTheme.getPrimaryTextColor();
+            }else {
+                priTextColor=darkModeModel.getPrimaryColor().getTextColor();
+            }
             String priTextColorHexa=ConvertColorHexa.convertHex(priTextColor);
             customTheme.setPrimaryTextColor(priTextColorHexa);
 
-            String priBackColor=darkModeModel.getPrimaryColor().getBackgroundColor();
+            String priBackColor;
+            if(darkModeModel.getPrimaryColor().getBackgroundColor().isBlank() || darkModeModel.getPrimaryColor().getBackgroundColor().isEmpty()){
+                priBackColor=customTheme.getPrimaryBackgroundColor();
+            }else {
+                priBackColor=darkModeModel.getPrimaryColor().getBackgroundColor();
+            }
             String priBackColorHexa=ConvertColorHexa.convertHex(priBackColor);
             customTheme.setPrimaryBackgroundColor(priBackColorHexa);
 
-            String secTextColor=darkModeModel.getSecondaryColor().getTextColor();
+            String secTextColor;
+            if(darkModeModel.getSecondaryColor().getTextColor().isEmpty() || darkModeModel.getSecondaryColor().getTextColor().isBlank()){
+                secTextColor=customTheme.getSecondaryTextColor();
+            }else {
+                secTextColor=darkModeModel.getSecondaryColor().getTextColor();
+            }
             String secTextColorHexa=ConvertColorHexa.convertHex(secTextColor);
             customTheme.setSecondaryTextColor(secTextColorHexa);
 
-            String secBackColor=darkModeModel.getSecondaryColor().getBackgroundColor();
+            String secBackColor;
+            if(darkModeModel.getSecondaryColor().getBackgroundColor().isBlank() || darkModeModel.getSecondaryColor().getBackgroundColor().isEmpty()){
+                secBackColor=customTheme.getSecondaryBackgroundColor();
+            }else {
+                secBackColor=darkModeModel.getSecondaryColor().getBackgroundColor();
+            }
             String secBackColorHexa=ConvertColorHexa.convertHex(secBackColor);
             customTheme.setSecondaryBackgroundColor(secBackColorHexa);
 
-            String indicColor=darkModeModel.getIndicatorColor();
+            String indicColor;
+            if(darkModeModel.getIndicatorColor().isEmpty() || darkModeModel.getIndicatorColor().isBlank()){
+                indicColor= customTheme.getIndicatorColor();
+            }else {
+                indicColor=darkModeModel.getIndicatorColor();
+            }
             String indicColorHexa=ConvertColorHexa.convertHex(indicColor);
             customTheme.setIndicatorColor(indicColorHexa);
 
-            String labelTextColor=darkModeModel.getLabel().getTextColor();
+            String labelTextColor;
+            if(darkModeModel.getLabel().getTextColor().isBlank() || darkModeModel.getLabel().getTextColor().isEmpty()){
+                labelTextColor= customTheme.getLabelTextColor();
+            }else {
+                labelTextColor=darkModeModel.getLabel().getTextColor();
+            }
             String labelTextColorHexa=ConvertColorHexa.convertHex(labelTextColor);
             customTheme.setLabelTextColor(labelTextColorHexa);
 
-            String labalBackColor=darkModeModel.getLabel().getBackgroundColor();
+            String labalBackColor;
+            if(darkModeModel.getLabel().getBackgroundColor().isEmpty() || darkModeModel.getLabel().getBackgroundColor().isBlank()){
+                labalBackColor=customTheme.getLabelBackgroundColor();
+            }else {
+                labalBackColor=darkModeModel.getLabel().getBackgroundColor();
+            }
             String labelBackColorHexa=ConvertColorHexa.convertHex(labalBackColor);
             customTheme.setLabelBackgroundColor(labelBackColorHexa);
 
-            String alertTextColor=darkModeModel.getAlert().getTextColor();
+            String alertTextColor;
+            if(darkModeModel.getAlert().getTextColor().isBlank() || darkModeModel.getAlert().getTextColor().isEmpty()){
+                alertTextColor= customTheme.getAlertTextColor();
+            }else {
+                alertTextColor=darkModeModel.getAlert().getTextColor();
+            }
             String alertTextColorHexa=ConvertColorHexa.convertHex(alertTextColor);
             customTheme.setAlertTextColor(alertTextColorHexa);
 
-            String alertBackColor=darkModeModel.getAlert().getBackgroundColor();
+            String alertBackColor;
+            if(darkModeModel.getAlert().getBackgroundColor().isEmpty() || darkModeModel.getAlert().getBackgroundColor().isBlank()){
+                alertBackColor=customTheme.getAlertBackgroundColor();
+            }else {
+                alertBackColor=darkModeModel.getAlert().getBackgroundColor();
+            }
             String alertBackColorHexa=ConvertColorHexa.convertHex(alertBackColor);
             customTheme.setAlertBackgroundColor(alertBackColorHexa);
 
-            String favButtonTextColor=darkModeModel.getButton().getFavoriteButton().getTextColor();
+            String favButtonTextColor;
+            if(darkModeModel.getButton().getFavoriteButton().getTextColor().isBlank() || darkModeModel.getButton().getFavoriteButton().getTextColor().isEmpty()){
+                favButtonTextColor= customTheme.getFavoriteButtonTextColor();
+            }else {
+                favButtonTextColor=darkModeModel.getButton().getFavoriteButton().getTextColor();
+            }
             String favButtonTextColorHexa=ConvertColorHexa.convertHex(favButtonTextColor);
             customTheme.setFavoriteButtonTextColor(favButtonTextColorHexa);
 
-            String favButtonBackColor=darkModeModel.getButton().getFavoriteButton().getBackgroundColor();
+            String favButtonBackColor;
+            if (
+                    darkModeModel.getButton().getFavoriteButton().getBackgroundColor().isBlank()
+                            || darkModeModel.getButton().getFavoriteButton().getBackgroundColor().isEmpty()
+            ){
+                favButtonBackColor= customTheme.getFavoriteButtonBackgroundColor();
+            }
+            else {
+                favButtonBackColor=darkModeModel.getButton().getFavoriteButton().getBackgroundColor();
+            }
             String favButtonBackColorHexa=ConvertColorHexa.convertHex(favButtonBackColor);
             customTheme.setFavoriteButtonBackgroundColor(favButtonBackColorHexa);
 
-            String bankBtnTextPriColor=darkModeModel.getButton().getBankButton().getTextPrimary();
+            String bankBtnTextPriColor;
+            if(darkModeModel.getButton().getBankButton().getTextPrimary().isEmpty() || darkModeModel.getButton().getBankButton().getTextPrimary().isBlank()){
+                bankBtnTextPriColor= customTheme.getBankButtonTextPrimaryColor();
+            }else {
+                bankBtnTextPriColor=darkModeModel.getButton().getBankButton().getTextPrimary();
+            }
             String bankBtnTextPriColorHexa=ConvertColorHexa.convertHex(bankBtnTextPriColor);
             customTheme.setBankButtonTextPrimaryColor(bankBtnTextPriColorHexa);
 
-            String bankBtnTextSecColor=darkModeModel.getButton().getBankButton().getTextSecondary();
+            String bankBtnTextSecColor;
+            if(darkModeModel.getButton().getBankButton().getTextSecondary().isBlank() || darkModeModel.getButton().getBankButton().getTextSecondary().isEmpty()){
+                bankBtnTextSecColor= customTheme.getBanButtonTextSecondaryColor();
+            }else {
+                bankBtnTextSecColor=darkModeModel.getButton().getBankButton().getTextSecondary();
+            }
             String bankBtnTextSecColorHexa=ConvertColorHexa.convertHex(bankBtnTextSecColor);
             customTheme.setBanButtonTextSecondaryColor(bankBtnTextSecColorHexa);
 
-            String bankBtnBackColor=darkModeModel.getButton().getBankButton().getBackgroundColor();
+            String bankBtnBackColor;
+            if(darkModeModel.getButton().getBankButton().getBackgroundColor().isEmpty() || darkModeModel.getButton().getBankButton().getBackgroundColor().isBlank()){
+                bankBtnBackColor=customTheme.getBankButtonBackgroundColor();
+            }else {
+                bankBtnBackColor=darkModeModel.getButton().getBankButton().getBackgroundColor();
+            }
             String bankBtnBackColorHexa=ConvertColorHexa.convertHex(bankBtnBackColor);
             customTheme.setBankButtonBackgroundColor(bankBtnBackColorHexa);
 
-            String actBtnTextColor=darkModeModel.getButton().getActionButton().getTextColor();
+            String actBtnTextColor;
+            if(darkModeModel.getButton().getActionButton().getTextColor().isBlank() || darkModeModel.getButton().getActionButton().getTextColor().isEmpty()){
+                actBtnTextColor=customTheme.getActionButtonTextColor();
+            }else {
+                actBtnTextColor=darkModeModel.getButton().getActionButton().getTextColor();
+            }
             String actBtnTextColorHexa=ConvertColorHexa.convertHex(actBtnTextColor);
             customTheme.setActionButtonTextColor(actBtnTextColorHexa);
 
-            String actBtnBackColor=darkModeModel.getButton().getActionButton().getBackgroundColor();
+            String actBtnBackColor;
+            if(darkModeModel.getButton().getActionButton().getBackgroundColor().isEmpty() || darkModeModel.getButton().getActionButton().getBackgroundColor().isBlank()){
+                actBtnBackColor=customTheme.getActionButtonBackgroundColor();
+            }else {
+                actBtnBackColor=darkModeModel.getButton().getActionButton().getBackgroundColor();
+            }
             String actBtnBackColorHexa=ConvertColorHexa.convertHex(actBtnBackColor);
             customTheme.setActionButtonBackgroundColor(actBtnBackColorHexa);
 
-            String btnTextColor=darkModeModel.getButton().getTextColor();
+            String btnTextColor;
+            if(darkModeModel.getButton().getTextColor().isBlank() || darkModeModel.getButton().getTextColor().isEmpty()){
+                btnTextColor=customTheme.getButtonTextColor();
+            }else {
+                btnTextColor=darkModeModel.getButton().getTextColor();
+            }
             String btnTextColorHexa=ConvertColorHexa.convertHex(btnTextColor);
             customTheme.setButtonTextColor(btnTextColorHexa);
 
-            String btnBackColor=darkModeModel.getButton().getBackgroundColor();
+            String btnBackColor;
+            if(darkModeModel.getButton().getBackgroundColor().isEmpty() || darkModeModel.getButton().getBackgroundColor().isBlank()){
+                btnBackColor=customTheme.getButtonBackgroundColor();
+            }else {
+                btnBackColor=darkModeModel.getButton().getBackgroundColor();
+            }
             String btnBackColorHexa=ConvertColorHexa.convertHex(btnBackColor);
             customTheme.setButtonBackgroundColor(btnBackColorHexa);
 

@@ -280,6 +280,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         public void onResponse(Call<BaseResponse<CheckoutDetailModel>> call, Response<BaseResponse<CheckoutDetailModel>> response) {
 
                             if(response.isSuccessful()){
+                                assert response.body() != null;
                                 if(response.body().getData().getTransInfo().getStatus().equals("success")){
 
                                     if(response.body().getData().getCheckoutPageConfig().isDisplaySuccessPage()){
@@ -349,6 +350,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             viewGroup.setBackground(shapeDrawable);
         }
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -487,13 +489,6 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         );
 
 
-
-
-
-
-
-
-
                     }
 
 
@@ -530,6 +525,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             }
         });
     }
+
 
     @Override
     public void onDestroy() {

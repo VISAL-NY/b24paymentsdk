@@ -244,10 +244,10 @@ public class SuccessActivity extends AppCompatActivity {
                 Color.parseColor(custom.getButtonBackgroundColor()),10,this);
         String buttonSelectColor=ConvertColorHexa.getFiftyPercentColor(
                 custom.getButtonBackgroundColor());
-        ShapeDrawable btnDoneSelectorShape=CustomShape.applyShape(Color.parseColor(buttonSelectColor),
-                10,this);
+//        ShapeDrawable btnDoneSelectorShape=CustomShape.applyShape(Color.parseColor(buttonSelectColor),
+//                10,this);
 
-        StateListDrawable selector= SelectedState.selectedSate(btnDoneNormalShape,btnDoneSelectorShape);
+        StateListDrawable selector= SelectedState.selectedSate(btnDoneNormalShape,btnDoneNormalShape);
         buttonDoneContainer.setBackground(selector);
         textDone.setTextColor(Color.parseColor(custom.getButtonTextColor()));
 

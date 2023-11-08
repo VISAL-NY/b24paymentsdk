@@ -1,11 +1,15 @@
 plugins {
      id 'com.android.library'
-     id 'maven-publish'
 }
 
 android {
-
     namespace 'com.bill24.b24paymentsdk'
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+
     compileSdk 34
 
     defaultConfig {
@@ -60,47 +64,5 @@ dependencies {
 
     }
 }
+apply from: '../publish-package.gradle'
 
-
-//shadowJar {
-//    baseName = 'b24paymentsdk'
-//    classifier = 'release'
-//
-//    from sourceSets.main.output
-//    configurations = [project.configurations.runtimeClasspath]
-//}
-//
-//artifacts {
-//    archives shadowJar
-//}
-
-// 5. Publishing:
-//publishing {
-//    publications {
-//        aar(MavenPublication) {
-//            groupId = 'com.github.visal-99'
-//            artifactId = 'b24paymentsdk'
-//            version = "1.0.0"
-//            pom{
-//                name = 'b24paymentsdk'   // Replace with your library's name
-//                description = 'provide payment online'
-//                url = 'https://github.com/visal-99/b24paymentsdk'
-//                licenses {
-//                    license {
-//                        name = 'The Apache License, Version 2.0'
-//                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    repositories {               // << --- ADD This
-//        maven {
-//            url = uri("https://s01.oss.sonatype.org/")
-//            credentials {
-//                username = "TLIP0CeP"
-//                password ="oehtRxNAdxPLcY6PCJwo2cjWtyoFomWCGdEC6Cj29PwW"
-//            }
-//        }
-//    }
-//}

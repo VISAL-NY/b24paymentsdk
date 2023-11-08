@@ -325,6 +325,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
 
+
                 return;
             }
             currentPos++; // Move to the next position
@@ -448,11 +449,11 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
             String favBtnSelectorColor=ConvertColorHexa.getFiftyPercentColor(
                     customTheme.getFavoriteButtonBackgroundColor()
             );
-            ShapeDrawable favBtnSelector=CustomShape.applyShape(
-                    Color.parseColor(favBtnSelectorColor),
-                    6,context);
+//            ShapeDrawable favBtnSelector=CustomShape.applyShape(
+//                    Color.parseColor(favBtnSelectorColor),
+//                    6,context);
 
-            StateListDrawable favSelector=SelectedState.selectedSate(favButtonShape,favBtnSelector);
+            StateListDrawable favSelector=SelectedState.selectedSate(favButtonShape,favButtonShape);
             addToFavoriteContainer.setBackground(favSelector);
 
             //favorite icon

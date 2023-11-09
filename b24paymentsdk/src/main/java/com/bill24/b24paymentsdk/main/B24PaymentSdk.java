@@ -11,44 +11,55 @@ public class B24PaymentSdk {
     public static void initSdk(
             FragmentManager fragmentManager,
             String tranId,
-            String refererKey,
-            String language,
-            boolean isLightMode,
-            String env){
-        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,language,isLightMode,env);
-        bottomSheet.show(fragmentManager,bottomSheet.getTag());
-
-    }
-    public static void initSdk(
-            FragmentManager fragmentManager,
-            String tranId,
-            String refererKey,
-            boolean isLightMode,
-            String env){
-        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,isLightMode,env);
-        bottomSheet.show(fragmentManager,bottomSheet.getTag());
-
-    }
-
-    public static void initSdk(
-            FragmentManager fragmentManager,
-            String tranId,
-            String refererKey,
-            String language,
-            boolean isLightMode
-           ){
-        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,language,isLightMode);
-        bottomSheet.show(fragmentManager,bottomSheet.getTag());
-
-    }
-
-    public static void initSdk(
-            FragmentManager fragmentManager,
-            String tranId,
-            String refererKey,
-            boolean isLightMode){
-        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,isLightMode);
+            String refererKey){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey);
         bottomSheet.show(fragmentManager, bottomSheet.getTag());
     }
+    public static void initSdk(
+            FragmentManager fragmentManager,
+            String tranId,
+            String refererKey,
+            String language
+    ){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,language);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
+    }
+
+    public static void initSdk(
+            FragmentManager fragmentManager,
+            String tranId,
+            String refererKey,
+            boolean darkMode){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,darkMode);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
+    }
+    public static void initSdk(
+            FragmentManager fragmentManager,
+            String tranId,
+            String refererKey,
+            boolean darkMode,
+            boolean isProduction){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,darkMode,isProduction);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+
+    }
+
+    public static void initSdk(
+            FragmentManager fragmentManager,
+            String tranId,
+            String refererKey,
+            String language,
+            boolean darkMode,
+            boolean isProduction
+    ){
+        BottomSheet bottomSheet=new BottomSheet(tranId,refererKey,language,darkMode,isProduction);
+        bottomSheet.show(fragmentManager,bottomSheet.getTag());
+    }
+
+
+
+
 
 }

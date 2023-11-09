@@ -141,10 +141,8 @@ public class MainActivity extends AppCompatActivity {
                    B24PaymentSdk.initSdk(
                            getSupportFragmentManager(),
                            responseModel.getData().getTranID(),
-                           "123X",
-                           "km",
-                           isLightMode,
-                           "en"
+                           "123X",true,false
+
 
                    );
 

@@ -170,10 +170,10 @@ public class CustomTheme {
     private String buttonBackgroundColor="#528A36";
 
 
-    public static CustomTheme getThemeFromAPI(boolean isLightMode, CheckoutPageConfigModel checkoutPageConfigModel){
+    public static CustomTheme getThemeFromAPI(boolean darkMode, CheckoutPageConfigModel checkoutPageConfigModel){
         CustomTheme customTheme=new CustomTheme();
 
-        if(isLightMode){
+        if(!darkMode){
             LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
 
             String priTextColor;

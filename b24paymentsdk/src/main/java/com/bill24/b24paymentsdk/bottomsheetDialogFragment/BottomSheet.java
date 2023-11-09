@@ -48,7 +48,6 @@ import com.bill24.b24paymentsdk.model.requestModel.CheckoutDetailRequestModel;
 import com.bill24.b24paymentsdk.socketIO.EVentName;
 import com.bill24.b24paymentsdk.socketIO.SocketManager;
 import com.bill24.b24paymentsdk.socketIO.model.SocketRespModel;
-import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -70,62 +69,49 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private ProgressBar progressBar;
     private LinearLayoutCompat bottomSheet;
     private View dragHandle;
-    private boolean isLightMode;
+    private boolean darkMode,idProduction=false;
     private BottomSheetDialog dialog;
-    private String tranId,refererKey,language,env, baseUrl="";
+    private String tranId,refererKey,language, baseUrl="";
     private CheckoutPageConfigModel checkoutPageConfigModel=new CheckoutPageConfigModel();
     public BottomSheet(
             String tranId,
-            String refererKey,
-            boolean isLightMode){
+            String refererKey){
         this.tranId=tranId;
         this.refererKey=refererKey;
-        this.isLightMode=isLightMode;
-
-        if(env==null || env.isEmpty()){
-            baseUrl =BaseURL.BASE_URL_DEMO;
+        if(!idProduction){
+            baseUrl=BaseURL.BASE_URL_DEMO;
+        }else {
+            baseUrl=BaseURL.BASE_URL_STAGGING;
         }
         requestModel=new CheckoutDetailRequestModel(this.tranId);
     }
 
+
     public BottomSheet(
             String tranId,
             String refererKey,
-            String language,
-            boolean isLightMode,
-            String env){
+            String language){
         this.tranId=tranId;
         this.refererKey=refererKey;
         this.language=language;
-        this.isLightMode=isLightMode;
-        this.env=env;
-
-        if(env.equals(Constant.DEMO_ENV)){
+        if(!idProduction){
             baseUrl=BaseURL.BASE_URL_DEMO;
-        }else if(env.equals(Constant.STAGING_ENV)){
-            baseUrl=BaseURL.BASE_URL_STAGGING;
         }else {
-            baseUrl=BaseURL.BASE_URL_DEMO;
+            baseUrl=BaseURL.BASE_URL_STAGGING;
         }
-
         requestModel=new CheckoutDetailRequestModel(this.tranId);
     }
     public BottomSheet(
             String tranId,
             String refererKey,
-            boolean isLightMode,
-            String env){
+            boolean darkMode){
         this.tranId=tranId;
         this.refererKey=refererKey;
-        this.isLightMode=isLightMode;
-        this.env=env;
-
-        if(env.equals(Constant.DEMO_ENV)){
+        this.darkMode=darkMode;
+        if(!idProduction){
             baseUrl=BaseURL.BASE_URL_DEMO;
-        }else if(env.equals(Constant.STAGING_ENV)){
-            baseUrl=BaseURL.BASE_URL_STAGGING;
         }else {
-            baseUrl=BaseURL.BASE_URL_DEMO;
+            baseUrl=BaseURL.BASE_URL_STAGGING;
         }
 
         requestModel=new CheckoutDetailRequestModel(this.tranId);
@@ -133,21 +119,48 @@ public class BottomSheet extends BottomSheetDialogFragment {
     public BottomSheet(
             String tranId,
             String refererKey,
-            String language,
-            boolean isLightMode
+            boolean darkMode,
+            boolean isProduction
            ){
         this.tranId=tranId;
         this.refererKey=refererKey;
-        this.language=language;
-        this.isLightMode=isLightMode;
+        this.darkMode=darkMode;
+        this.idProduction=isProduction;
 
 
-        if(env==null || env.isEmpty()){
+        if(!isProduction){
             baseUrl =BaseURL.BASE_URL_DEMO;
+        }else {
+            baseUrl=BaseURL.BASE_URL_STAGGING;
         }
 
         requestModel=new CheckoutDetailRequestModel(this.tranId);
     }
+
+    public BottomSheet(
+            String tranId,
+            String refererKey,
+            String language,
+            boolean darkMode,
+            boolean isProduction
+    ){
+        this.tranId=tranId;
+        this.refererKey=refererKey;
+        this.language=language;
+        this.darkMode=darkMode;
+        this.idProduction=isProduction;
+
+
+        if(!isProduction){
+            baseUrl =BaseURL.BASE_URL_DEMO;
+        }else {
+            baseUrl=BaseURL.BASE_URL_STAGGING;
+        }
+
+        requestModel=new CheckoutDetailRequestModel(this.tranId);
+    }
+
+
 
 
     private void initView(View view){
@@ -185,12 +198,11 @@ public class BottomSheet extends BottomSheetDialogFragment {
         connectSocketIO(tranId);
 
 
-
         if(language==null || language.isEmpty()){
             language= LanguageCode.KH;
         }
 
-        if(isLightMode){
+        if(!darkMode){
             bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loding_light_shape));
         }else {
             bottomSheet.setBackground(getContext().getDrawable(R.drawable.bottom_sheet_loading_dark_shape));
@@ -217,7 +229,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         editor.putString(Constant.KEY_TRANSACTION_INFO,SharePreferenceCustom.convertObjectToJson(transactionInfoModel));
         editor.putString(Constant.KEY_CHECKOUT_PAGE_CONFIG,SharePreferenceCustom.convertObjectToJson(checkoutPageConfigModel));
         editor.putString(Constant.KEY_BILLER,SharePreferenceCustom.convertObjectToJson(billerModel));
-        editor.putBoolean(Constant.IS_LIGHT_MODE,isLightMode);
+        editor.putBoolean(Constant.IS_LIGHT_MODE,darkMode);
         editor.putString(Constant.BASE_URL_ENV, baseUrl);
 
         editor.apply();
@@ -292,7 +304,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                                         if(isAdded()){
                                             Intent intent=new Intent(requireActivity(), SuccessActivity.class);
                                             intent.putExtra(Constant.KEY_LANGUAGE_CODE,transactionInfoModel.getLanguage());
-                                            intent.putExtra(Constant.IS_LIGHT_MODE,isLightMode);
+                                            intent.putExtra(Constant.IS_LIGHT_MODE,darkMode);
                                             intent.putExtra(Constant.KEY_TRANSACTION_INFO,transactionInfoModel);
                                             intent.putExtra(Constant.KEY_CHECKOUT_PAGE_CONFIG,checkoutPageConfigModel);
                                             intent.putExtra(Constant.KEY_BILLER,billerModel);
@@ -334,7 +346,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         };
 
 
-        if(isLightMode){
+        if(!darkMode){
             ShapeDrawable shapeDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
             String bottomSheetColor=checkoutPageConfigModel.getAppearance().getLightMode().getSecondaryColor().getBackgroundColor();
             String bottomSheetHexa= ConvertColorHexa.convertHex(bottomSheetColor);
@@ -447,7 +459,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         }
 
                         //set drag handle
-                        if(isLightMode){
+                        if(!darkMode){
                             LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
                             String dragHandle=lightModeModel.getIndicatorColor();
                             String dragHanleHexa=ConvertColorHexa.convertHex(dragHandle);

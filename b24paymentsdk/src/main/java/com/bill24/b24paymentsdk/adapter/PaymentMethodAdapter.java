@@ -35,7 +35,6 @@ import com.bill24.b24paymentsdk.helper.ConvertColorHexa;
 import com.bill24.b24paymentsdk.helper.SetFont;
 import com.bill24.b24paymentsdk.helper.StickyHeaderItemDecoration;
 import com.bill24.b24paymentsdk.helper.Translate;
-import com.bill24.b24paymentsdk.helper.translateLanguage.TranslateLanguage;
 import com.bill24.b24paymentsdk.model.AddToFavoriteModel;
 import com.bill24.b24paymentsdk.model.BankPaymentMethodItemModel;
 import com.bill24.b24paymentsdk.model.BankPaymentMethodModel;
@@ -48,7 +47,6 @@ import com.bill24.b24paymentsdk.model.requestModel.AddToFavoriteRequestModel;
 import com.bill24.b24paymentsdk.theme.CustomTheme;
 import com.squareup.picasso.Picasso;
 import java.util.List;
-import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,7 +67,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
     private AppCompatTextView textSectionHeader,
             textBankName;
     private String tranasctionId, refererKey,language,baseUrl;
-    private boolean isLightMode;
+    private boolean darkMode;
 
    public void setPaymentMethod(
            CheckoutPageConfigModel checkoutPageConfigModel,
@@ -77,7 +75,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
            List<BankPaymentMethodModel> bankPaymentMethodModelList,
            String transactionId,
            String refererKey,
-           boolean isLightMode,
+           boolean darkMode,
            String language,
            String baseUrl){
        this.checkoutPageConfigModel=checkoutPageConfigModel;
@@ -85,7 +83,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
        this.bankPaymentMethodModelList=bankPaymentMethodModelList;
        this.tranasctionId=transactionId;
        this.refererKey=refererKey;
-       this.isLightMode=isLightMode;
+       this.darkMode =darkMode;
        this.language=language;
        this.baseUrl=baseUrl;
 
@@ -111,7 +109,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     private void applyHeaderTheme(LinearLayoutCompat headerContainer,AppCompatTextView sectionHeader){
-        CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+        CustomTheme customTheme=CustomTheme.getThemeFromAPI(darkMode,checkoutPageConfigModel);
 
         headerContainer.setBackgroundColor(Color.parseColor(customTheme.getLabelBackgroundColor()));
         sectionHeader.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
@@ -355,7 +353,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         void applyHeaderTheme(){
-            CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+            CustomTheme customTheme=CustomTheme.getThemeFromAPI(darkMode,checkoutPageConfigModel);
 
             headerContainer.setBackgroundColor(Color.parseColor(customTheme.getLabelBackgroundColor()));
             textSection.setTextColor(Color.parseColor(customTheme.getLabelTextColor()));
@@ -404,7 +402,7 @@ public class PaymentMethodAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         void applyItemTheme(Context context){
-            CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+            CustomTheme customTheme=CustomTheme.getThemeFromAPI(darkMode,checkoutPageConfigModel);
             ShapeDrawable bankItemShape=CustomShape.applyShape(Color.parseColor(
                     customTheme.getBankButtonBackgroundColor()),12,context);
 

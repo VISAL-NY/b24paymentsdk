@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.bill24.b24paymentsdk.R;
 import com.bill24.b24paymentsdk.bottomsheetDialogFragment.BottomSheet;
@@ -94,7 +92,7 @@ public class KhqrFragment extends Fragment {
     private String transactionId,refererKey,language,baseUrl;
     private CoordinatorLayout khqrContainer;
     private View khqrBackground;
-    private  boolean isLightMode;
+    private  boolean darkMode;
     private ProgressBar khqrProgressBar;
     public KhqrFragment(String transactionId){
         this.transactionId=transactionId;
@@ -193,7 +191,7 @@ public class KhqrFragment extends Fragment {
 
 
             //get isLight mode
-            isLightMode=preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
+            darkMode =preferences.getBoolean(Constant.IS_LIGHT_MODE,true);
 
             //get base url
             baseUrl=preferences.getString(Constant.BASE_URL_ENV,"");
@@ -203,21 +201,10 @@ public class KhqrFragment extends Fragment {
     }
 
     private void postExtendExpiredTime(View view){
-        if(isLightMode){
-            LightModeModel lightModeModel=checkoutPageConfigModel.getAppearance().getLightMode();
-            String khqrLoadingColor=lightModeModel.getSecondaryColor().getBackgroundColor();
-            String khqrLoadingHexa=ConvertColorHexa.convertHex(khqrLoadingColor);
-            khqrLoading.setBackgroundColor(Color.parseColor(khqrLoadingHexa));
-            khqrLoading.setVisibility(View.VISIBLE);
-        }else {
 
-            DarkModeModel darkModeModel=checkoutPageConfigModel.getAppearance().getDarkMode();
-            String khqrLoadingColor=darkModeModel.getSecondaryColor().getBackgroundColor();
-            String khqrLoadingHexa=ConvertColorHexa.convertHex(khqrLoadingColor);
-            khqrLoading.setBackgroundColor(Color.parseColor(khqrLoadingHexa));
-            khqrLoading.setVisibility(View.VISIBLE);
-
-        }
+        CustomTheme customTheme=CustomTheme.getThemeFromAPI(darkMode,checkoutPageConfigModel);
+        khqrLoading.setBackgroundColor(Color.parseColor(customTheme.getSecondaryBackgroundColor()));
+        khqrLoading.setVisibility(View.VISIBLE);
 
         RequestAPI requestAPI=new RequestAPI(refererKey,baseUrl);
         ExpiredRequestModel requestModel=new ExpiredRequestModel(transactionId);
@@ -402,7 +389,7 @@ public class KhqrFragment extends Fragment {
 
 
     private void  applyThemeShape(){
-        CustomTheme customTheme=CustomTheme.getThemeFromAPI(isLightMode,checkoutPageConfigModel);
+        CustomTheme customTheme=CustomTheme.getThemeFromAPI(darkMode,checkoutPageConfigModel);
 
         khqrContainer.setBackgroundColor(Color.parseColor(customTheme.getSecondaryBackgroundColor()));
         textScanToPay.setTextColor(Color.parseColor(customTheme.getPrimaryTextColor()));
@@ -430,8 +417,8 @@ public class KhqrFragment extends Fragment {
                 Color.parseColor(customTheme.getActionButtonBackgroundColor()),
                         10,getContext());
 
-        String selectorColor=ConvertColorHexa.getFiftyPercentColor(
-                customTheme.getActionButtonBackgroundColor());
+//        String selectorColor=ConvertColorHexa.getFiftyPercentColor(
+//                customTheme.getActionButtonBackgroundColor());
 
 //        ShapeDrawable selectorShape=CustomShape.applyShape(
 //                Color.parseColor(selectorColor),
